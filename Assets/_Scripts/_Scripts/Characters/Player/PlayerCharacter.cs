@@ -1,0 +1,15 @@
+using UnityEngine;
+
+
+public class PlayerCharacter : Character
+{
+    public static PlayerCharacter Instance {  get; private set; }
+
+    private void Awake()
+    {
+        if (Instance == null)
+            Instance = this;
+        else
+            Debug.LogError("More than one instance of player character");
+    }
+}

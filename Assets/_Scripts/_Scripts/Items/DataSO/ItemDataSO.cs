@@ -3,15 +3,15 @@ using UnityEngine;
 
 public abstract class ItemDataSO : ScriptableObject
 {
-    public string ItemName => itemName;
-    public Sprite Icon => icon;
-    public int Price => price;
-    public ItemEffectSO[] Effects => effects;
-    public GameObject Prefab => prefab;
-    public ItemSubType SubType => itemSubType;
-    public RarityType Rarity => rarity;
+    public string ItemName => _itemName;
+    public Sprite Icon => _icon;
+    public int Price => _price;
+    public ItemEffectSO Effects => _effect;
+    public GameObject Prefab => _prefab;
+    public ItemSubType SubType => _itemSubType;
+    public RarityType Rarity => _rarity;
 
-    public Vector2Int GetShapeSize() => new Vector2Int(shapeWidth, shapeHeight);
+    public Vector2Int GetShapeSize() => new Vector2Int(_shapeWidth, _shapeHeight);
 
     public enum ItemType
     {
@@ -52,38 +52,38 @@ public abstract class ItemDataSO : ScriptableObject
 
 
     [Header("Basic Info")]
-    [SerializeField] private string itemName;
-    [SerializeField] private Sprite icon;
-    [SerializeField] private GameObject prefab;
+    [SerializeField] private string _itemName;
+    [SerializeField] private Sprite _icon;
+    [SerializeField] private GameObject _prefab;
 
     [Header("SubType")]
-    [SerializeField] private ItemSubType itemSubType = ItemSubType.None;
+    [SerializeField] private ItemSubType _itemSubType = ItemSubType.None;
 
     [Header("Rarity")]
-    [SerializeField] private RarityType rarity = RarityType.None;
+    [SerializeField] private RarityType _rarity = RarityType.None;
 
     [Header("Shape")]
-    [SerializeField] private int shapeWidth = 1;
-    [SerializeField] private int shapeHeight = 1;
-    [SerializeField] private bool[] shapeArray;
+    [SerializeField] private int _shapeWidth = 1;
+    [SerializeField] private int _shapeHeight = 1;
+    [SerializeField] private bool[] _shapeArray;
 
     [Header("Effects")]
-    [SerializeField] private ItemEffectSO[] effects;
+    [SerializeField] private ItemEffectSO _effect;
 
     [Header("Properties")]
-    [SerializeField] private int price;   
+    [SerializeField] private int _price;   
   
 
     public bool[,] GetShape()
     {
-        bool[,] shape = new bool[shapeWidth, shapeHeight];
-        if (shapeArray != null && shapeArray.Length == shapeWidth * shapeHeight)
+        bool[,] shape = new bool[_shapeWidth, _shapeHeight];
+        if (_shapeArray != null && _shapeArray.Length == _shapeWidth * _shapeHeight)
         {
-            for (int x = 0; x < shapeWidth; x++)
+            for (int x = 0; x < _shapeWidth; x++)
             {
-                for (int y = 0; y < shapeHeight; y++)
+                for (int y = 0; y < _shapeHeight; y++)
                 {
-                    shape[x, y] = shapeArray[y * shapeWidth + x];
+                    shape[x, y] = _shapeArray[y * _shapeWidth + x];
                 }
             }
         }
@@ -92,15 +92,15 @@ public abstract class ItemDataSO : ScriptableObject
 
     public void SetShape(bool[,] newShape)
     {
-        shapeWidth = newShape.GetLength(0);
-        shapeHeight = newShape.GetLength(1);
-        shapeArray = new bool[shapeWidth * shapeHeight];
+        _shapeWidth = newShape.GetLength(0);
+        _shapeHeight = newShape.GetLength(1);
+        _shapeArray = new bool[_shapeWidth * _shapeHeight];
 
-        for (int x = 0; x < shapeWidth; x++)
+        for (int x = 0; x < _shapeWidth; x++)
         {
-            for (int y = 0; y < shapeHeight; y++)
+            for (int y = 0; y < _shapeHeight; y++)
             {
-                shapeArray[y * shapeWidth + x] = newShape[x, y];
+                _shapeArray[y * _shapeWidth + x] = newShape[x, y];
             }
         }
     }
