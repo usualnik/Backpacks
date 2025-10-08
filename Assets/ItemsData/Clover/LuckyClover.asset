@@ -12,13 +12,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 948226c214859ab43a32d0f6f3eaa7c0, type: 3}
   m_Name: LuckyClover
   m_EditorClassIdentifier: Assembly-CSharp::AccessoryDataSO
-  itemName: Lucky Clover
-  icon: {fileID: 21300000, guid: bd62a757dc3f0ea45ae9bcc6bcae29c3, type: 3}
-  prefab: {fileID: 98611140532912634, guid: 2f2635880fbbe034a95f93b5a1e2922f, type: 3}
-  itemSubType: 0
-  rarity: 2
-  shapeWidth: 1
-  shapeHeight: 1
-  shapeArray: 
-  effects: []
-  price: 2
+  _itemName: LuckyClover
+  _icon: {fileID: 21300000, guid: bd62a757dc3f0ea45ae9bcc6bcae29c3, type: 3}
+  _prefab: {fileID: 98611140532912634, guid: 2f2635880fbbe034a95f93b5a1e2922f, type: 3}
+  _itemSubType: 0
+  _rarity: 2
+  _shapeWidth: 1
+  _shapeHeight: 1
+  _shapeArray: 01
+  _effect: {fileID: 11400000, guid: f8a3b7456b436ce46b694bc5f2f6efa3, type: 2}
+  _price: 2

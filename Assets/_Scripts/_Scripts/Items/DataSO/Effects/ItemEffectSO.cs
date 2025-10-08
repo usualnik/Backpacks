@@ -1,9 +1,11 @@
 using UnityEngine;
 
+
 public abstract class ItemEffectSO : ScriptableObject
 {
     [SerializeField] private string _name;
     [SerializeField] private string _description;
+  
 
     public enum EffectType
     {
@@ -21,4 +23,5 @@ public abstract class ItemEffectSO : ScriptableObject
         Blindness,
         Cold,
     }
+    public abstract void ApplyEffect();
 }

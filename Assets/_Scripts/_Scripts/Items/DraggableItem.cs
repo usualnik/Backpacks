@@ -4,15 +4,19 @@ using UnityEngine.UI;
 
 public class DraggableItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler
 {
+
     private bool _isDragging;
     private Rigidbody2D _rb;
     private Image _image;
     private bool _canRotate;
 
+    private Canvas _canvas;
+
     private void Awake()
     {
         _rb = GetComponent<Rigidbody2D>();
         _image = GetComponent<Image>();
+        _canvas = GetComponentInParent<Canvas>();
     }
 
     public void OnBeginDrag(PointerEventData eventData)
@@ -26,6 +30,8 @@ public class DraggableItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
         _image.raycastTarget = false;
         _isDragging = true;
         _canRotate = true;
+
+        transform.SetParent(_canvas.transform, false);
     }
 
     public void OnDrag(PointerEventData eventData)

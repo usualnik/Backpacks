@@ -11,5 +11,7 @@ public class PlayerCharacter : Character
             Instance = this;
         else
             Debug.LogError("More than one instance of player character");
+
+        _stats.Health = _stats.HealthMax;
     }
 }

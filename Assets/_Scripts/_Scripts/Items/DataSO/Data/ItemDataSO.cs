@@ -6,7 +6,7 @@ public abstract class ItemDataSO : ScriptableObject
     public string ItemName => _itemName;
     public Sprite Icon => _icon;
     public int Price => _price;
-    public ItemEffectSO Effects => _effect;
+    public ItemEffectSO Effect => _effect;
     public GameObject Prefab => _prefab;
     public ItemSubType SubType => _itemSubType;
     public RarityType Rarity => _rarity;
@@ -104,5 +104,8 @@ public abstract class ItemDataSO : ScriptableObject
             }
         }
     }
+
+
+    public abstract void PerformAction(ItemBehaviour.Target target);  
    
 }

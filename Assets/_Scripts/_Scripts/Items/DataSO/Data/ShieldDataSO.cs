@@ -10,5 +10,9 @@ public class ShieldDataSO : ItemDataSO
     [SerializeField] private int _socketsAmount;
 
     private const ItemType ITEM_TYPE = ItemType.Shields;
- 
+
+    public override void PerformAction(ItemBehaviour.Target target)
+    {     
+        Effect.ApplyEffect();
+    }
 }

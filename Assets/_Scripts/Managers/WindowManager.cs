@@ -1,8 +1,17 @@
+using System;
 using UnityEngine;
 
     public class WindowManager : MonoBehaviour
     {
         public static WindowManager Instance { get; private set; }
+        public event Action<WindowType> OnWindowOpened;
+        public enum WindowType
+        {
+            MainMenu = 0,
+            Store = 1,
+            Gameplay = 2,
+        }
+        private WindowType _windowType;
 
         [Header("Menu windows refs")]
         [SerializeField] private CanvasGroup[] _windowCanvasGroups;
@@ -22,11 +31,22 @@ using UnityEngine;
 
         private void Start()
         {          
-            //Open main menu
-            OpenWindow(0);
+            
+            OpenWindow((int)WindowType.MainMenu);
+            CombatManager.Instance.OnCombatFinished += CombatManager_OnCombatFinished;
+        }
+        private void OnDestroy()
+        {
+                CombatManager.Instance.OnCombatFinished -= CombatManager_OnCombatFinished;
+
         }
 
-        public void OpenWindow(int index)
+    private void CombatManager_OnCombatFinished(string obj)
+    {
+        OpenWindow((int)WindowType.Store);
+    }
+
+    public void OpenWindow(int index)
         {                     
             if (index < 0 || index >= _windowCanvasGroups.Length)
             {
@@ -44,6 +64,10 @@ using UnityEngine;
             _windowCanvasGroups[index].alpha = 1;
             _windowCanvasGroups[index].interactable = true;
             _windowCanvasGroups[index].blocksRaycasts = true;
+
+            ChangeCurrentWindowType(index);
+            OnWindowOpened?.Invoke(_windowType);
+            
         }
 
         public CanvasGroup GetWindowByIndex(int index)
@@ -52,4 +76,20 @@ using UnityEngine;
                 return _windowCanvasGroups[index];
             return null;
         }    
+
+        private void ChangeCurrentWindowType(int index)
+    {
+        switch (index)
+        {
+            case 0:
+                _windowType = WindowType.MainMenu; break;
+            case 1:
+                    _windowType = WindowType.Store; break;
+            case 2:
+                _windowType = WindowType.Gameplay; break;
+            default:
+
+                break;
+        }
     }
+}
