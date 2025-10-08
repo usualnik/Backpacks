@@ -141,4 +141,8 @@ public class CombatManager : MonoBehaviour
     {
         // Реализация эффектов
     }
+
+    public PlayerCharacter GetPlayerCharacter() => _playerCharacter;
+    public EnemyCharacter GetEnemyCharacter() => _enemyCharacter;
+
 }
