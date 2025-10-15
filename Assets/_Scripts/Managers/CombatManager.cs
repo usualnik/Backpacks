@@ -7,12 +7,21 @@ public class CombatManager : MonoBehaviour
     public static CombatManager Instance { get; private set; }
 
     public event Action OnCombatStarted;
-    public event Action<string> OnCombatFinished;
+    public event Action<CombatResult> OnCombatFinished;
 
     [SerializeField] private PlayerCharacter _playerCharacter;
     [SerializeField] private EnemyCharacter _enemyCharacter;
 
-    private string _combatResult = string.Empty;
+    public enum CombatResult
+    {
+        PlayerWin,
+        EnemyWin,
+        Tie
+    }
+    private CombatResult _result;
+
+
+    //private string _combatResult = string.Empty;
     private bool _isInCombat = false;
 
     private Coroutine _currentAttackRoutine;
@@ -41,16 +50,17 @@ public class CombatManager : MonoBehaviour
 
         _playerCharacter.OnCharacterDeath -= Player_OnCharacterDeath;
         _enemyCharacter.OnCharacterDeath -= Enemy_OnCharacterDeath;
-               
+
         if (_currentAttackRoutine != null)
             StopCoroutine(_currentAttackRoutine);
     }
+
+    #region Events
 
     private void StartCombatButton_OnGameStateChanged(GameManager.GameState gameState)
     {
         if (gameState == GameManager.GameState.Gameplay)
         {
-            Debug.Log("I AM STARTING COMBAT");
             _isInCombat = true;
             OnCombatStarted?.Invoke();
         }
@@ -58,22 +68,24 @@ public class CombatManager : MonoBehaviour
 
     private void Enemy_OnCharacterDeath()
     {
-        _combatResult = "PLAYER WINS";
+       _result = CombatResult.PlayerWin;
         _isInCombat = false;
         if (_currentAttackRoutine != null)
             StopCoroutine(_currentAttackRoutine);
-        OnCombatFinished?.Invoke(_combatResult);
+        OnCombatFinished?.Invoke(_result);
     }
 
     private void Player_OnCharacterDeath()
     {
-        _combatResult = "ENEMY WINS";
+        _result = CombatResult.EnemyWin;
         _isInCombat = false;
         if (_currentAttackRoutine != null)
             StopCoroutine(_currentAttackRoutine);
-        OnCombatFinished?.Invoke(_combatResult);
+        OnCombatFinished?.Invoke(_result);
     }
+    #endregion
 
+    #region WeaponDamage
     public void StartAutoAttack(ItemBehaviour.Target target,
         float damageMin, float damageMax,
         float staminaCost, float cooldown, float accuracy)
@@ -98,6 +110,28 @@ public class CombatManager : MonoBehaviour
         }
     }
 
+
+    private IEnumerator AutoAttackRoutine(Character targetCharacter,
+        float damageMin, float damageMax,
+        float staminaCost, float cooldown, float accuracy)
+    {
+
+        while (_isInCombat && targetCharacter != null && !targetCharacter.IsDead)
+        {
+            float damage = UnityEngine.Random.Range(damageMin, damageMax);
+            damage = Mathf.RoundToInt(damage);
+
+            targetCharacter.UseStamina(staminaCost);
+            targetCharacter.TakeDamage(damage);
+
+
+            yield return new WaitForSeconds(cooldown);
+        }
+
+        Debug.Log("Auto attack routine finished");
+        _currentAttackRoutine = null;
+    }
+
     public void StopAutoAttack()
     {
         if (_currentAttackRoutine != null)
@@ -108,41 +142,25 @@ public class CombatManager : MonoBehaviour
         }
     }
 
-    private IEnumerator AutoAttackRoutine(Character targetCharacter,
-        float damageMin, float damageMax,
-        float staminaCost, float cooldown, float accuracy)
-    {
-        Debug.Log($"Starting auto attack on {targetCharacter.name}");
-       
-        while (_isInCombat && targetCharacter != null && !targetCharacter.IsDead)
-        {
-           
-            if (UnityEngine.Random.value > accuracy)
-            {
-                Debug.Log($"Attack missed! Accuracy: {accuracy}");
-            }
-            else
-            {
-                float damage = UnityEngine.Random.Range(damageMin, damageMax);
-                Debug.Log($"Dealing {damage} damage to {targetCharacter.name}");
-
-                targetCharacter.TakeDamage(damage);
-            }
-
-            yield return new WaitForSeconds(cooldown);
-        }
-
-        Debug.Log("Auto attack routine finished");
-        _currentAttackRoutine = null;
-    }
-
-
-    public void ApplyEffect(ItemBehaviour.Target target)
-    {
-        // Реализация эффектов
-    }
-
     public PlayerCharacter GetPlayerCharacter() => _playerCharacter;
     public EnemyCharacter GetEnemyCharacter() => _enemyCharacter;
+    #endregion
 
+    #region Effects
+    public void ApplyEffect(ItemBehaviour.Target target,  ItemEffectSO itemEffectSO)
+    {
+        switch (target)
+        {
+            case ItemBehaviour.Target.Player:
+                _playerCharacter.ApplyEffect(itemEffectSO);
+                break;
+            case ItemBehaviour.Target.Enemy:
+                _enemyCharacter.ApplyEffect(itemEffectSO);
+                break;
+            default:
+                Debug.LogWarning($"Unknown target: {target}");
+                break;
+        }
+        #endregion
+    }
 }
