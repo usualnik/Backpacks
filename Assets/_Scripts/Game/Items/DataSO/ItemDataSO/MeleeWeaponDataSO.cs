@@ -24,7 +24,7 @@ public class MeleeWeaponDataSO : ItemDataSO
 
     public override void PerformAction(ItemBehaviour.Target target)
     {
-        CombatManager.Instance.StartAutoAttack(target,_damageMin,_damageMax,_staminaCost,_cooldown,_accuracy);
+        CombatManager.Instance.StartAutoAttack(target,this,_damageMin,_damageMax,_staminaCost,_cooldown,_accuracy);
                
     }
 }

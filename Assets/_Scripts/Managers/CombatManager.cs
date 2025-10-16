@@ -9,6 +9,12 @@ public class CombatManager : MonoBehaviour
     public event Action OnCombatStarted;
     public event Action<CombatResult> OnCombatFinished;
 
+    public event Action<ItemDataSO, string> OnDamageDealt;
+    public event Action<ItemEffectSO, string> OnEffectAppliedDealt;
+
+
+
+
     [SerializeField] private PlayerCharacter _playerCharacter;
     [SerializeField] private EnemyCharacter _enemyCharacter;
 
@@ -22,6 +28,7 @@ public class CombatManager : MonoBehaviour
 
 
     //private string _combatResult = string.Empty;
+
     private bool _isInCombat = false;
 
     private Coroutine _currentAttackRoutine;
@@ -86,7 +93,7 @@ public class CombatManager : MonoBehaviour
     #endregion
 
     #region WeaponDamage
-    public void StartAutoAttack(ItemBehaviour.Target target,
+    public void StartAutoAttack(ItemBehaviour.Target target,ItemDataSO attackWeapon,
         float damageMin, float damageMax,
         float staminaCost, float cooldown, float accuracy)
     {
@@ -99,10 +106,12 @@ public class CombatManager : MonoBehaviour
         switch (target)
         {
             case ItemBehaviour.Target.Player:
-                _currentAttackRoutine = StartCoroutine(AutoAttackRoutine(_playerCharacter, damageMin, damageMax, staminaCost, cooldown, accuracy));
+                _currentAttackRoutine = StartCoroutine(AutoAttackRoutine(_playerCharacter, attackWeapon,
+                    damageMin, damageMax, staminaCost, cooldown, accuracy));
                 break;
             case ItemBehaviour.Target.Enemy:
-                _currentAttackRoutine = StartCoroutine(AutoAttackRoutine(_enemyCharacter, damageMin, damageMax, staminaCost, cooldown, accuracy));
+                _currentAttackRoutine = StartCoroutine(AutoAttackRoutine(_enemyCharacter,attackWeapon,
+                    damageMin, damageMax, staminaCost, cooldown, accuracy));
                 break;
             default:
                 Debug.LogWarning($"Unknown target: {target}");
@@ -111,7 +120,7 @@ public class CombatManager : MonoBehaviour
     }
 
 
-    private IEnumerator AutoAttackRoutine(Character targetCharacter,
+    private IEnumerator AutoAttackRoutine(Character targetCharacter, ItemDataSO attackWeapon,
         float damageMin, float damageMax,
         float staminaCost, float cooldown, float accuracy)
     {
@@ -124,6 +133,7 @@ public class CombatManager : MonoBehaviour
             targetCharacter.UseStamina(staminaCost);
             targetCharacter.TakeDamage(damage);
 
+            OnDamageDealt?.Invoke(attackWeapon, targetCharacter.name);
 
             yield return new WaitForSeconds(cooldown);
         }
@@ -153,9 +163,11 @@ public class CombatManager : MonoBehaviour
         {
             case ItemBehaviour.Target.Player:
                 _playerCharacter.ApplyEffect(itemEffectSO);
+                OnEffectAppliedDealt?.Invoke(itemEffectSO, target.ToString());
                 break;
             case ItemBehaviour.Target.Enemy:
                 _enemyCharacter.ApplyEffect(itemEffectSO);
+                OnEffectAppliedDealt?.Invoke(itemEffectSO, target.ToString());
                 break;
             default:
                 Debug.LogWarning($"Unknown target: {target}");
