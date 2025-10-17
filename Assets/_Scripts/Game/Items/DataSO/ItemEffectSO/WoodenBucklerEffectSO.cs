@@ -1,7 +1,7 @@
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "ShieldEffectSO", menuName = "Items/Effects/Shield")]
-public class TestShieldEffectSO : ItemEffectSO
+[CreateAssetMenu(fileName = "WoodenBucklerEffectSO", menuName = "Items/Effects/Shields/WoodenBucklerEffect")]
+public class WoodenBucklerEffectSO : ItemEffectSO
 {
     public override void ApplyEffect(ItemBehaviour.Target target)
     {

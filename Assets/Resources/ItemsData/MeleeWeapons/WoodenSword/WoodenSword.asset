@@ -21,7 +21,8 @@ MonoBehaviour:
   _shapeWidth: 1
   _shapeHeight: 2
   _shapeArray: 0101
-  _effect: {fileID: 11400000, guid: f11ffb870cf807a43ae305cee9031190, type: 2}
+  _effects:
+  - {fileID: 11400000, guid: f11ffb870cf807a43ae305cee9031190, type: 2}
   _price: 3
   _damageMin: 1
   _damageMax: 3

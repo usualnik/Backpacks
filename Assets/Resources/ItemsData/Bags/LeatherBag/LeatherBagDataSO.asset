@@ -1,0 +1,27 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7c33474cc10562243914f23d0019b141, type: 3}
+  m_Name: LeatherBagDataSO
+  m_EditorClassIdentifier: 
+  _itemName: LeatherBag
+  _icon: {fileID: -4570096753328562795, guid: 3f348da4e06bada4dadb07613433e25f, type: 3}
+  _prefab: {fileID: 98611140532912634, guid: 6768a74b6aef0194199dc3df3efbd0b9, type: 3}
+  _uniqueIndex: 5
+  _itemSubType: 0
+  _rarity: 1
+  _shapeWidth: 2
+  _shapeHeight: 2
+  _shapeArray: 01010101
+  _effects:
+  - {fileID: 11400000, guid: 45638f729a13d4a4ca2a4eaca9bd378f, type: 2}
+  _price: 4
+  _slotsAmount: 4

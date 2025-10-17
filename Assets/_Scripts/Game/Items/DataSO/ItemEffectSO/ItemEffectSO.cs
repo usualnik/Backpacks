@@ -22,6 +22,7 @@ public abstract class ItemEffectSO : ScriptableObject
         Heat,
         Amplification,
         ShieldEffect,
+        BagEffect,
 
         //Debuffs
         Poison,

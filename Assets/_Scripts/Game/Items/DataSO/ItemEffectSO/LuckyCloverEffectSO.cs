@@ -1,7 +1,7 @@
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "CloverEffectSO", menuName = "Items/Effects/Clover")]
-public class TestCloverEffectSO : ItemEffectSO
+[CreateAssetMenu(fileName = "LuckyEffectSO", menuName = "Items/Effects/Accessory/LuckyCloverEffect")]
+public class LuckyCloverEffectSO : ItemEffectSO
 {    
     public override void ApplyEffect(ItemBehaviour.Target target)
     {

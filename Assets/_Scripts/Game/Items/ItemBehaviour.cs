@@ -2,6 +2,8 @@ using UnityEngine;
 
 public class ItemBehaviour : MonoBehaviour
 {
+    public ItemDataSO ItemData => _itemData;
+
     [SerializeField] private ItemDataSO _itemData;
 
     public enum Target
@@ -25,6 +27,8 @@ public class ItemBehaviour : MonoBehaviour
     private void CombatManager_OnCombatStarted()
     {
         _itemData.PerformAction(_target);
-        _itemData.Effect.ApplyEffect(_target);
+
+        //Stub
+        _itemData.Effects[0].ApplyEffect(_target);
     }
 }

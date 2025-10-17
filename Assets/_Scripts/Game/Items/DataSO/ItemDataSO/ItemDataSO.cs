@@ -6,7 +6,7 @@ public abstract class ItemDataSO : ScriptableObject
     public string ItemName => _itemName;
     public Sprite Icon => _icon;
     public int Price => _price;
-    public ItemEffectSO Effect => _effect;
+    public ItemEffectSO[] Effects => _effects;
     public GameObject Prefab => _prefab;
     public ItemSubType SubType => _itemSubType;
     public RarityType Rarity => _rarity;
@@ -69,7 +69,7 @@ public abstract class ItemDataSO : ScriptableObject
     [SerializeField] private bool[] _shapeArray;
 
     [Header("Effects")]
-    [SerializeField] private ItemEffectSO _effect;
+    [SerializeField] private ItemEffectSO[] _effects;
 
     [Header("Properties")]
     [SerializeField] private int _price;   

@@ -81,7 +81,7 @@ public class Shop : MonoBehaviour
 
     [ContextMenu("LOAD ALL ITEMS")]
     private void InitShopItems()
-    {
+    {      
         _allSpawnebleItems = Resources.LoadAll<ItemDataSO>("ItemsData");
     }
 }

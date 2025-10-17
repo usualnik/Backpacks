@@ -21,6 +21,7 @@ MonoBehaviour:
   _shapeWidth: 2
   _shapeHeight: 2
   _shapeArray: 01010101
-  _effect: {fileID: 11400000, guid: 312cf83ea7a352e488a32d13c3374ac2, type: 2}
+  _effects:
+  - {fileID: 11400000, guid: 312cf83ea7a352e488a32d13c3374ac2, type: 2}
   _price: 4
   _socketsAmount: 1
