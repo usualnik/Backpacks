@@ -14,7 +14,7 @@ public class PlayerCharacter : Character
     [SerializeField] private int _lives;
     [SerializeField] private int _trophies;
 
-    
+    private ItemBehaviour _currentSelectedItem;
 
     private void Awake()
     {
@@ -24,24 +24,52 @@ public class PlayerCharacter : Character
             Debug.LogError("More than one instance of player character");       
     }
 
-    
+
     //This is Start()
     protected override void InitializeCharacter()
     {
         base.InitializeCharacter();
 
         CombatManager.Instance.OnCombatFinished += CombatManager_OnCombatFinished;
-
-
+        SelectedItemManager.Instance.OnItemSelected += SelectedItemManager_OnItemSelected;
     }
 
- 
     //This is OnDestroy()
     protected override void DestroyCharacter()
     {
         base.DestroyCharacter();
         CombatManager.Instance.OnCombatFinished -= CombatManager_OnCombatFinished;
+        SelectedItemManager.Instance.OnItemSelected -= SelectedItemManager_OnItemSelected;
 
+        // Отписываемся от текущего выбранного предмета
+        if (_currentSelectedItem != null)
+        {
+            _currentSelectedItem.OnItemStateChanged -= SelectedItem_OnItemStateChanged;
+        }
+    }
+    private void SelectedItemManager_OnItemSelected(ItemBehaviour newItem)
+    {
+        // Отписываемся от предыдущего предмета
+        if (_currentSelectedItem != null)
+        {
+            _currentSelectedItem.OnItemStateChanged -= SelectedItem_OnItemStateChanged;
+        }
+
+        // Подписываемся на новый предмет
+        _currentSelectedItem = newItem;
+
+        if (_currentSelectedItem != null)
+        {
+            _currentSelectedItem.OnItemStateChanged += SelectedItem_OnItemStateChanged;
+
+            // Обрабатываем текущее состояние сразу
+            SelectedItem_OnItemStateChanged(_currentSelectedItem.PreviousState, _currentSelectedItem.CurrentState);
+        }
+    }
+
+    private void SelectedItem_OnItemStateChanged(ItemBehaviour.ItemState previousState , ItemBehaviour.ItemState newState)
+    {
+      // ОБРАБОТКА ПОКУПКИ
     }
 
     private void CombatManager_OnCombatFinished(CombatManager.CombatResult combatResult)

@@ -135,6 +135,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 77f13e2431a4444469a2a39d93c84908, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Item
+  _image: {fileID: 0}
+  _itemCells: []
 --- !u!114 &3722408764420827945
 MonoBehaviour:
   m_ObjectHideFlags: 0

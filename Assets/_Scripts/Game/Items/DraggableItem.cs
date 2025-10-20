@@ -2,7 +2,8 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class DraggableItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler
+public class DraggableItem : MonoBehaviour, 
+    IBeginDragHandler, IDragHandler, IEndDragHandler
 {
     [SerializeField] protected Image _image;
     [SerializeField] private ItemCell[] _itemCells;
@@ -39,6 +40,9 @@ public class DraggableItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
     {
         if (_isDragging) return;
 
+        SelectedItemManager.Instance.SetCurrentSelectedItem(_itemBehaviour);
+
+
         // Если предмет уже в сумке - освобождаем ячейки при начале перетаскивания
         if (_isPlacedInBag)
         {
@@ -69,6 +73,8 @@ public class DraggableItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
         if (!_isDragging) return;
 
         CheckPutInSlot();
+
+        SelectedItemManager.Instance.SetCurrentSelectedItem(null);
 
         _image.raycastTarget = true;
         _canRotate = false;
@@ -104,6 +110,7 @@ public class DraggableItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
         {
             // Предмет можно разместить - привязываем к ячейкам сумки
             PlaceItemInBagCells();
+            _itemBehaviour.SetItemState(ItemBehaviour.ItemState.Inventory);
             Debug.Log("Item placed successfully!");
         }
         else
@@ -111,6 +118,7 @@ public class DraggableItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
             // Предмет нельзя разместить - возвращаем физику
             _rb.bodyType = RigidbodyType2D.Dynamic;
             _isPlacedInBag = false;
+            _itemBehaviour.SetItemState(ItemBehaviour.ItemState.FreeFall);
             Debug.Log($"Item cannot be placed: {_currentSlotsToBePlaced}/{_neededSlotsToBePlaced}");
         }
     }
@@ -225,6 +233,9 @@ public class DraggableItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
             ReleaseBagCells();
             _collider.enabled = true;
             _rb.bodyType = RigidbodyType2D.Dynamic;
+            _itemBehaviour.SetItemState(ItemBehaviour.ItemState.FreeFall);
         }
     }
+
+  
 }

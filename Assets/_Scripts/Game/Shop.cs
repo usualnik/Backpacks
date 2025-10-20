@@ -55,6 +55,8 @@ public class Shop : MonoBehaviour
 
             GameObject shopItem = Instantiate(_allSpawnebleItems[randomIndex].Prefab, _shopTransforms[i].position, Quaternion.identity);
             shopItem.transform.SetParent(_shopTransforms[i], true);
+
+            shopItem.GetComponent<ItemBehaviour>()?.SetItemState(ItemBehaviour.ItemState.Store);
             
             //Sets a price for every spawned item
             _priceTexts[i].text = _allSpawnebleItems[randomIndex].Price.ToString();
