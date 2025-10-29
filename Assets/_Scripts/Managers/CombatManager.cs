@@ -11,9 +11,7 @@ public class CombatManager : MonoBehaviour
 
     public event Action<ItemDataSO, string> OnDamageDealt;
     public event Action<ItemEffectSO, string> OnEffectAppliedDealt;
-
-
-
+    public event Action<int> OnFatigueDamageApplied;
 
     [SerializeField] private PlayerCharacter _playerCharacter;
     [SerializeField] private EnemyCharacter _enemyCharacter;
@@ -26,12 +24,13 @@ public class CombatManager : MonoBehaviour
     }
     private CombatResult _result;
 
-
-    //private string _combatResult = string.Empty;
-
     private bool _isInCombat = false;
-
     private Coroutine _currentAttackRoutine;
+
+    private int _fatigueDamageAmount = 0;
+    private const float _fatigueDamageStartTimer = 17f;
+    private const float _fatigueDamageRepeatTimer = 1f;
+    private Coroutine _fatigueDamageCoroutine;
 
     private void Awake()
     {
@@ -60,6 +59,8 @@ public class CombatManager : MonoBehaviour
 
         if (_currentAttackRoutine != null)
             StopCoroutine(_currentAttackRoutine);
+
+        StopFatigueDamage();
     }
 
     #region Events
@@ -69,16 +70,18 @@ public class CombatManager : MonoBehaviour
         if (gameState == GameManager.GameState.Gameplay)
         {
             _isInCombat = true;
+            StartFatigueDamage();
             OnCombatStarted?.Invoke();
         }
     }
 
     private void Enemy_OnCharacterDeath()
     {
-       _result = CombatResult.PlayerWin;
+        _result = CombatResult.PlayerWin;
         _isInCombat = false;
         if (_currentAttackRoutine != null)
             StopCoroutine(_currentAttackRoutine);
+        StopFatigueDamage();
         OnCombatFinished?.Invoke(_result);
     }
 
@@ -88,12 +91,13 @@ public class CombatManager : MonoBehaviour
         _isInCombat = false;
         if (_currentAttackRoutine != null)
             StopCoroutine(_currentAttackRoutine);
+        StopFatigueDamage();
         OnCombatFinished?.Invoke(_result);
     }
     #endregion
-
+       
     #region WeaponDamage
-    public void StartAutoAttack(ItemBehaviour.Target target,ItemDataSO attackWeapon,
+    public void StartAutoAttack(ItemBehaviour.Target target, ItemDataSO attackWeapon,
         float damageMin, float damageMax,
         float staminaCost, float cooldown, float accuracy)
     {
@@ -110,7 +114,7 @@ public class CombatManager : MonoBehaviour
                     damageMin, damageMax, staminaCost, cooldown, accuracy));
                 break;
             case ItemBehaviour.Target.Enemy:
-                _currentAttackRoutine = StartCoroutine(AutoAttackRoutine(_enemyCharacter,attackWeapon,
+                _currentAttackRoutine = StartCoroutine(AutoAttackRoutine(_enemyCharacter, attackWeapon,
                     damageMin, damageMax, staminaCost, cooldown, accuracy));
                 break;
             default:
@@ -119,12 +123,10 @@ public class CombatManager : MonoBehaviour
         }
     }
 
-
     private IEnumerator AutoAttackRoutine(Character targetCharacter, ItemDataSO attackWeapon,
         float damageMin, float damageMax,
         float staminaCost, float cooldown, float accuracy)
     {
-
         while (_isInCombat && targetCharacter != null && !targetCharacter.IsDead)
         {
             float damage = UnityEngine.Random.Range(damageMin, damageMax);
@@ -157,7 +159,7 @@ public class CombatManager : MonoBehaviour
     #endregion
 
     #region Effects
-    public void ApplyEffect(ItemBehaviour.Target target,  ItemEffectSO itemEffectSO)
+    public void ApplyEffect(ItemBehaviour.Target target, ItemEffectSO itemEffectSO)
     {
         switch (target)
         {
@@ -173,6 +175,46 @@ public class CombatManager : MonoBehaviour
                 Debug.LogWarning($"Unknown target: {target}");
                 break;
         }
-        #endregion
     }
+    #endregion
+
+    #region Fatigue Damage Management
+
+    private void StartFatigueDamage()
+    {
+        ResetFatigueDamage();
+        _fatigueDamageCoroutine = StartCoroutine(FatigueDamageRoutine());
+    }
+
+    private void StopFatigueDamage()
+    {
+        if (_fatigueDamageCoroutine != null)
+        {
+            StopCoroutine(_fatigueDamageCoroutine);
+            _fatigueDamageCoroutine = null;
+        }
+        ResetFatigueDamage();
+    }
+
+    private void ResetFatigueDamage()
+    {
+        _fatigueDamageAmount = 0;
+    }
+
+    private IEnumerator FatigueDamageRoutine()
+    {
+        yield return new WaitForSeconds(_fatigueDamageStartTimer);
+
+        while (_isInCombat)
+        {
+            _fatigueDamageAmount++;
+            _playerCharacter.TakeDamage(_fatigueDamageAmount);
+            _enemyCharacter.TakeDamage(_fatigueDamageAmount);
+            OnFatigueDamageApplied?.Invoke(_fatigueDamageAmount);
+
+            yield return new WaitForSeconds(_fatigueDamageRepeatTimer);
+        }
+    }
+
+    #endregion
 }

@@ -7,6 +7,7 @@ public class DraggableItem : MonoBehaviour,
 {
     [SerializeField] protected Image _image;
     [SerializeField] private ItemCell[] _itemCells;
+    [SerializeField] private bool _isCanBeSelled = false;
 
     protected bool _isDragging;
     protected Rigidbody2D _rb;
@@ -74,6 +75,9 @@ public class DraggableItem : MonoBehaviour,
 
         CheckPutInSlot();
 
+        if (_isCanBeSelled)
+            PlayerCharacter.Instance.SellItem();
+
         SelectedItemManager.Instance.SetCurrentSelectedItem(null);
 
         _image.raycastTarget = true;
@@ -106,20 +110,21 @@ public class DraggableItem : MonoBehaviour,
 
     private void CheckPutInSlot()
     {
-        if (_currentSlotsToBePlaced == _neededSlotsToBePlaced)
+        // Если можно разместить и хватает денег на покупку
+        if (_currentSlotsToBePlaced == _neededSlotsToBePlaced 
+            && PlayerCharacter.Instance.HasMoneyToBuyItem(_itemBehaviour.GetItemPrice()))
         {
             // Предмет можно разместить - привязываем к ячейкам сумки
             PlaceItemInBagCells();
             _itemBehaviour.SetItemState(ItemBehaviour.ItemState.Inventory);
-            Debug.Log("Item placed successfully!");
         }
         else
         {
-            // Предмет нельзя разместить - возвращаем физику
+            // TODO: Предмет нельзя разместить - возвращаем предмет в магазин или в стейт в котором он находился
+
             _rb.bodyType = RigidbodyType2D.Dynamic;
             _isPlacedInBag = false;
             _itemBehaviour.SetItemState(ItemBehaviour.ItemState.FreeFall);
-            Debug.Log($"Item cannot be placed: {_currentSlotsToBePlaced}/{_neededSlotsToBePlaced}");
         }
     }
 
@@ -237,5 +242,17 @@ public class DraggableItem : MonoBehaviour,
         }
     }
 
-  
+    public void SetCanBeSelled()
+    {
+        if (!_isCanBeSelled)
+        {
+            _isCanBeSelled = true;
+        }
+        else
+        {
+            _isCanBeSelled = false;
+        }
+    }
+
+   
 }

@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class PlayerCharacter : Character
 {
-    public static PlayerCharacter Instance {  get; private set; }
+    public static PlayerCharacter Instance { get; private set; }
     public event Action<int> OnTrophiesValueChanged;
     public event Action<int> OnLivesValueChanged;
 
@@ -21,7 +21,7 @@ public class PlayerCharacter : Character
         if (Instance == null)
             Instance = this;
         else
-            Debug.LogError("More than one instance of player character");       
+            Debug.LogError("More than one instance of player character");
     }
 
 
@@ -41,7 +41,6 @@ public class PlayerCharacter : Character
         CombatManager.Instance.OnCombatFinished -= CombatManager_OnCombatFinished;
         SelectedItemManager.Instance.OnItemSelected -= SelectedItemManager_OnItemSelected;
 
-        // Отписываемся от текущего выбранного предмета
         if (_currentSelectedItem != null)
         {
             _currentSelectedItem.OnItemStateChanged -= SelectedItem_OnItemStateChanged;
@@ -49,27 +48,40 @@ public class PlayerCharacter : Character
     }
     private void SelectedItemManager_OnItemSelected(ItemBehaviour newItem)
     {
-        // Отписываемся от предыдущего предмета
         if (_currentSelectedItem != null)
         {
             _currentSelectedItem.OnItemStateChanged -= SelectedItem_OnItemStateChanged;
         }
 
-        // Подписываемся на новый предмет
         _currentSelectedItem = newItem;
 
         if (_currentSelectedItem != null)
         {
             _currentSelectedItem.OnItemStateChanged += SelectedItem_OnItemStateChanged;
 
-            // Обрабатываем текущее состояние сразу
             SelectedItem_OnItemStateChanged(_currentSelectedItem.PreviousState, _currentSelectedItem.CurrentState);
         }
     }
 
-    private void SelectedItem_OnItemStateChanged(ItemBehaviour.ItemState previousState , ItemBehaviour.ItemState newState)
+    private void SelectedItem_OnItemStateChanged(ItemBehaviour.ItemState previousState, ItemBehaviour.ItemState newState)
     {
-      // ОБРАБОТКА ПОКУПКИ
+        if (previousState.HasFlag(ItemBehaviour.ItemState.Store) && newState.HasFlag(ItemBehaviour.ItemState.Inventory))
+        {
+            BuyItem();
+        }
+    }
+
+    private void BuyItem()
+    {
+        if (HasMoneyToBuyItem(_currentSelectedItem.GetItemPrice()))
+        {
+            SpendMoney();
+            _currentSelectedItem.SetItemState(ItemBehaviour.ItemState.Inventory);
+        }
+        else
+        {
+            Debug.Log($"You dont have enough money to buy {_currentSelectedItem.ItemData.ItemName}");
+        }
     }
 
     private void CombatManager_OnCombatFinished(CombatManager.CombatResult combatResult)
@@ -85,6 +97,24 @@ public class PlayerCharacter : Character
             OnLivesValueChanged?.Invoke(_lives);
         }
 
+    }
+
+    private void SpendMoney()
+    {
+        Stats.GoldAmount -= _currentSelectedItem.GetItemPrice();
+        InvokeStatsChanged(_stats);
+    }
+
+    public bool HasMoneyToBuyItem(int price)
+    {
+        return Stats.GoldAmount - price >= 0;
+    }
+    public void SellItem()
+    {
+        Stats.GoldAmount += (int)(_currentSelectedItem.GetItemPrice() / 2);
+        InvokeStatsChanged(_stats);
+
+        _currentSelectedItem.DestroySelf();
     }
 
 

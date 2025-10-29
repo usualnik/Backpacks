@@ -67,10 +67,6 @@ public abstract class Character : MonoBehaviour, IDamageable, IStaminable
     }
 
 
-
-
-
-
     protected void LevelManager_OnLevelChanged(int levelIndex)
     {
         AddHealthAndGoldAfterCombat(levelIndex);
@@ -82,7 +78,7 @@ public abstract class Character : MonoBehaviour, IDamageable, IStaminable
         if (_stats.Health - damage > 0)
         {
             _stats.Health -= damage;
-            OnCharacterStatsChanged?.Invoke(_stats);
+            InvokeStatsChanged(_stats);
         }
         else
         {
@@ -108,7 +104,7 @@ public abstract class Character : MonoBehaviour, IDamageable, IStaminable
         while (!_isDead && _stats.Stamina < _stats.StaminaMax)
         {
             _stats.Stamina += STAMINA_REGEN_STEP;
-            OnCharacterStatsChanged?.Invoke(_stats);
+            InvokeStatsChanged(_stats);
             yield return new WaitForSeconds(0.1f);
         }
         _staminaRegenCoroutine = null;
@@ -133,9 +129,7 @@ public abstract class Character : MonoBehaviour, IDamageable, IStaminable
 
     }
 
-
     #endregion
-
 
     private void AddHealthAndGoldAfterCombat(int levelIndex)
     {
@@ -154,7 +148,12 @@ public abstract class Character : MonoBehaviour, IDamageable, IStaminable
         _stats.Health = _stats.HealthMax;
         _stats.Stamina = _stats.StaminaMax;
 
-        OnCharacterStatsChanged?.Invoke(_stats);
+        InvokeStatsChanged(_stats);
+    }
+
+    protected void InvokeStatsChanged(CharacterStats stats)
+    {
+        OnCharacterStatsChanged?.Invoke(stats);
     }
 
     public string NickName => _nickname;
