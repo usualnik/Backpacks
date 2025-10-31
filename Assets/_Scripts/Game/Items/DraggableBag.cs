@@ -2,11 +2,12 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class DraggableBag : MonoBehaviour, IBeginDragHandler,
-    IDragHandler, IEndDragHandler
+public class DraggableBag : MonoBehaviour,
+    IBeginDragHandler, IDragHandler, IEndDragHandler, IDraggable
 {
     [SerializeField] protected Image _image;
     [SerializeField] private BagCell[] _bagCells;
+    [SerializeField] private bool _isCanBeSelled = false;
 
     protected bool _isDragging;
     protected Rigidbody2D _rb;
@@ -21,6 +22,10 @@ public class DraggableBag : MonoBehaviour, IBeginDragHandler,
     private int _currentSlotsToBePlaced = 0;
     private bool _isPlacedInInventory = false;
 
+    private Vector3 _originalPosition;
+    private Quaternion _originalRotation;
+    private Transform _originalParent;
+
     private void Awake()
     {
         _itemBehaviour = GetComponent<ItemBehaviour>();
@@ -29,25 +34,43 @@ public class DraggableBag : MonoBehaviour, IBeginDragHandler,
         _targetInventoryCells = new InventoryCell[_bagCells.Length];
 
         _neededSlotsToBePlaced = _bagCells.Length;
+
+        ValidateComponents();
     }
 
     private void Start()
     {
         _canvas = GetComponentInParent<Canvas>();
+        if (_canvas == null)
+        {
+            Debug.LogError("Canvas not found in parent hierarchy!", this);
+        }
     }
 
     public void OnBeginDrag(PointerEventData eventData)
     {
         if (_isDragging) return;
-        
-        SelectedItemManager.Instance.SetCurrentSelectedItem(_itemBehaviour);
 
+        // Сохраняем оригинальные трансформы перед началом перетаскивания
+        _originalPosition = transform.position;
+        _originalRotation = transform.rotation;
+        _originalParent = transform.parent;
 
-        //// Если предмет уже в инвентаре - освобождаем ячейки при начале перетаскивания
-        //if (_isPlacedInInventory)
-        //{
-        //    ReleaseInventoryCells();
-        //}
+        if (SelectedItemManager.Instance != null)
+        {
+            SelectedItemManager.Instance.SetCurrentSelectedItem(_itemBehaviour);
+            _itemBehaviour.SetItemState(ItemBehaviour.ItemState.Dragging);
+        }
+        else
+        {
+            Debug.LogWarning("SelectedItemManager instance not found!");
+        }
+
+        // Если сумка уже в инвентаре - освобождаем ячейки при начале перетаскивания
+        if (_isPlacedInInventory)
+        {
+            ReleaseInventoryCells();
+        }
 
         _rb.bodyType = RigidbodyType2D.Kinematic;
         _rb.linearVelocity = Vector2.zero;
@@ -58,7 +81,10 @@ public class DraggableBag : MonoBehaviour, IBeginDragHandler,
         _canRotate = true;
         _collider.enabled = true;
 
-        transform.SetParent(_canvas.transform, false);
+        if (_canvas != null)
+        {
+            transform.SetParent(_canvas.transform, true);
+        }
     }
 
     public void OnDrag(PointerEventData eventData)
@@ -74,7 +100,11 @@ public class DraggableBag : MonoBehaviour, IBeginDragHandler,
 
         CheckPutInInventory();
 
-        SelectedItemManager.Instance.SetCurrentSelectedItem(null);
+        if (_isCanBeSelled && PlayerCharacter.Instance != null)
+            PlayerCharacter.Instance.SellItem();
+
+        if (SelectedItemManager.Instance != null)
+            SelectedItemManager.Instance.SetCurrentSelectedItem(null);
 
         _image.raycastTarget = true;
         _canRotate = false;
@@ -93,41 +123,50 @@ public class DraggableBag : MonoBehaviour, IBeginDragHandler,
         }
     }
 
-
     private void HandleRotation()
     {
         float scroll = Input.GetAxis("Mouse ScrollWheel");
         if (scroll != 0)
         {
-            if (scroll > 0)
-            {
-                transform.Rotate(0, 0, -90);
-            }
-            else
-            {
-                transform.Rotate(0, 0, 90);
-            }
+            RotateBag(scroll > 0 ? 90 : -90);
         }
+    }
+
+    private void RotateBag(float angle)
+    {
+        transform.Rotate(0, 0, angle);
+
+        // Опционально: снэп к ближайшим 90 градусам
+        Vector3 currentRotation = transform.eulerAngles;
+        currentRotation.z = Mathf.Round(currentRotation.z / 90) * 90;
+        transform.eulerAngles = currentRotation;
     }
 
     private void CheckPutInInventory()
     {
-        if (_currentSlotsToBePlaced == _neededSlotsToBePlaced)
+        bool canPlace = _currentSlotsToBePlaced == _neededSlotsToBePlaced;
+
+        if (canPlace)
         {
-            // Сумку можно разместить - привязываем к ячейкам сумки
+            // Сумку можно разместить - привязываем к ячейкам инвентаря
             PlaceBagInInventoryCells();
             _itemBehaviour.SetItemState(ItemBehaviour.ItemState.Inventory);
             Debug.Log("Bag placed successfully!");
         }
         else
         {
-            // Сумку нельзя разместить - возвращаем физику
-            _rb.bodyType = RigidbodyType2D.Dynamic;
-            _isPlacedInInventory = false;
-            _itemBehaviour.SetItemState(ItemBehaviour.ItemState.FreeFall);
-            Debug.Log($"Bag cannot be placed: {_currentSlotsToBePlaced}/{_neededSlotsToBePlaced}");
+            if (_itemBehaviour.CurrentState.HasFlag(ItemBehaviour.ItemState.Store))
+            {
+                ReturnIfNotPlaced();
+            }
+            else
+            {
+                FreeFall();
+            }
         }
     }
+
+
 
     private void CheckCanBePlaced()
     {
@@ -164,14 +203,14 @@ public class DraggableBag : MonoBehaviour, IBeginDragHandler,
         // Вычисляем центр всех целевых ячеек
         Vector2 centerPosition = CalculateCenterPosition();
 
-        // Устанавливаем позицию предмета в центр
+        // Устанавливаем позицию сумки в центр
         transform.position = centerPosition;
 
-        // Делаем предмет кинематическим и выключаем коллайдер
+        // Делаем сумку кинематической и выключаем коллайдер
         _rb.bodyType = RigidbodyType2D.Kinematic;
         _collider.enabled = false;
 
-        // Можно также привязать к родительской ячейке
+        // Привязываем к родительской ячейке
         transform.SetParent(_targetInventoryCells[0].transform.parent, true);
 
         // Помечаем ячейки как занятые
@@ -189,7 +228,7 @@ public class DraggableBag : MonoBehaviour, IBeginDragHandler,
         ResetColor();
     }
 
-    // Метод для освобождения ячеек сумки
+    // Метод для освобождения ячеек инвентаря
     private void ReleaseInventoryCells()
     {
         foreach (var inventoryCell in _targetInventoryCells)
@@ -205,7 +244,7 @@ public class DraggableBag : MonoBehaviour, IBeginDragHandler,
         // Очищаем массив целевых ячеек
         for (int i = 0; i < _targetInventoryCells.Length; i++)
         {
-           _targetInventoryCells[i] = null;
+            _targetInventoryCells[i] = null;
         }
     }
 
@@ -236,10 +275,65 @@ public class DraggableBag : MonoBehaviour, IBeginDragHandler,
         if (_isPlacedInInventory)
         {
             ReleaseInventoryCells();
-            _collider.enabled = true;
-            _rb.bodyType = RigidbodyType2D.Dynamic;
+            FreeFall();
         }
     }
 
-   
+    public void SetCanBeSelled()
+    {
+        _isCanBeSelled = !_isCanBeSelled;
+    }
+
+    public void ReturnIfNotPlaced()
+    {
+        // Восстанавливаем оригинальную позицию и rotation
+        transform.position = _originalPosition;
+        transform.rotation = _originalRotation;
+
+        // Восстанавливаем оригинального родителя
+        if (_originalParent != null)
+        {
+            transform.SetParent(_originalParent, true);
+        }
+
+        ResetColor();
+    }
+
+    private void ValidateComponents()
+    {
+        if (_image == null) _image = GetComponent<Image>();
+        if (_itemBehaviour == null) _itemBehaviour = GetComponent<ItemBehaviour>();
+        if (_rb == null) _rb = GetComponent<Rigidbody2D>();
+        if (_collider == null) _collider = GetComponent<Collider2D>();
+
+        if (_bagCells == null || _bagCells.Length == 0)
+        {
+            Debug.LogError("BagCells array is not set up!", this);
+        }
+    }
+
+    private void OnDisable()
+    {
+        // Clean up when object is disabled
+        if (_isDragging)
+        {
+            OnEndDrag(new PointerEventData(EventSystem.current));
+        }
+    }
+
+    private void OnDestroy()
+    {
+        // Release any occupied cells when destroyed
+        if (_isPlacedInInventory)
+        {
+            ReleaseInventoryCells();
+        }
+    }
+
+    public void FreeFall()
+    {
+        _collider.enabled = true;
+        _rb.bodyType = RigidbodyType2D.Dynamic;
+        _itemBehaviour.SetItemState(ItemBehaviour.ItemState.FreeFall);
+    }
 }

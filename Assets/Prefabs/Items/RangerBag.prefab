@@ -144,6 +144,10 @@ PrefabInstance:
       propertyPath: m_BodyType
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 8920212590439791724, guid: 137870c767bf8b84f9c550357331a0cf, type: 3}
+      propertyPath: _isItemSpawnableInShop
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 7615502037528801199, guid: 137870c767bf8b84f9c550357331a0cf, type: 3}
     m_RemovedGameObjects: []
@@ -199,6 +203,7 @@ MonoBehaviour:
   - {fileID: 3553691596774768938}
   - {fileID: 1789801527149933753}
   - {fileID: 3998233334984344902}
+  _isCanBeSelled: 0
 --- !u!114 &7866734978329282475
 MonoBehaviour:
   m_ObjectHideFlags: 0

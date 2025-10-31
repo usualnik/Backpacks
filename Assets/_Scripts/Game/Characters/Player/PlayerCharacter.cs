@@ -73,15 +73,8 @@ public class PlayerCharacter : Character
 
     private void BuyItem()
     {
-        if (HasMoneyToBuyItem(_currentSelectedItem.GetItemPrice()))
-        {
-            SpendMoney();
-            _currentSelectedItem.SetItemState(ItemBehaviour.ItemState.Inventory);
-        }
-        else
-        {
-            Debug.Log($"You dont have enough money to buy {_currentSelectedItem.ItemData.ItemName}");
-        }
+        SpendMoney(_currentSelectedItem.GetItemPrice());
+        _currentSelectedItem.SetItemState(ItemBehaviour.ItemState.Inventory);       
     }
 
     private void CombatManager_OnCombatFinished(CombatManager.CombatResult combatResult)
@@ -99,10 +92,18 @@ public class PlayerCharacter : Character
 
     }
 
-    private void SpendMoney()
+    public void SpendMoney(int moneyAmount)
     {
-        Stats.GoldAmount -= _currentSelectedItem.GetItemPrice();
-        InvokeStatsChanged(_stats);
+        if (Stats.GoldAmount - moneyAmount >= 0)
+        {
+            Stats.GoldAmount -= moneyAmount; 
+            InvokeStatsChanged(_stats);
+        }
+        else
+        {
+            Debug.Log("You dont have money to do that");
+        }
+
     }
 
     public bool HasMoneyToBuyItem(int price)
