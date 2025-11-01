@@ -15,7 +15,8 @@ MonoBehaviour:
   _itemName: RangerBag
   _icon: {fileID: 21300000, guid: 021277c294be75d4fb76c9755e309c17, type: 3}
   _prefab: {fileID: 98611140532912634, guid: 31c08e4acc2691945a801582794bdfff, type: 3}
-  _uniqueIndex: 4
+  _isSpawnableInShop: 0
+  _itemType: 512
   _itemSubType: 0
   _rarity: 6
   _shapeWidth: 2
@@ -24,5 +25,6 @@ MonoBehaviour:
   _effects:
   - {fileID: 11400000, guid: 1cab48600bb1ec34e90cd98bc9bd207e, type: 2}
   - {fileID: 11400000, guid: 26d9887b075725a4ea8d46cb7c4063a6, type: 2}
+  _starEffect: {fileID: 0}
   _price: 0
   _slotsAmount: 6

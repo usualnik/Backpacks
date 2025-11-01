@@ -206,7 +206,7 @@ public class DraggableItem : MonoBehaviour,
 
         // Делаем предмет кинематическим и выключаем коллайдер
         _rb.bodyType = RigidbodyType2D.Kinematic;
-        _collider.enabled = false;
+        //_collider.enabled = false;
 
         // Привязываем к родительской ячейке
         transform.SetParent(_targetBagCells[0].transform.parent, true);

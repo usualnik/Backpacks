@@ -3362,7 +3362,6 @@ GameObject:
   - component: {fileID: 577042459}
   - component: {fileID: 577042458}
   - component: {fileID: 577042460}
-  - component: {fileID: 577042461}
   m_Layer: 5
   m_Name: RerollPriceText (TMP)
   m_TagString: Untagged
@@ -3500,20 +3499,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e006c1d4e3747a345a65fdf481f431b0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &577042461
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 577042456}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c9db60d982c079944bf3340d119eda21, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _isItemSpawnableInShop: 1
-  _isItemReserved: 0
 --- !u!1 &583073816
 GameObject:
   m_ObjectHideFlags: 0
@@ -8609,6 +8594,8 @@ MonoBehaviour:
   - {fileID: 57946914}
   _allSpawnebleItems:
   - {fileID: 11400000, guid: 55e7aafd18b11154888f8a39ef508b03, type: 2}
+  - {fileID: 11400000, guid: 49db54dd5acc34b4bb1f55719e374261, type: 2}
+  - {fileID: 11400000, guid: 6b77aa3d4db3ef740a24ad9a5bf602ad, type: 2}
   - {fileID: 11400000, guid: a496a46d86118cf48a5e54b86f9d90f7, type: 2}
   - {fileID: 11400000, guid: 6d74f01e7f2cee84686171080c41788c, type: 2}
   - {fileID: 11400000, guid: 2797f330e0647744dbda4c334a3555bc, type: 2}

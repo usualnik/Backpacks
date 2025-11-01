@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using TMPro;
 using UnityEngine;
 using Random = UnityEngine.Random;
@@ -20,6 +21,7 @@ public class Shop : MonoBehaviour
     [SerializeField] private ItemDataSO[] _allSpawnebleItems;
 
     private const float SALE_CHANCE = 0.2f;
+    private const int MAX_SPAWN_ATTEMPTS = 50; // Защита от бесконечного цикла
 
     private int _rerollPrice = 1;
     private int _rerollProgression = 0;
@@ -92,15 +94,46 @@ public class Shop : MonoBehaviour
                 }
             }
 
-            // Спавним новый предмет
+            // Спавним новый предмет с защитой от бесконечного цикла
+            GameObject shopObject = SpawnRandomItemInSlot(i);
+            if (shopObject != null)
+            {
+                _items.Add(shopObject);
+            }
+        }
+    }
+
+    private GameObject SpawnRandomItemInSlot(int slotIndex)
+    {
+        int attempts = 0;
+
+        while (attempts < MAX_SPAWN_ATTEMPTS)
+        {
+            attempts++;
+
             int randomIndex = Random.Range(0, _allSpawnebleItems.Length);
-            ShopItem newShopItem = _allSpawnebleItems[randomIndex].Prefab.GetComponent<ShopItem>();
-            bool canBeSpawnedInShop = newShopItem.GetCanBeSawnedInShop();
+            GameObject itemPrefab = _allSpawnebleItems[randomIndex].Prefab;
+
+            if (itemPrefab == null)
+            {
+                Debug.LogWarning($"Item prefab is null for item: {_allSpawnebleItems[randomIndex].name}");
+                continue;
+            }
+
+            ShopItem newShopItem = itemPrefab.GetComponent<ShopItem>();
+
+            if (newShopItem == null)
+            {
+                Debug.LogWarning($"ShopItem component is missing on prefab: {itemPrefab.name}");
+                continue;
+            }
+
+            bool canBeSpawnedInShop = _allSpawnebleItems[randomIndex].IsSpawnableInShop;
 
             if (canBeSpawnedInShop)
             {
-                GameObject shopObject = Instantiate(_allSpawnebleItems[randomIndex].Prefab, _shopTransforms[i].position, Quaternion.identity);
-                shopObject.transform.SetParent(_shopTransforms[i], true);
+                GameObject shopObject = Instantiate(itemPrefab, _shopTransforms[slotIndex].position, Quaternion.identity);
+                shopObject.transform.SetParent(_shopTransforms[slotIndex], true);
 
                 ItemBehaviour shopObjectItemBehaviour = shopObject.GetComponent<ItemBehaviour>();
                 shopObjectItemBehaviour?.InitItemStateInStore();
@@ -109,30 +142,29 @@ public class Shop : MonoBehaviour
 
                 if (itemOnSale)
                 {
-                    int salePrice = Mathf.RoundToInt(shopObjectItemBehaviour.GetItemPrice() / 2f);
+                    int originalPrice = shopObjectItemBehaviour.GetItemPrice();
+                    int salePrice = Mathf.RoundToInt(originalPrice / 2f);
 
-                    //Price
-                    _priceTexts[i].text = shopObjectItemBehaviour.GetItemPrice().ToString();
-                    //Sale price
-                    _salePricesObjects[i].SetActive(true);
-                    _salePricesObjects[i].GetComponentInChildren<TextMeshProUGUI>().text = salePrice.ToString();
+                    // Price
+                    _priceTexts[slotIndex].text = originalPrice.ToString();
+                    // Sale price
+                    _salePricesObjects[slotIndex].SetActive(true);
+                    _salePricesObjects[slotIndex].GetComponentInChildren<TextMeshProUGUI>().text = salePrice.ToString();
 
                     shopObjectItemBehaviour.SetItemPrice(salePrice);
                 }
                 else
                 {
-                    //Sets a price for every spawned item
-                    _priceTexts[i].text = shopObjectItemBehaviour.GetItemPrice().ToString();
+                    // Sets a price for every spawned item
+                    _priceTexts[slotIndex].text = shopObjectItemBehaviour.GetItemPrice().ToString();
                 }
 
-                _items.Add(shopObject);
-            }
-            else
-            {
-                //Вычитаем 1 из итератора, чтобы повторить проход для этого слота
-                i--;
+                return shopObject;
             }
         }
+
+        Debug.LogError($"Failed to spawn item in slot {slotIndex} after {MAX_SPAWN_ATTEMPTS} attempts");
+        return null;
     }
 
     public void Reroll()
@@ -146,17 +178,32 @@ public class Shop : MonoBehaviour
         }
 
         PlayerCharacter.Instance.SpendMoney(_rerollPrice);
-
-        // Убираем ClearShop() и делаем всю логику в SpawnItems()
         SpawnItems();
     }
-
-    // Убираем метод ClearShop() полностью, так как вся очистка теперь в SpawnItems()
 
     [ContextMenu("LOAD ALL ITEMS")]
     private void InitShopItems()
     {
-        _allSpawnebleItems = Resources.LoadAll<ItemDataSO>("ItemsData");
+        _allSpawnebleItems = Resources.LoadAll<ItemDataSO>("ItemsData")
+            .Where(item => item.IsSpawnableInShop)
+            .ToArray();
+
+        Debug.Log($"Loaded {_allSpawnebleItems.Length} items");
+
+        foreach (var itemData in _allSpawnebleItems)
+        {
+            if (itemData.Prefab == null)
+            {
+                Debug.LogError($"Item {itemData.name} has null prefab!");
+                continue;
+            }
+
+            ShopItem shopItem = itemData.Prefab.GetComponent<ShopItem>();
+            if (shopItem == null)
+            {
+                Debug.LogError($"Item {itemData.name} prefab is missing ShopItem component!");
+            }
+        }
     }
 
     public int GetCurrentRerollPrice() => _rerollPrice;

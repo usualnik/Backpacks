@@ -8,7 +8,7 @@ public class ItemBehaviour : MonoBehaviour
     public ItemDataSO ItemData => _itemData;
 
     [SerializeField] private ItemDataSO _itemData;
-    [SerializeField] private int _itemPrice;
+    private int _itemPrice;
 
     [Flags]
     public enum ItemState

@@ -10,19 +10,19 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 948226c214859ab43a32d0f6f3eaa7c0, type: 3}
-  m_Name: LuckyClover
-  m_EditorClassIdentifier: Assembly-CSharp::AccessoryDataSO
-  _itemName: LuckyClover
-  _icon: {fileID: 21300000, guid: bd62a757dc3f0ea45ae9bcc6bcae29c3, type: 3}
-  _prefab: {fileID: 98611140532912634, guid: 2f2635880fbbe034a95f93b5a1e2922f, type: 3}
+  m_Name: WalrusTusk
+  m_EditorClassIdentifier: 
+  _itemName: WalrusTusk
+  _icon: {fileID: 21300000, guid: b83fc5ed6712c5b4a880fea6f00284e7, type: 3}
+  _prefab: {fileID: 98611140532912634, guid: c00b70073820df542921561735d64a70, type: 3}
   _isSpawnableInShop: 1
   _itemType: 1
-  _itemSubType: 0
-  _rarity: 2
+  _itemSubType: 8
+  _rarity: 1
   _shapeWidth: 1
-  _shapeHeight: 1
-  _shapeArray: 01
+  _shapeHeight: 2
+  _shapeArray: 0101
   _effects:
-  - {fileID: 11400000, guid: f8a3b7456b436ce46b694bc5f2f6efa3, type: 2}
+  - {fileID: 11400000, guid: 24ae040b455802c4e98748f34944ce11, type: 2}
   _starEffect: {fileID: 0}
-  _price: 2
+  _price: 4

@@ -2,7 +2,7 @@ using UnityEngine;
 
 
 public abstract class ItemEffectSO : ScriptableObject
-{
+{    
     [SerializeField] private string _name;
     [SerializeField] [TextArea] private string _description;
     [SerializeField] private float _amount;
@@ -33,6 +33,7 @@ public abstract class ItemEffectSO : ScriptableObject
     public string Description => _description;
     public float Amount => _amount;
     public EffectType Type => _effectType;
-    public bool IsBuff => _isBuff;
+    public bool IsBuff => _isBuff;        
+
     public abstract void ApplyEffect(ItemBehaviour.Target target);
 }

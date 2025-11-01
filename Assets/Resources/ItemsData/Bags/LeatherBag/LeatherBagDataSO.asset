@@ -15,7 +15,8 @@ MonoBehaviour:
   _itemName: LeatherBag
   _icon: {fileID: -4570096753328562795, guid: 3f348da4e06bada4dadb07613433e25f, type: 3}
   _prefab: {fileID: 98611140532912634, guid: 6768a74b6aef0194199dc3df3efbd0b9, type: 3}
-  _uniqueIndex: 5
+  _isSpawnableInShop: 1
+  _itemType: 512
   _itemSubType: 0
   _rarity: 1
   _shapeWidth: 2
@@ -23,5 +24,6 @@ MonoBehaviour:
   _shapeArray: 01010101
   _effects:
   - {fileID: 11400000, guid: 45638f729a13d4a4ca2a4eaca9bd378f, type: 2}
+  _starEffect: {fileID: 0}
   _price: 4
   _slotsAmount: 4

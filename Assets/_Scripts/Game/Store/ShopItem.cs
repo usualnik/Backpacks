@@ -4,8 +4,6 @@ using UnityEngine.EventSystems;
 
 public class ShopItem : MonoBehaviour, IPointerClickHandler
 {
-
-    [SerializeField] private bool _isItemSpawnableInShop = true;
     [SerializeField] private bool _isItemReserved;
 
     private ItemBehaviour _itemBehaviour;
@@ -14,6 +12,7 @@ public class ShopItem : MonoBehaviour, IPointerClickHandler
     private void Awake()
     {
         _itemBehaviour = GetComponent<ItemBehaviour>();
+        
     }
     private void Start()
     {
@@ -32,6 +31,6 @@ public class ShopItem : MonoBehaviour, IPointerClickHandler
         }
     }
 
-    public bool GetCanBeSawnedInShop() => _isItemSpawnableInShop;
+    public bool GetCanBeSpawnedInShop() => _itemBehaviour.ItemData.IsSpawnableInShop;
     public bool GetIsItemReserved() => _isItemReserved;
 }
