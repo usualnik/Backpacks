@@ -125,11 +125,11 @@ public class DraggableBag : MonoBehaviour,
 
     private void HandleRotation()
     {
-        float scroll = Input.GetAxis("Mouse ScrollWheel");
-        if (scroll != 0)
-        {
-            RotateBag(scroll > 0 ? 90 : -90);
-        }
+        //float scroll = Input.GetAxis("Mouse ScrollWheel");
+        //if (scroll != 0)
+        //{
+        //    RotateBag(scroll > 0 ? 90 : -90);
+        //}
     }
 
     private void RotateBag(float angle)

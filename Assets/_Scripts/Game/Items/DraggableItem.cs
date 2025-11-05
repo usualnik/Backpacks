@@ -115,11 +115,11 @@ public class DraggableItem : MonoBehaviour,
     {
         if (!_canRotate) return;
 
-        float scroll = Input.GetAxis("Mouse ScrollWheel");
-        if (scroll != 0)
-        {
-            RotateItem(scroll > 0 ? 90 : -90);
-        }
+        ////float scroll = Input.GetAxis("Mouse ScrollWheel");
+        //if (scroll != 0)
+        //{
+        //    RotateItem(scroll > 0 ? 90 : -90);
+        //}
 
         if (_isDragging)
         {
