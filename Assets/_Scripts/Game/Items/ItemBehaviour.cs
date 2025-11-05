@@ -5,10 +5,12 @@ public class ItemBehaviour : MonoBehaviour
 {
     public event Action<ItemState, ItemState> OnItemStateChanged;
 
+    public ItemState CurrentState => _currentState;
+    public ItemState PreviousState => _previousState;
     public ItemDataSO ItemData => _itemData;
 
     [SerializeField] private ItemDataSO _itemData;
-    private int _itemPrice;
+
 
     [Flags]
     public enum ItemState
@@ -25,6 +27,9 @@ public class ItemBehaviour : MonoBehaviour
     [SerializeField] private ItemState _previousState = ItemState.None;
 
 
+    private int _itemPrice;
+    private ItemVisual _itemVisual;
+
     public enum Target
     {
         Player,
@@ -33,13 +38,12 @@ public class ItemBehaviour : MonoBehaviour
 
     [SerializeField] private Target _target;
 
-    public ItemState CurrentState => _currentState;
-    public ItemState PreviousState => _previousState;
 
     private void Awake()
     {
         //Эта строчка существет потому что цена объекта зафиксирована в SO и она readonly, из-за природы SO
         _itemPrice = _itemData.Price;
+        _itemVisual = GetComponentInChildren<ItemVisual>();
     }
 
     private void Start()
@@ -54,10 +58,12 @@ public class ItemBehaviour : MonoBehaviour
 
     private void CombatManager_OnCombatStarted()
     {
-        _itemData.PerformAction(_target);
-
-        //HACK: Применяется только первый эффект в списке - это неверно
-        _itemData.Effects[0].ApplyEffect(_target);
+        if (CurrentState.HasFlag(ItemState.Inventory))
+        {
+            _itemData.PerformAction(_target);
+            //HACK: Применяется только первый эффект в списке - это неверно
+            _itemData.Effects[0].ApplyEffect(_target);
+        }       
     }
 
     public ItemState GetItemState() { return _currentState; }
@@ -90,7 +96,15 @@ public class ItemBehaviour : MonoBehaviour
     {
         Destroy(gameObject);
     }
+
+    public void CombineWithIngridient(ItemBehaviour ingridient, ItemDataSO recipeResult)
+    {
+        _itemData = recipeResult;
+        Destroy(ingridient.gameObject);
+        _itemVisual.UpdateVisual(_itemData.Icon);
+    }
     public int GetItemPrice() => _itemPrice;
     public void SetItemPrice(int value) => _itemPrice = value;
+    public ItemVisual GetItemVisual() => _itemVisual;
 
 }

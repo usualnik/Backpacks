@@ -9,9 +9,19 @@ public class BagCell : MonoBehaviour
     public bool IsOccupied { get; private set; }
     public DraggableItem OccupyingItem { get; private set; }
 
+
+    private Color _canbePlacedColor = Color.green;
+    private Color _normalColor;
+
+
+
+
+
     private void Awake()
     {
         _bagCellImage = GetComponent<Image>();
+
+        _normalColor = _bagCellImage.color;
     }
 
     private void OnDestroy()
@@ -27,12 +37,12 @@ public class BagCell : MonoBehaviour
         IsOccupied = occupied;
         OccupyingItem = item;
 
-        // Визуальная обратная связь
-        Image image = GetComponent<Image>();
-        if (image != null)
-        {
-            image.color = occupied ? new Color(0.5f, 0.5f, 0.5f, 0.5f) : new Color(0.5f, 0.5f, 0.5f, 0.5f);
-        }
+        //// Визуальная обратная связь
+        //Image image = GetComponent<Image>();
+        //if (image != null)
+        //{
+        //    image.color = occupied ? new Color(0.5f, 0.5f, 0.5f, 0.5f) : new Color(0.5f, 0.5f, 0.5f, 0.5f);
+        //}
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -41,7 +51,6 @@ public class BagCell : MonoBehaviour
         {
             CanBePlaced = true;
             CurrentInventoryCell = inventoryCell;
-            _bagCellImage.color = new Color(0, 1, 0, 0.5f);
         }
     }
 
@@ -51,7 +60,6 @@ public class BagCell : MonoBehaviour
         {
             CanBePlaced = false;
             CurrentInventoryCell = null;
-            _bagCellImage.color = new Color(1, 0, 0, 0.5f);
         }
     }
 
@@ -63,13 +71,13 @@ public class BagCell : MonoBehaviour
             {
                 CanBePlaced = true;
                 CurrentInventoryCell = InventoryCell;
-                _bagCellImage.color = new Color(0, 1, 0, 0.5f);
+                //_bagCellImage.color = new Color(0, 1, 0, 0.5f);
             }
             else
             {
                 CanBePlaced = false;
                 CurrentInventoryCell = null;
-                _bagCellImage.color = new Color(1, 0, 0, 0.5f);
+                //_bagCellImage.color = new Color(1, 0, 0, 0.5f);
             }
         }
     }

@@ -154,7 +154,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ItemBehaviour
   _itemData: {fileID: 0}
-  _itemPrice: 0
   _currentState: 0
   _previousState: 0
   _target: 1
@@ -165,7 +164,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 329016987711949224}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: a28faf8c4cb2bed4a92dedd5c7debe8e, type: 3}
   m_Name: 
@@ -182,7 +181,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c9db60d982c079944bf3340d119eda21, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _isItemSpawnableInShop: 1
   _isItemReserved: 0
 --- !u!1 &1551166408140226759
 GameObject:
@@ -467,6 +465,7 @@ GameObject:
   - component: {fileID: 4284989212161699790}
   - component: {fileID: 4263750978920031582}
   - component: {fileID: 5512910330479703549}
+  - component: {fileID: 7330839766586261910}
   m_Layer: 5
   m_Name: Visual
   m_TagString: Untagged
@@ -531,6 +530,18 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &7330839766586261910
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4380552780120952074}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 37004b6b061dde34db21939bf90dcfee, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &4796539222365334969
 GameObject:
   m_ObjectHideFlags: 0

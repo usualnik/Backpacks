@@ -1,7 +1,5 @@
 using System;
 using UnityEngine;
-using static ItemDataSO;
-
 
 public abstract class ItemDataSO : ScriptableObject
 {
@@ -15,6 +13,8 @@ public abstract class ItemDataSO : ScriptableObject
     public bool IsSpawnableInShop => _isSpawnableInShop;
     public StarEffectSO StarEffect => _starEffect;
     public ItemType Type => _itemType;
+    public ItemDataSO[] RecipeIngridients => _recipeIngridients;
+    public ItemDataSO RecipeResult => _recipeResult;
 
     public Vector2Int GetShapeSize() => new Vector2Int(_shapeWidth, _shapeHeight);
 
@@ -80,6 +80,10 @@ public abstract class ItemDataSO : ScriptableObject
     [Header("Effects")]
     [SerializeField] private ItemEffectSO[] _effects;
     [SerializeField] private StarEffectSO _starEffect;
+
+    [Header("Recipe")]
+    [SerializeField] private ItemDataSO[] _recipeIngridients;
+    [SerializeField] private ItemDataSO _recipeResult;
 
     [Header("Properties")]
     [SerializeField] private int _price;

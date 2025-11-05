@@ -19,12 +19,12 @@ public class InventoryCell : MonoBehaviour
         IsOccupied = occupied;
         OccupyingBag = bag;
 
-        // Визуальная обратная связь
-        Image image = GetComponent<Image>();
-        if (image != null)
-        {
-            image.color = occupied ? new Color(0.5f, 0.5f, 0.5f, 0.5f) : new Color(0.5f, 0.5f, 0.5f, 0.5f);
-        }
+        //// Визуальная обратная связь
+        //Image image = GetComponent<Image>();
+        //if (image != null)
+        //{
+        //    image.color = occupied ? new Color(0.5f, 0.5f, 0.5f, 0.5f) : new Color(0.5f, 0.5f, 0.5f, 0.5f);
+        //}
     }
 
 }

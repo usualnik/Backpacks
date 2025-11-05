@@ -4109,8 +4109,8 @@ MonoBehaviour:
   _isDead: 0
   _stats:
     GoldAmount: 5
-    Health: 1000
-    HealthMax: 1000
+    Health: 25
+    HealthMax: 25
     Stamina: 5
     StaminaMax: 5
   _buffs: []
@@ -6722,11 +6722,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6648914310299956083, guid: 2f2635880fbbe034a95f93b5a1e2922f, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 15
+      value: -186
       objectReference: {fileID: 0}
     - target: {fileID: 6648914310299956083, guid: 2f2635880fbbe034a95f93b5a1e2922f, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -10
+      value: -32
       objectReference: {fileID: 0}
     - target: {fileID: 6648914310299956083, guid: 2f2635880fbbe034a95f93b5a1e2922f, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -8115,11 +8115,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6648914310299956083, guid: 4b561236f6f17d7458cacee86a434681, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: -70
+      value: -255
       objectReference: {fileID: 0}
     - target: {fileID: 6648914310299956083, guid: 4b561236f6f17d7458cacee86a434681, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -35
+      value: -55
       objectReference: {fileID: 0}
     - target: {fileID: 6648914310299956083, guid: 4b561236f6f17d7458cacee86a434681, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -11174,8 +11174,8 @@ MonoBehaviour:
   _isDead: 0
   _stats:
     GoldAmount: 50
-    Health: 1000
-    HealthMax: 1000
+    Health: 25
+    HealthMax: 25
     Stamina: 5
     StaminaMax: 5
   _buffs: []

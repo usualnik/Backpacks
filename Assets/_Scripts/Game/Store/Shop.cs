@@ -23,9 +23,11 @@ public class Shop : MonoBehaviour
     private const float SALE_CHANCE = 0.2f;
     private const int MAX_SPAWN_ATTEMPTS = 50; // Защита от бесконечного цикла
 
-    private int _rerollPrice = 1;
+    private int _rerollPrice;
     private int _rerollProgression = 0;
+
     private const int REROLLS_NEEDED_TO_NEW_PRICE = 3;
+    private const int INITIAL_REROLL_PRICE = 1;
 
     private void Awake()
     {
@@ -35,11 +37,14 @@ public class Shop : MonoBehaviour
         }
         else
             Debug.LogError("More than one instance of shop manager");
+
     }
 
     private void Start()
     {
         SpawnItems();
+        ResetRerollPrice();
+
         CombatManager.Instance.OnCombatFinished += CombatManager_OnCombatFinished;
     }
 
@@ -51,6 +56,7 @@ public class Shop : MonoBehaviour
     private void CombatManager_OnCombatFinished(CombatManager.CombatResult combatResult)
     {
         SpawnItems();
+        ResetRerollPrice();
     }
 
     private void SpawnItems()
@@ -205,6 +211,10 @@ public class Shop : MonoBehaviour
             }
         }
     }
-
+    private void ResetRerollPrice()
+    {
+        _rerollPrice = INITIAL_REROLL_PRICE;
+        OnRerollPriceChanged?.Invoke();
+    }
     public int GetCurrentRerollPrice() => _rerollPrice;
 }

@@ -10,23 +10,22 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: d4a428925e9ac8943943aef736706fa9, type: 3}
-  m_Name: WoodenBuckler
+  m_Name: SpikedShield
   m_EditorClassIdentifier: Assembly-CSharp::ShieldDataSO
-  _itemName: WoodenBuckler
-  _icon: {fileID: 21300000, guid: cde6d02af692dc347aadd42206be4202, type: 3}
-  _prefab: {fileID: 98611140532912634, guid: b3cc16694e30b9b46abce156bd62532e, type: 3}
-  _isSpawnableInShop: 1
+  _itemName: SpikedShield
+  _icon: {fileID: 21300000, guid: a30adcf7bcad5a544adf622125a0d17e, type: 3}
+  _prefab: {fileID: 98611140532912634, guid: 4cd5b525ac0421148acc6e4f45fcc2ac, type: 3}
+  _isSpawnableInShop: 0
   _itemType: 1024
   _itemSubType: 0
-  _rarity: 1
+  _rarity: 2
   _shapeWidth: 2
   _shapeHeight: 2
   _shapeArray: 01010101
   _effects:
-  - {fileID: 11400000, guid: 312cf83ea7a352e488a32d13c3374ac2, type: 2}
+  - {fileID: 11400000, guid: a8643a3eae1c9ae44ade0e5bab95c525, type: 2}
   _starEffect: {fileID: 0}
-  _recipeIngridients:
-  - {fileID: 11400000, guid: 49db54dd5acc34b4bb1f55719e374261, type: 2}
-  _recipeResult: {fileID: 11400000, guid: b368bbe2f9b8ab34a9513ef8eb9987a6, type: 2}
-  _price: 4
+  _itemsNeededToCraft: []
+  _recipeResult: {fileID: 0}
+  _price: 8
   _socketsAmount: 1
