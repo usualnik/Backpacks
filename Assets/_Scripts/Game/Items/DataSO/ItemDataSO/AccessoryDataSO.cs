@@ -6,7 +6,7 @@ public class AccessoryDataSO : ItemDataSO
 
     //private const ItemType ITEM_TYPE = ItemType.Accessory;
 
-    public override void PerformAction(ItemBehaviour.Target target)
+    public override void PerformAction(ItemBehaviour.Target target, ItemBehaviour performedItem)
     {
        
     }

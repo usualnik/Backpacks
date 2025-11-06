@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class CombatManager : MonoBehaviour
@@ -25,7 +26,7 @@ public class CombatManager : MonoBehaviour
     private CombatResult _result;
 
     private bool _isInCombat = false;
-    private Coroutine _currentAttackRoutine;
+    private List<Coroutine> _activeAttackRoutines = new List<Coroutine>();
 
     private int _fatigueDamageAmount = 0;
     private const float _fatigueDamageStartTimer = 17f;
@@ -57,9 +58,7 @@ public class CombatManager : MonoBehaviour
         _playerCharacter.OnCharacterDeath -= Player_OnCharacterDeath;
         _enemyCharacter.OnCharacterDeath -= Enemy_OnCharacterDeath;
 
-        if (_currentAttackRoutine != null)
-            StopCoroutine(_currentAttackRoutine);
-
+        StopAllAutoAttacks();
         StopFatigueDamage();
     }
 
@@ -79,8 +78,7 @@ public class CombatManager : MonoBehaviour
     {
         _result = CombatResult.PlayerWin;
         _isInCombat = false;
-        if (_currentAttackRoutine != null)
-            StopCoroutine(_currentAttackRoutine);
+        StopAllAutoAttacks();
         StopFatigueDamage();
         OnCombatFinished?.Invoke(_result);
     }
@@ -89,15 +87,14 @@ public class CombatManager : MonoBehaviour
     {
         _result = CombatResult.EnemyWin;
         _isInCombat = false;
-        if (_currentAttackRoutine != null)
-            StopCoroutine(_currentAttackRoutine);
+        StopAllAutoAttacks();
         StopFatigueDamage();
         OnCombatFinished?.Invoke(_result);
     }
     #endregion
-       
+
     #region WeaponDamage
-    public void StartAutoAttack(ItemBehaviour.Target target, ItemDataSO attackWeapon,
+    public void StartAutoAttack(ItemBehaviour.Target target, WeaponBehaviour weapon,
         float damageMin, float damageMax,
         float staminaCost, float cooldown, float accuracy)
     {
@@ -107,51 +104,102 @@ public class CombatManager : MonoBehaviour
             return;
         }
 
+        Coroutine newRoutine = null;
         switch (target)
         {
             case ItemBehaviour.Target.Player:
-                _currentAttackRoutine = StartCoroutine(AutoAttackRoutine(_playerCharacter, attackWeapon,
+                newRoutine = StartCoroutine(AutoAttackRoutine(_enemyCharacter,
+                    _playerCharacter, weapon,
                     damageMin, damageMax, staminaCost, cooldown, accuracy));
                 break;
             case ItemBehaviour.Target.Enemy:
-                _currentAttackRoutine = StartCoroutine(AutoAttackRoutine(_enemyCharacter, attackWeapon,
+                newRoutine = StartCoroutine(AutoAttackRoutine(_playerCharacter,
+                    _enemyCharacter, weapon,
                     damageMin, damageMax, staminaCost, cooldown, accuracy));
                 break;
             default:
                 Debug.LogWarning($"Unknown target: {target}");
                 break;
         }
+
+        if (newRoutine != null)
+        {
+            _activeAttackRoutines.Add(newRoutine);
+        }
     }
 
-    private IEnumerator AutoAttackRoutine(Character targetCharacter, ItemDataSO attackWeapon,
+    private IEnumerator AutoAttackRoutine(Character sourceCharacter,
+        Character targetCharacter, WeaponBehaviour weapon,
         float damageMin, float damageMax,
         float staminaCost, float cooldown, float accuracy)
     {
         while (_isInCombat && targetCharacter != null && !targetCharacter.IsDead)
         {
-            float damage = UnityEngine.Random.Range(damageMin, damageMax);
+            float damage = CalculateFinalDamage(sourceCharacter, damageMin, damageMax, weapon);
             damage = Mathf.RoundToInt(damage);
 
-            targetCharacter.UseStamina(staminaCost);
-            targetCharacter.TakeDamage(damage);
+            bool isHit = UnityEngine.Random.Range(0f, 100f) <=
+                CalculateFinalAccuracy(sourceCharacter, accuracy) ? true : false;
 
-            OnDamageDealt?.Invoke(attackWeapon, targetCharacter.name);
+            if (!isHit)
+                yield return new WaitForSeconds(cooldown);
+
+
+
+            if (sourceCharacter.HasStaminaToAttack(staminaCost))
+            {
+                sourceCharacter.UseStamina(staminaCost);
+                targetCharacter.TakeDamage(damage);
+                OnDamageDealt?.Invoke(weapon.ItemData, targetCharacter.name);
+            }
+            else
+            {
+                weapon.TryGetComponent(out WeaponVisual weaponVisual);
+                weaponVisual.ShowNoStaminaText();
+            }
 
             yield return new WaitForSeconds(cooldown);
         }
 
-        Debug.Log("Auto attack routine finished");
-        _currentAttackRoutine = null;
+        // јвтоматически очищаем завершенные корутины при остановке бо€
+        CleanupFinishedRoutines();
+    }
+    private float CalculateFinalDamage(Character sourceCharacter, float damageMin, float damageMax,
+        WeaponBehaviour weapon)
+    {
+        return UnityEngine.Random.Range
+             (weapon.WeaponDamageMin + sourceCharacter.GetThornsStacks(),
+             weapon.WeaponDamageMax + sourceCharacter.GetThornsStacks());
+    }
+    private float CalculateFinalAccuracy(Character attacker, float weaponAccuracy)
+    {
+        float finalAccuracy;
+
+        return finalAccuracy = attacker.GetAccuracy() + weaponAccuracy;
     }
 
-    public void StopAutoAttack()
+    public void StopAutoAttack(ItemDataSO weaponToStop)
     {
-        if (_currentAttackRoutine != null)
+        // ќстанавливает все атаки от конкретного оружи€
+        // ¬ данной реализации останавливает все атаки, так как нет прив€зки к конкретному оружию
+        // ƒл€ более точного управлени€ можно использовать Dictionary<ItemDataSO, Coroutine>
+        StopAllAutoAttacks();
+    }
+
+    public void StopAllAutoAttacks()
+    {
+        foreach (var routine in _activeAttackRoutines)
         {
-            StopCoroutine(_currentAttackRoutine);
-            _currentAttackRoutine = null;
-            Debug.Log("Auto attack stopped");
+            if (routine != null)
+                StopCoroutine(routine);
         }
+        _activeAttackRoutines.Clear();
+    }
+
+    private void CleanupFinishedRoutines()
+    {
+        // ”дал€ем null ссылки (завершенные корутины)
+        _activeAttackRoutines.RemoveAll(routine => routine == null);
     }
 
     public PlayerCharacter GetPlayerCharacter() => _playerCharacter;

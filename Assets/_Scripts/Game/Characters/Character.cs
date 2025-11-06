@@ -43,6 +43,9 @@ public abstract class Character : MonoBehaviour, IDamageable, IStaminable
     private int[] _levelHealthData = { 0, 35, 45, 55, 70, 85, 100, 115, 130, 150, 170, 190, 210, 230, 260, 290, 320, 350 };
 
 
+
+    private const int ACCURACY_PER_STACK = 5;
+
     private void Start()
     {
         InitializeCharacter();
@@ -97,6 +100,11 @@ public abstract class Character : MonoBehaviour, IDamageable, IStaminable
         {
             OnStaminaEmpty?.Invoke();
         }
+    }
+
+    public bool HasStaminaToAttack(float amount)
+    {
+        return _stats.Stamina - amount > 0;
     }
 
     private IEnumerator RegenStaminaRoutine()
@@ -155,7 +163,41 @@ public abstract class Character : MonoBehaviour, IDamageable, IStaminable
     {
         OnCharacterStatsChanged?.Invoke(stats);
     }
+    public float GetAccuracy()
+    {
+        float accuracy = 0;
+        foreach (var buff in _buffs)
+        {
+            if (buff.Type == ItemEffectSO.EffectType.Luck)
+            {
+                accuracy += ACCURACY_PER_STACK;
+            }
+        }
 
+        foreach (var debuff in _debuffs)
+        {
+            if (debuff.Type == ItemEffectSO.EffectType.Blindness)
+            {
+                accuracy -= ACCURACY_PER_STACK;
+            }
+        }
+
+        return accuracy;
+    }
+
+    public float GetThornsStacks()
+    {
+        float thornsStacks = 0;
+        foreach (var buff in _buffs)
+        {
+            if (buff.Type == ItemEffectSO.EffectType.Thorns)
+            {
+                thornsStacks++;
+            }
+        }
+
+        return thornsStacks;
+    }
     public string NickName => _nickname;
     public string ClassName => _className;
     public CharacterStats Stats => _stats;

@@ -13,6 +13,10 @@ PrefabInstance:
       value: WalrusTusk
       objectReference: {fileID: 0}
     - target: {fileID: 3722408764420827945, guid: 137870c767bf8b84f9c550357331a0cf, type: 3}
+      propertyPath: _target
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3722408764420827945, guid: 137870c767bf8b84f9c550357331a0cf, type: 3}
       propertyPath: _itemData
       value: 
       objectReference: {fileID: 11400000, guid: 49db54dd5acc34b4bb1f55719e374261, type: 2}

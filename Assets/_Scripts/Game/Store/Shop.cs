@@ -43,6 +43,7 @@ public class Shop : MonoBehaviour
     private void Start()
     {
         SpawnItems();
+
         ResetRerollPrice();
 
         CombatManager.Instance.OnCombatFinished += CombatManager_OnCombatFinished;

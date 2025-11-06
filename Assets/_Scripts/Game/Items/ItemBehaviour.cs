@@ -23,12 +23,12 @@ public class ItemBehaviour : MonoBehaviour
         Dragging = 1 << 4,          // 16
     }
 
-    [SerializeField] private ItemState _currentState;
-    [SerializeField] private ItemState _previousState = ItemState.None;
+    [SerializeField] protected ItemState _currentState;
+    [SerializeField] protected ItemState _previousState = ItemState.None;
 
 
-    private int _itemPrice;
-    private ItemVisual _itemVisual;
+    protected int _itemPrice;
+    protected ItemVisual _itemVisual;
 
     public enum Target
     {
@@ -36,7 +36,7 @@ public class ItemBehaviour : MonoBehaviour
         Enemy
     }
 
-    [SerializeField] private Target _target;
+    [SerializeField] protected Target _target;
 
 
     private void Awake()
@@ -60,7 +60,7 @@ public class ItemBehaviour : MonoBehaviour
     {
         if (CurrentState.HasFlag(ItemState.Inventory))
         {
-            _itemData.PerformAction(_target);
+            _itemData.PerformAction(_target,this);
             //HACK: Применяется только первый эффект в списке - это неверно
             _itemData.Effects[0].ApplyEffect(_target);
         }       

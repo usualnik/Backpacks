@@ -61,6 +61,8 @@ public class StarCell : MonoBehaviour
         {
             _starImage.sprite = _starFilled;
             _isFilled = true;
+
+            _itemBehaviour.ItemData.StarEffect.ApplyStarEffect(otherItem);
         }
     }
     private void OnTriggerExit2D(Collider2D collision)
@@ -70,6 +72,9 @@ public class StarCell : MonoBehaviour
         {
             _starImage.sprite = _starEmpty;
             _isFilled = false;
+
+            _itemBehaviour.ItemData.StarEffect.RemoveStarEffect(otherItem);
+
         }
     }
 

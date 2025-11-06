@@ -121,6 +121,6 @@ public abstract class ItemDataSO : ScriptableObject
     }
 
 
-    public abstract void PerformAction(ItemBehaviour.Target target);
+    public abstract void PerformAction(ItemBehaviour.Target target, ItemBehaviour performedItem);
 
 }

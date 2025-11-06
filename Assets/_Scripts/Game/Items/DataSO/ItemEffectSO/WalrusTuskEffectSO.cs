@@ -5,5 +5,6 @@ public class WalrusTuskEffectSO : ItemEffectSO
 {
     public override void ApplyEffect(ItemBehaviour.Target target)
     {
+        CombatManager.Instance.ApplyEffect(target, this);
     }
 }

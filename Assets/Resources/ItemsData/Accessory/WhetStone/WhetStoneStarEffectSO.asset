@@ -15,3 +15,4 @@ MonoBehaviour:
   _name: WhetStoneStarEffect
   _description: Apply 1 damage for each STAR Weapon
   _target: 192
+  _amount: 1

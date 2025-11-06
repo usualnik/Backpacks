@@ -8,7 +8,7 @@ public class BagDataSO : ItemDataSO
     [SerializeField] private int _slotsAmount;
 
 
-    public override void PerformAction(ItemBehaviour.Target target)
+    public override void PerformAction(ItemBehaviour.Target target, ItemBehaviour performedItem)
     {
        
     }
