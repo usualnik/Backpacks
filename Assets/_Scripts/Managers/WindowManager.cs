@@ -1,4 +1,5 @@
 using System;
+using TMPro;
 using UnityEngine;
 
 public class WindowManager : MonoBehaviour
@@ -11,7 +12,7 @@ public class WindowManager : MonoBehaviour
         Store = 1,
         Gameplay = 2,
     }
-    private WindowType _windowType;
+    private WindowType _windowType;    
 
     [Header("Menu windows refs")]
     [SerializeField] private CanvasGroup[] _windowCanvasGroups;
