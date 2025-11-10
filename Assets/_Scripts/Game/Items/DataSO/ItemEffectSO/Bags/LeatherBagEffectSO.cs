@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class LeatherBagEffectSO : ItemEffectSO
 {
-    public override void ApplyEffect(ItemBehaviour.Target target)
+    public override void ApplyEffect(ItemBehaviour itemBehaviour)
     {
     }    
 }

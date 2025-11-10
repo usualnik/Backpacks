@@ -1,0 +1,30 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7e9e758e7527b1141acbef2bb51d64ed, type: 3}
+  m_Name: Garlic
+  m_EditorClassIdentifier: 
+  _itemName: Garlic
+  _icon: {fileID: 21300000, guid: 6e5955009cbb40842be9608c86191c90, type: 3}
+  _prefab: {fileID: 98611140532912634, guid: 824f851aad3467d438f9def638a08d50, type: 3}
+  _isSpawnableInShop: 1
+  _itemType: 8
+  _itemSubType: 0
+  _rarity: 1
+  _shapeWidth: 1
+  _shapeHeight: 2
+  _shapeArray: 0101
+  _effects:
+  - {fileID: 11400000, guid: 086b1ea3ecff78e48871150dac6cb29d, type: 2}
+  _starEffect: {fileID: 11400000, guid: 1e68c8033a6ab684797f5b28cd6e7db0, type: 2}
+  _recipeIngridients: []
+  _recipeResult: {fileID: 0}
+  _price: 2

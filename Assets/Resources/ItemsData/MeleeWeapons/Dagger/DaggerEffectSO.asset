@@ -9,12 +9,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 90acce84276e5974d8bb7ea634cf4070, type: 3}
-  m_Name: RangerBagEffectSO
+  m_Script: {fileID: 11500000, guid: aef449d7198a333438d0de5971c07caa, type: 3}
+  m_Name: DaggerEffectSO
   m_EditorClassIdentifier: 
-  _name: RangerBagEffect
-  _description: Items inside have a 10% chance to deal a critical hit for each LUCK
-    stack.
+  _name: DaggerEffect
+  _description: 'On stun: Triggers extra attack.'
   _amount: 0
-  _effectType: 9
-  _isBuff: 1
+  _effectType: 0
+  _isBuff: 0

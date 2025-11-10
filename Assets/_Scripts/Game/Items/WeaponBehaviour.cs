@@ -31,7 +31,7 @@ public class WeaponBehaviour : ItemBehaviour
         {
             _weaponDataSO.PerformWeaponAction(_target, this);
             //HACK: Применяется только первый эффект в списке - это неверно
-            _weaponDataSO.Effects[0].ApplyEffect(_target);
+            _weaponDataSO.Effects[0].ApplyEffect(this);
         }
     }
 

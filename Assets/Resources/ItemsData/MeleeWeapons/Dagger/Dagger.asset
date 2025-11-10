@@ -10,27 +10,27 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 022187cc8b9c22f478b4a1bd367e097f, type: 3}
-  m_Name: WoodenSword
-  m_EditorClassIdentifier: Assembly-CSharp::MeleeWeaponDataSO
-  _itemName: WoodenSword
-  _icon: {fileID: 21300000, guid: d58669bc29e67af4abc92bebe3f80b6e, type: 3}
-  _prefab: {fileID: 98611140532912634, guid: 4b561236f6f17d7458cacee86a434681, type: 3}
+  m_Name: Dagger
+  m_EditorClassIdentifier: 
+  _itemName: Dagger
+  _icon: {fileID: 21300000, guid: 70b39a99e1261524a932d80e66eb152c, type: 3}
+  _prefab: {fileID: 98611140532912634, guid: 68a55cb5e1a8a2b4a945009d02beb130, type: 3}
   _isSpawnableInShop: 1
   _itemType: 64
   _itemSubType: 0
-  _rarity: 1
+  _rarity: 2
   _shapeWidth: 1
   _shapeHeight: 2
   _shapeArray: 0101
   _effects:
-  - {fileID: 11400000, guid: f11ffb870cf807a43ae305cee9031190, type: 2}
+  - {fileID: 11400000, guid: f260a01a624025b4cb079f6e31dbdf3d, type: 2}
   _starEffect: {fileID: 0}
   _recipeIngridients: []
   _recipeResult: {fileID: 0}
-  _price: 3
-  _damageMin: 1
-  _damageMax: 3
-  _staminaCost: 1
-  _cooldown: 1.4
-  _accuracy: 90
+  _price: 4
+  _damageMin: 2
+  _damageMax: 5
+  _staminaCost: 0
+  _cooldown: 3.5
+  _accuracy: 95
   _socketsAmount: 1

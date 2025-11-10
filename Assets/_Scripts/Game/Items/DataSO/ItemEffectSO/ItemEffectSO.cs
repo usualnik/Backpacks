@@ -35,5 +35,5 @@ public abstract class ItemEffectSO : ScriptableObject
     public EffectType Type => _effectType;
     public bool IsBuff => _isBuff;        
 
-    public abstract void ApplyEffect(ItemBehaviour.Target target);
+    public abstract void ApplyEffect(ItemBehaviour itemBehaviour);
 }

@@ -10,22 +10,21 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 7c33474cc10562243914f23d0019b141, type: 3}
-  m_Name: RangerBag
+  m_Name: StorageCoffin
   m_EditorClassIdentifier: 
-  _itemName: RangerBag
-  _icon: {fileID: 21300000, guid: 021277c294be75d4fb76c9755e309c17, type: 3}
-  _prefab: {fileID: 98611140532912634, guid: 31c08e4acc2691945a801582794bdfff, type: 3}
+  _itemName: StorageCoffin
+  _icon: {fileID: 21300000, guid: f39f481b3b52c45409c4bd8527d10f61, type: 3}
+  _prefab: {fileID: 98611140532912634, guid: 218a7078d7561f4499b0de74f71c038f, type: 3}
   _isSpawnableInShop: 0
   _itemType: 512
   _itemSubType: 0
-  _rarity: 6
+  _rarity: 32
   _shapeWidth: 2
-  _shapeHeight: 3
-  _shapeArray: 010101010101
-  _effects:
-  - {fileID: 11400000, guid: 1cab48600bb1ec34e90cd98bc9bd207e, type: 2}
+  _shapeHeight: 4
+  _shapeArray: 0101010101010101
+  _effects: []
   _starEffect: {fileID: 0}
   _recipeIngridients: []
   _recipeResult: {fileID: 0}
-  _price: 16
-  _slotsAmount: 6
+  _price: 20
+  _slotsAmount: 8

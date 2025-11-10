@@ -9,12 +9,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 90acce84276e5974d8bb7ea634cf4070, type: 3}
-  m_Name: RangerBagEffectSO
+  m_Script: {fileID: 11500000, guid: 6c728f6aa7b0cef46ad7ef02cb25eacc, type: 3}
+  m_Name: GarlicEffectSO
   m_EditorClassIdentifier: 
-  _name: RangerBagEffect
-  _description: Items inside have a 10% chance to deal a critical hit for each LUCK
-    stack.
+  _name: GarlicEffect
+  _description: 'Every 4s: Gain 3 Block. 30% chance to remove 1 Vampirism from your
+    opponent.'
   _amount: 0
-  _effectType: 9
-  _isBuff: 1
+  _effectType: 0
+  _isBuff: 0

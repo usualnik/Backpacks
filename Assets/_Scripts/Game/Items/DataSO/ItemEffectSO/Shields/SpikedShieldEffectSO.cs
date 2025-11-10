@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class SpikedShieldEffectSO : ItemEffectSO
 {
-    public override void ApplyEffect(ItemBehaviour.Target target)
+    public override void ApplyEffect(ItemBehaviour itemBehaviour)
     {
-        CombatManager.Instance.ApplyEffect(target, this);
+        CombatManager.Instance.ApplyEffect(itemBehaviour, this);
     }
 }

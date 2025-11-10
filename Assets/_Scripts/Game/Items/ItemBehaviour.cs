@@ -62,7 +62,7 @@ public class ItemBehaviour : MonoBehaviour
         {
             _itemData.PerformAction(_target,this);
             //HACK: Применяется только первый эффект в списке - это неверно
-            _itemData.Effects[0].ApplyEffect(_target);
+            _itemData.Effects[0].ApplyEffect(this);
         }       
     }
 
@@ -103,8 +103,9 @@ public class ItemBehaviour : MonoBehaviour
         Destroy(ingridient.gameObject);
         _itemVisual.UpdateVisual(_itemData.Icon);
     }
-    public int GetItemPrice() => _itemPrice;
+    public int GetItemPrice() => ItemData.Price;
     public void SetItemPrice(int value) => _itemPrice = value;
     public ItemVisual GetItemVisual() => _itemVisual;
+    public ItemBehaviour.Target GetTarget() => _target;
 
 }

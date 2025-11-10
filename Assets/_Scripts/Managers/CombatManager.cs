@@ -135,6 +135,7 @@ public class CombatManager : MonoBehaviour
     {
         while (_isInCombat && targetCharacter != null && !targetCharacter.IsDead)
         {
+
             float damage = CalculateFinalDamage(sourceCharacter, damageMin, damageMax, weapon);
             damage = Mathf.RoundToInt(damage);
 
@@ -143,8 +144,6 @@ public class CombatManager : MonoBehaviour
 
             if (!isHit)
                 yield return new WaitForSeconds(cooldown);
-
-
 
             if (sourceCharacter.HasStaminaToAttack(staminaCost))
             {
@@ -167,9 +166,18 @@ public class CombatManager : MonoBehaviour
     private float CalculateFinalDamage(Character sourceCharacter, float damageMin, float damageMax,
         WeaponBehaviour weapon)
     {
-        return UnityEngine.Random.Range
+        if (weapon.ItemData.Type.HasFlag(ItemDataSO.ItemType.MeleeWeapons))
+        {
+            return UnityEngine.Random.Range
              (weapon.WeaponDamageMin + sourceCharacter.GetThornsStacks(),
              weapon.WeaponDamageMax + sourceCharacter.GetThornsStacks());
+        }
+        else
+        {
+            // TODO: Когда добавишь рендж пухи - нужно написать формулу урона
+            return 0;
+        }
+        
     }
     private float CalculateFinalAccuracy(Character attacker, float weaponAccuracy)
     {
@@ -207,20 +215,20 @@ public class CombatManager : MonoBehaviour
     #endregion
 
     #region Effects
-    public void ApplyEffect(ItemBehaviour.Target target, ItemEffectSO itemEffectSO)
+    public void ApplyEffect(ItemBehaviour itemBehaviour, ItemEffectSO itemEffectSO)
     {
-        switch (target)
+        switch (itemBehaviour.GetTarget())
         {
             case ItemBehaviour.Target.Player:
                 _playerCharacter.ApplyEffect(itemEffectSO);
-                OnEffectAppliedDealt?.Invoke(itemEffectSO, target.ToString());
+                OnEffectAppliedDealt?.Invoke(itemEffectSO, itemBehaviour.GetTarget().ToString());
                 break;
             case ItemBehaviour.Target.Enemy:
                 _enemyCharacter.ApplyEffect(itemEffectSO);
-                OnEffectAppliedDealt?.Invoke(itemEffectSO, target.ToString());
+                OnEffectAppliedDealt?.Invoke(itemEffectSO, itemBehaviour.GetTarget().ToString());
                 break;
             default:
-                Debug.LogWarning($"Unknown target: {target}");
+                Debug.LogWarning($"Unknown target: {itemBehaviour.GetTarget()}");
                 break;
         }
     }
