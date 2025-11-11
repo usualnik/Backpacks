@@ -5,6 +5,7 @@ public class ItemBehaviour : MonoBehaviour
 {
     public event Action<ItemState, ItemState> OnItemStateChanged;
 
+    public event Action<ItemBehaviour> OnItemActionPerformed;
     public ItemState CurrentState => _currentState;
     public ItemState PreviousState => _previousState;
     public ItemDataSO ItemData => _itemData;
@@ -65,6 +66,8 @@ public class ItemBehaviour : MonoBehaviour
         if (CurrentState.HasFlag(ItemState.Inventory))
         {
             _itemData.PerformAction(_target,this);
+            OnItemActionPerformed?.Invoke(this);
+
             //HACK: Применяется только первый эффект в списке - это неверно
             _effect?.ApplyEffect(this, ItemData.Effects[0]);
         }       

@@ -9,11 +9,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ad76f38a4ce55f447a50d8ef5be60f3f, type: 3}
-  m_Name: WhetStoneEffectSO
+  m_Script: {fileID: 11500000, guid: b79b86a900e80214c8ed6aaae222bbf5, type: 3}
+  m_Name: BloodAmuletEffect
   m_EditorClassIdentifier: 
-  _name: WhetStoneEffect
-  _description: 'Start of battle: Star Weapons gain 1 damage.'
-  _amount: 1
-  _effectType: 0
-  _isBuff: 1
+  _name: BloodAmuletEffect
+  _description: 'Start of battle: Gain 2 Vampirism and 20 maximum health. '
+  _effectType: 4
+  _isPositive: 1

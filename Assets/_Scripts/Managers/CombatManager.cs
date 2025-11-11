@@ -136,7 +136,7 @@ public class CombatManager : MonoBehaviour
         while (_isInCombat && targetCharacter != null && !targetCharacter.IsDead)
         {
 
-            float damage = CalculateFinalDamage(sourceCharacter, damageMin, damageMax, weapon);
+            float damage = CalculateFinalDamage(sourceCharacter,targetCharacter, damageMin, damageMax, weapon);
             damage = Mathf.RoundToInt(damage);
 
             bool isHit = UnityEngine.Random.Range(0f, 100f) <=
@@ -163,7 +163,7 @@ public class CombatManager : MonoBehaviour
         // Автоматически очищаем завершенные корутины при остановке боя
         CleanupFinishedRoutines();
     }
-    private float CalculateFinalDamage(Character sourceCharacter, float damageMin, float damageMax,
+    private float CalculateFinalDamage(Character sourceCharacter,Character targetCharcter ,float damageMin, float damageMax,
         WeaponBehaviour weapon)
     {
         if (weapon.ItemData.Type.HasFlag(ItemDataSO.ItemType.MeleeWeapons))
@@ -173,14 +173,14 @@ public class CombatManager : MonoBehaviour
             if (isCrit)
             {
                 return UnityEngine.Random.Range
-                    ((weapon.WeaponDamageMin + sourceCharacter.GetThornsStacks()) * 2,
-                    (weapon.WeaponDamageMax + sourceCharacter.GetThornsStacks()) * 2);
+                    ((weapon.WeaponDamageMin + sourceCharacter.GetThornsStacks() - targetCharcter.GetArmorStacks()) * 2,
+                    (weapon.WeaponDamageMax + sourceCharacter.GetThornsStacks() - targetCharcter.GetArmorStacks()) * 2);
             }
             else
             {
                 return UnityEngine.Random.Range
-                    (weapon.WeaponDamageMin + sourceCharacter.GetThornsStacks(),
-                    weapon.WeaponDamageMax + sourceCharacter.GetThornsStacks());
+                    (weapon.WeaponDamageMin + sourceCharacter.GetThornsStacks() - targetCharcter.GetArmorStacks(),
+                    weapon.WeaponDamageMax + sourceCharacter.GetThornsStacks() - targetCharcter.GetArmorStacks());
             }
            
         }

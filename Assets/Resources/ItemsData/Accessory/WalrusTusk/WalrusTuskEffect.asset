@@ -15,4 +15,4 @@ MonoBehaviour:
   _name: WalrusTuskEffect
   _description: Adds 1 Thorns
   _effectType: 3
-  _isBuff: 1
+  _isPositive: 1

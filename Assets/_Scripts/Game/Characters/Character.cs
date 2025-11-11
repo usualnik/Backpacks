@@ -199,6 +199,22 @@ public abstract class Character : MonoBehaviour, IDamageable, IStaminable
         return luckStacks;
     }
 
+    public float GetArmorStacks()
+    {
+        float armorStacks = 0;
+
+        foreach (var buff in _buffs)
+        {
+            if (buff.Type == ItemEffectSO.EffectType.Armor)
+            {
+                armorStacks++;
+            }
+        }
+
+        return armorStacks;
+
+    }
+
     public float GetThornsStacks()
     {
         float thornsStacks = 0;
@@ -211,6 +227,13 @@ public abstract class Character : MonoBehaviour, IDamageable, IStaminable
         }
 
         return thornsStacks;
+    }
+
+    public void BuffHealth(float value)
+    {
+        _stats.HealthMax += value;
+        _stats.Health += value;
+        InvokeStatsChanged(_stats);       
     }
     public string NickName => _nickname;
     public string ClassName => _className;

@@ -15,4 +15,4 @@ MonoBehaviour:
   _name: CloverEffect
   _description: Adds 1 Luck
   _effectType: 1
-  _isBuff: 1
+  _isPositive: 1

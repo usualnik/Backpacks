@@ -17,7 +17,7 @@ public abstract class WeaponDataSO : ItemDataSO
     [SerializeField] protected float _staminaCost;
     [SerializeField] protected float _cooldown;
     [SerializeField] protected float _accuracy;
-    [SerializeField] private float _baseCritHitChance;
+    private float _baseCritHitChance;
 
     [SerializeField] protected int _socketsAmount;
     public virtual void PerformWeaponAction(ItemBehaviour.Target target, WeaponBehaviour performedItem)

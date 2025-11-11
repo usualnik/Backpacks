@@ -15,4 +15,4 @@ MonoBehaviour:
   _name: GarlicEfffect
   _description: 'Every 4s: Gain 3 Block. '
   _effectType: 10
-  _isBuff: 1
+  _isPositive: 1

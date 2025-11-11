@@ -1,0 +1,35 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 09869a080ac0664449b43d0222c7ada2, type: 3}
+  m_Name: Pumpkin
+  m_EditorClassIdentifier: 
+  _itemName: Pumpkin
+  _icon: {fileID: -3545189308076068758, guid: 25348625bbad1ec45a8e2028cde10211, type: 3}
+  _prefab: {fileID: 98611140532912634, guid: fe9ddaecbb55d174a9769ef8093ae724, type: 3}
+  _isSpawnableInShop: 1
+  _itemType: 136
+  _itemSubType: 8
+  _rarity: 32
+  _shapeWidth: 2
+  _shapeHeight: 2
+  _shapeArray: 01010101
+  _effects:
+  - {fileID: 11400000, guid: 17aa27dc6f7d66d42b902a4df43ad08d, type: 2}
+  _recipeIngridients: []
+  _recipeResult: {fileID: 0}
+  _price: 8
+  _damageMin: 6
+  _damageMax: 12
+  _staminaCost: 0
+  _cooldown: 5
+  _accuracy: 90
+  _socketsAmount: 2

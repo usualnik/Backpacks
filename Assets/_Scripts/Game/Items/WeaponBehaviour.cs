@@ -11,7 +11,7 @@ public class WeaponBehaviour : ItemBehaviour
     private float _weaponDamageMin;
     private float _weaponDamageMax;
 
-    [SerializeField]
+    
     private float _critHitChance = 0;  
 
 

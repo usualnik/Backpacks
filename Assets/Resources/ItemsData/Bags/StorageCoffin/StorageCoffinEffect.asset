@@ -9,11 +9,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 72d31d9638bc3884ebb5a06027991c53, type: 3}
-  m_Name: LeatherBagEffectSO
+  m_Script: {fileID: 11500000, guid: b79b86a900e80214c8ed6aaae222bbf5, type: 3}
+  m_Name: StorageCoffinEffect
   m_EditorClassIdentifier: 
-  _name: LeatherBagEffect
-  _description: Adds 4 slots
-  _amount: 0
-  _effectType: 9
-  _isBuff: 1
+  _name: StorageCoffinEffect
+  _description: 'Item inside activates: 25% chance to inflict 1 Poison.'
+  _effectType: 11
+  _isPositive: 0
