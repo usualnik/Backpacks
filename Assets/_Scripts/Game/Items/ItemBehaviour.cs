@@ -11,6 +11,8 @@ public class ItemBehaviour : MonoBehaviour
 
     [SerializeField] private ItemDataSO _itemData;
 
+    private IItemEffect _effect;
+
 
     [Flags]
     public enum ItemState
@@ -44,6 +46,8 @@ public class ItemBehaviour : MonoBehaviour
         //Эта строчка существет потому что цена объекта зафиксирована в SO и она readonly, из-за природы SO
         _itemPrice = _itemData.Price;
         _itemVisual = GetComponentInChildren<ItemVisual>();
+        _effect = GetComponent<IItemEffect>();
+
     }
 
     private void Start()
@@ -62,7 +66,7 @@ public class ItemBehaviour : MonoBehaviour
         {
             _itemData.PerformAction(_target,this);
             //HACK: Применяется только первый эффект в списке - это неверно
-            _itemData.Effects[0].ApplyEffect(this);
+            _effect?.ApplyEffect(this, ItemData.Effects[0]);
         }       
     }
 

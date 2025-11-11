@@ -16,7 +16,7 @@ public abstract class Character : MonoBehaviour, IDamageable, IStaminable
     }
 
     public event Action<CharacterStats> OnCharacterStatsChanged;
-    public event Action<ItemEffectSO.EffectType, float, bool> OnNewEffectApplied;
+    public event Action<ItemEffectSO.EffectType, bool> OnNewEffectApplied;
     public event Action OnCharacterDeath;
     public event Action OnStaminaEmpty;
 
@@ -122,18 +122,17 @@ public abstract class Character : MonoBehaviour, IDamageable, IStaminable
     #region Effects
     public void ApplyEffect(ItemEffectSO itemEffectSO)
     {
-        if (itemEffectSO.IsBuff)
+        if (itemEffectSO.IsPositive)
         {
             _buffs.Add(itemEffectSO);
-
         }
         else
         {
             _debuffs.Add(itemEffectSO);
-
         }
 
-        OnNewEffectApplied?.Invoke(itemEffectSO.Type, itemEffectSO.Amount, itemEffectSO.IsBuff);
+        OnNewEffectApplied?.Invoke(itemEffectSO.Type, itemEffectSO.IsPositive);
+
 
     }
 
@@ -183,6 +182,21 @@ public abstract class Character : MonoBehaviour, IDamageable, IStaminable
         }
 
         return accuracy;
+    }
+
+    public float GetLuckStacks()
+    {
+        float luckStacks = 0;
+
+        foreach (var buff in _buffs)
+        {
+            if (buff.Type == ItemEffectSO.EffectType.Luck)
+            {
+                luckStacks++;
+            }
+        }
+
+        return luckStacks;
     }
 
     public float GetThornsStacks()

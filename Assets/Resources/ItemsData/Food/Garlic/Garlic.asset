@@ -23,8 +23,7 @@ MonoBehaviour:
   _shapeHeight: 2
   _shapeArray: 0101
   _effects:
-  - {fileID: 11400000, guid: 086b1ea3ecff78e48871150dac6cb29d, type: 2}
-  _starEffect: {fileID: 11400000, guid: 1e68c8033a6ab684797f5b28cd6e7db0, type: 2}
+  - {fileID: 11400000, guid: c23137997af1d1e468f64a30717aa97b, type: 2}
   _recipeIngridients: []
   _recipeResult: {fileID: 0}
   _price: 2

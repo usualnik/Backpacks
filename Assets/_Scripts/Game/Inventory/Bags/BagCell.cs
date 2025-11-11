@@ -12,6 +12,7 @@ public class BagCell : MonoBehaviour
 
     private Color _canbePlacedColor = Color.green;
     private Color _normalColor;
+    private Bag _parentBag;
 
 
 
@@ -20,6 +21,7 @@ public class BagCell : MonoBehaviour
     private void Awake()
     {
         _bagCellImage = GetComponent<Image>();
+        _parentBag = GetComponentInParent<Bag>();
 
         _normalColor = _bagCellImage.color;
     }
@@ -28,21 +30,26 @@ public class BagCell : MonoBehaviour
     {
         if (IsOccupied && OccupyingItem != null)
         {
-            SetOccupied(false, null);
+            SetOccupied(false, OccupyingItem);
         }
     }
 
     public void SetOccupied(bool occupied, DraggableItem item)
     {
-        IsOccupied = occupied;
-        OccupyingItem = item;
+        if (occupied)
+        {
+            _parentBag.AddItemToBag(item.ItemBehaviour);
 
-        //// Визуальная обратная связь
-        //Image image = GetComponent<Image>();
-        //if (image != null)
-        //{
-        //    image.color = occupied ? new Color(0.5f, 0.5f, 0.5f, 0.5f) : new Color(0.5f, 0.5f, 0.5f, 0.5f);
-        //}
+            IsOccupied = true;
+            OccupyingItem = item;
+        }
+        else
+        {
+            _parentBag.RemoveItemFromBag(item.ItemBehaviour);
+
+            IsOccupied = false;
+            OccupyingItem = null;
+        }
     }
 
     private void OnTriggerEnter2D(Collider2D collision)

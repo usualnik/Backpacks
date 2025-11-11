@@ -75,9 +75,17 @@ public class GamePlayInfoPanel : MonoBehaviour
         ClearBuffsText();
     }
 
-    private void Character_OnNewEffectApplied(ItemEffectSO.EffectType type, float amount, bool isBuff)
+    private void Character_OnNewEffectApplied(ItemEffectSO.EffectType type, bool isBuff)
     {
-        UpdateBuffText(type.ToString(), amount, isBuff);
+        //HACK: Добавить какую-то идентификацию того, должен ли эффект быть показан в списке бафов и дебафов
+        //if (type == ItemEffectSO.EffectType.Armor)
+        //{
+        //    // No visual if its Armor
+        //}
+        //else
+        //{
+            UpdateBuffText(type.ToString(), isBuff);
+       //}
     }
 
     private void Character_OnCharacterStatsChanged(Character.CharacterStats obj)
@@ -99,18 +107,18 @@ public class GamePlayInfoPanel : MonoBehaviour
         _staminaBarImage.fillAmount = _character.Stats.Stamina / _character.Stats.StaminaMax;
     }
 
-    private void UpdateBuffText(string buffName, float buffAmount, bool isBuff)
+    private void UpdateBuffText(string buffName, bool isBuff)
     {
         if (isBuff)
         {
-            _characterBuffsText.text += _characterBuffsText.text == string.Empty ? buffName + " " + buffAmount :
-                "\n" + buffName + " " + buffAmount;
+            _characterBuffsText.text += _characterBuffsText.text == string.Empty ? buffName + " " :
+                "\n" + buffName + " ";
 
         }
         else
         {
-            _characterDebuffsText.text += _characterDebuffsText.text == string.Empty ? buffName + " " + buffAmount :
-                "\n" + buffName + " " + buffAmount;
+            _characterDebuffsText.text += _characterDebuffsText.text == string.Empty ? buffName :
+                "\n" + buffName;
 
         }
     }

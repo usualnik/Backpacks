@@ -4,16 +4,22 @@ public class WeaponBehaviour : ItemBehaviour
 {
     public float WeaponDamageMin => _weaponDamageMin;
     public float WeaponDamageMax => _weaponDamageMax;
+    public float CritHitChance => _critHitChance;
 
     [SerializeField] private WeaponDataSO _weaponDataSO;
-    [SerializeField] private float _weaponDamageMin;
-    [SerializeField] private float _weaponDamageMax;
+
+    private float _weaponDamageMin;
+    private float _weaponDamageMax;
+
+    [SerializeField]
+    private float _critHitChance = 0;  
 
 
     private void Awake()
     {
         _weaponDamageMin = _weaponDataSO.DamageMin;
         _weaponDamageMax = _weaponDataSO.DamageMax;
+        _critHitChance = _weaponDataSO.BaseCritChance;
     }
     private void Start()
     {
@@ -29,9 +35,7 @@ public class WeaponBehaviour : ItemBehaviour
     {
         if (CurrentState.HasFlag(ItemState.Inventory))
         {
-            _weaponDataSO.PerformWeaponAction(_target, this);
-            //HACK: Применяется только первый эффект в списке - это неверно
-            _weaponDataSO.Effects[0].ApplyEffect(this);
+            _weaponDataSO.PerformWeaponAction(_target, this);           
         }
     }
 
@@ -39,6 +43,11 @@ public class WeaponBehaviour : ItemBehaviour
     {
         _weaponDamageMin += value;
         _weaponDamageMax += value;
+    }
+
+    public void AddCritHitChanceToWeapon(float value)
+    {
+        _critHitChance += value;
     }
 
 }

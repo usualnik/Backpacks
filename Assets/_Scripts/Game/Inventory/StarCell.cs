@@ -56,24 +56,24 @@ public class StarCell : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.TryGetComponent(out ItemBehaviour otherItem)
-            && _itemBehaviour.ItemData.StarEffect.Target.HasFlag(otherItem.ItemData.Type))
+        if (collision.TryGetComponent(out ItemBehaviour otherItem))
+            //&& _itemBehaviour.ItemData.StarEffect.Target.HasFlag(otherItem.ItemData.Type))
         {
-            _starImage.sprite = _starFilled;
-            _isFilled = true;
+            //_starImage.sprite = _starFilled;
+            //_isFilled = true;
 
-            _itemBehaviour.ItemData.StarEffect.ApplyStarEffect(otherItem);
+            //_itemBehaviour.ItemData.StarEffect.ApplyStarEffect(otherItem);
         }
     }
     private void OnTriggerExit2D(Collider2D collision)
     {
-        if (collision.TryGetComponent(out ItemBehaviour otherItem)
-            && _itemBehaviour.ItemData.StarEffect.Target.HasFlag(otherItem.ItemData.Type))
-        {
-            _starImage.sprite = _starEmpty;
-            _isFilled = false;
+        if (collision.TryGetComponent(out ItemBehaviour otherItem))
+        //    && _itemBehaviour.ItemData.StarEffect.Target.HasFlag(otherItem.ItemData.Type))
+       {
+        //    _starImage.sprite = _starEmpty;
+        //    _isFilled = false;
 
-            _itemBehaviour.ItemData.StarEffect.RemoveStarEffect(otherItem);
+        //    _itemBehaviour.ItemData.StarEffect.RemoveStarEffect(otherItem);
 
         }
     }

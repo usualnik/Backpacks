@@ -1,16 +1,27 @@
+using NUnit.Framework;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class Bag : MonoBehaviour
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    public List<ItemBehaviour> ItemsInbag => _itemsInBag;
+
+    [SerializeField] private List<ItemBehaviour> _itemsInBag;
+
+    public void AddItemToBag(ItemBehaviour item)
     {
-        
+        if (!_itemsInBag.Contains(item))
+        {
+            _itemsInBag.Add(item);
+        }
+    }
+    public void RemoveItemFromBag(ItemBehaviour item)
+    {
+        if (_itemsInBag.Contains(item))
+        {
+            _itemsInBag.Remove(item);
+        }
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+    
 }

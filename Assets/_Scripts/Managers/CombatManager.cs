@@ -11,7 +11,7 @@ public class CombatManager : MonoBehaviour
     public event Action<CombatResult> OnCombatFinished;
 
     public event Action<ItemDataSO, string> OnDamageDealt;
-    public event Action<ItemEffectSO, string> OnEffectAppliedDealt;
+    public event Action<ItemEffectSO, string> OnEffectApplied;
     public event Action<int> OnFatigueDamageApplied;
 
     [SerializeField] private PlayerCharacter _playerCharacter;
@@ -168,16 +168,28 @@ public class CombatManager : MonoBehaviour
     {
         if (weapon.ItemData.Type.HasFlag(ItemDataSO.ItemType.MeleeWeapons))
         {
-            return UnityEngine.Random.Range
-             (weapon.WeaponDamageMin + sourceCharacter.GetThornsStacks(),
-             weapon.WeaponDamageMax + sourceCharacter.GetThornsStacks());
+            bool isCrit = UnityEngine.Random.Range(0f, 100f) <= weapon.CritHitChance ? true : false;
+
+            if (isCrit)
+            {
+                return UnityEngine.Random.Range
+                    ((weapon.WeaponDamageMin + sourceCharacter.GetThornsStacks()) * 2,
+                    (weapon.WeaponDamageMax + sourceCharacter.GetThornsStacks()) * 2);
+            }
+            else
+            {
+                return UnityEngine.Random.Range
+                    (weapon.WeaponDamageMin + sourceCharacter.GetThornsStacks(),
+                    weapon.WeaponDamageMax + sourceCharacter.GetThornsStacks());
+            }
+           
         }
         else
         {
             // TODO: Когда добавишь рендж пухи - нужно написать формулу урона
             return 0;
         }
-        
+
     }
     private float CalculateFinalAccuracy(Character attacker, float weaponAccuracy)
     {
@@ -215,20 +227,23 @@ public class CombatManager : MonoBehaviour
     #endregion
 
     #region Effects
-    public void ApplyEffect(ItemBehaviour itemBehaviour, ItemEffectSO itemEffectSO)
+    public void ApplyEffect(ItemBehaviour target, ItemEffectSO itemEffectSO)
     {
-        switch (itemBehaviour.GetTarget())
+        if (target == null)
+            return;
+
+        switch (target.GetTarget())
         {
             case ItemBehaviour.Target.Player:
                 _playerCharacter.ApplyEffect(itemEffectSO);
-                OnEffectAppliedDealt?.Invoke(itemEffectSO, itemBehaviour.GetTarget().ToString());
+                OnEffectApplied?.Invoke(itemEffectSO, target.GetTarget().ToString());
                 break;
             case ItemBehaviour.Target.Enemy:
                 _enemyCharacter.ApplyEffect(itemEffectSO);
-                OnEffectAppliedDealt?.Invoke(itemEffectSO, itemBehaviour.GetTarget().ToString());
+                OnEffectApplied?.Invoke(itemEffectSO, target.GetTarget().ToString());
                 break;
             default:
-                Debug.LogWarning($"Unknown target: {itemBehaviour.GetTarget()}");
+                Debug.LogWarning($"Unknown target: {target.GetTarget()}");
                 break;
         }
     }

@@ -5,6 +5,9 @@ using UnityEngine.UI;
 public class DraggableItem : MonoBehaviour,
     IBeginDragHandler, IDragHandler, IEndDragHandler, IDraggable
 {
+
+    public ItemBehaviour ItemBehaviour => _itemBehaviour;
+
     [SerializeField] protected Image _image;
     [SerializeField] private ItemCell[] _itemCells;
     [SerializeField] private bool _isCanBeSelled = false;
@@ -233,7 +236,7 @@ public class DraggableItem : MonoBehaviour,
         {
             if (bagCell != null)
             {
-                bagCell.SetOccupied(false, null);
+                bagCell.SetOccupied(false, this);
             }
         }
 

@@ -26,14 +26,14 @@ public class CombatLogPanel : MonoBehaviour, IDragHandler
     private void Start()
     {
         CombatManager.Instance.OnDamageDealt += CombatManager_OnDamageDealt;
-        CombatManager.Instance.OnEffectAppliedDealt += CombatManager_OnEffectAppliedDealt;
+        CombatManager.Instance.OnEffectApplied += CombatManager_OnEffectAppliedDealt;
     }
 
 
     private void OnDestroy()
     {
         CombatManager.Instance.OnDamageDealt -= CombatManager_OnDamageDealt;
-        CombatManager.Instance.OnEffectAppliedDealt -= CombatManager_OnEffectAppliedDealt;
+        CombatManager.Instance.OnEffectApplied -= CombatManager_OnEffectAppliedDealt;
 
 
     }
