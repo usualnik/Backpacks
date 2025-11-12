@@ -5,14 +5,17 @@ public class ItemBehaviour : MonoBehaviour
 {
     public event Action<ItemState, ItemState> OnItemStateChanged;
 
-    public event Action<ItemBehaviour> OnItemActionPerformed;
+    public event Action<ItemBehaviour, Character> OnItemActionPerformed;
     public ItemState CurrentState => _currentState;
     public ItemState PreviousState => _previousState;
     public ItemDataSO ItemData => _itemData;
+    public Character TargetCharacter => _targetCharacter;
 
     [SerializeField] private ItemDataSO _itemData;
 
     private IItemEffect _effect;
+
+    private Character _targetCharacter;
 
 
     [Flags]
@@ -65,11 +68,19 @@ public class ItemBehaviour : MonoBehaviour
     {
         if (CurrentState.HasFlag(ItemState.Inventory))
         {
-            _itemData.PerformAction(_target,this);
-            OnItemActionPerformed?.Invoke(this);
+            switch (GetTarget())
+            {
+                case Target.Player:
+                    _targetCharacter = PlayerCharacter.Instance; break;
+                case Target.Enemy:
+                    _targetCharacter = EnemyCharacter.Instance; break;
+            }
 
-            //HACK: Применяется только первый эффект в списке - это неверно
-            _effect?.ApplyEffect(this, ItemData.Effects[0]);
+
+            _itemData.PerformAction(_target,this);
+            OnItemActionPerformed?.Invoke(this, _targetCharacter);
+            
+            _effect?.ApplyEffect(this,_targetCharacter);
         }       
     }
 

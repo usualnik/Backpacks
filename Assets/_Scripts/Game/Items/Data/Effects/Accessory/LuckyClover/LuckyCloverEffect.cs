@@ -2,10 +2,21 @@ using UnityEngine;
 
 public class LuckyCloverEffect : MonoBehaviour, IItemEffect
 {
+    private Buff _luckyCloverBuff;
 
-    public void ApplyEffect(ItemBehaviour target, ItemEffectSO effectData)
+    private void Awake()
     {
-        CombatManager.Instance.ApplyEffect(target, effectData);
+        _luckyCloverBuff = new Buff
+        {
+            Name = "LuckyCloverBuff",
+            Type = Buff.BuffType.Luck,
+            IsPositive = true,
+            Value = 1
+        };
+    }
+    public void ApplyEffect(ItemBehaviour item, Character targetCharacter)
+    {
+        CombatManager.Instance.ApplyBuff(_luckyCloverBuff, targetCharacter);
     }
 
     public void RemoveEffect()

@@ -1451,7 +1451,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 98611140532912634, guid: 2f2635880fbbe034a95f93b5a1e2922f, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1162797940950742682, guid: 2f2635880fbbe034a95f93b5a1e2922f, type: 3}
       propertyPath: m_IsActive
@@ -2283,7 +2283,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 98611140532912634, guid: 4b561236f6f17d7458cacee86a434681, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3580631491124617892, guid: 4b561236f6f17d7458cacee86a434681, type: 3}
       propertyPath: m_IsActive
@@ -2460,6 +2460,7 @@ MonoBehaviour:
       GoldAmount: 0
       Health: 0
       HealthMax: 0
+      Armor: 0
       Stamina: 0
       StaminaMax: 0
 --- !u!1 &457488074
@@ -3895,6 +3896,7 @@ MonoBehaviour:
     GoldAmount: 5
     Health: 25
     HealthMax: 25
+    Armor: 0
     Stamina: 5
     StaminaMax: 5
   _buffs: []
@@ -5377,7 +5379,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 98611140532912634, guid: 6768a74b6aef0194199dc3df3efbd0b9, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3919845225088230267, guid: 6768a74b6aef0194199dc3df3efbd0b9, type: 3}
       propertyPath: _state
@@ -6101,7 +6103,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 98611140532912634, guid: 6768a74b6aef0194199dc3df3efbd0b9, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3919845225088230267, guid: 6768a74b6aef0194199dc3df3efbd0b9, type: 3}
       propertyPath: _state
@@ -8475,7 +8477,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 98611140532912634, guid: b3cc16694e30b9b46abce156bd62532e, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2872540222749556197, guid: b3cc16694e30b9b46abce156bd62532e, type: 3}
       propertyPath: m_IsActive
@@ -10474,7 +10476,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 98611140532912634, guid: 31c08e4acc2691945a801582794bdfff, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3919845225088230267, guid: 31c08e4acc2691945a801582794bdfff, type: 3}
       propertyPath: _state
@@ -10755,8 +10757,9 @@ MonoBehaviour:
     GoldAmount: 50
     Health: 25
     HealthMax: 25
-    Stamina: 3
-    StaminaMax: 3
+    Armor: 0
+    Stamina: 5
+    StaminaMax: 5
   _buffs: []
   _debuffs: []
   RankName: Bronze

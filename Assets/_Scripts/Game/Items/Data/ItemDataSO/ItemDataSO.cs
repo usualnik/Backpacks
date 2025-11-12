@@ -7,12 +7,13 @@ public abstract class ItemDataSO : ScriptableObject
     public string ItemName => _itemName;
     public Sprite Icon => _icon;
     public int Price => _price;
-    public ItemEffectSO[] Effects => _effects;
+
+    //public BuffSO[] Buffs => _buffs;
     public GameObject Prefab => _prefab;
     public ItemSubType SubType => _itemSubType;
     public RarityType Rarity => _rarity;
     public bool IsSpawnableInShop => _isSpawnableInShop;
-    //public StarEffectSO StarEffect => _starEffect;
+   // public StarEffectSO StarEffect => _starEffect;
     public ItemType Type => _itemType;
     public ItemDataSO[] RecipeIngridients => _recipeIngridients;
     public ItemDataSO RecipeResult => _recipeResult;
@@ -57,6 +58,7 @@ public abstract class ItemDataSO : ScriptableObject
         Legendary   = 1 << 3,   // 8
         Divine      = 1 << 4,   // 16
         Unique      = 1 << 5,   // 32
+        Godly       = 1 << 6,   // 64
     }
 
 
@@ -78,9 +80,9 @@ public abstract class ItemDataSO : ScriptableObject
     [SerializeField] private int _shapeHeight = 1;
     [SerializeField] private bool[] _shapeArray;
 
-    [Header("Effects")]
-    [SerializeField] private ItemEffectSO[] _effects;
-    //[SerializeField] private StarEffectSO _starEffect;
+       // [Header("StarEffect")]
+    //[SerializeField] private BuffSO[] _buffs;
+     //[SerializeField] private StarEffectSO _starEffect;
 
     [Header("Recipe")]
     [SerializeField] private ItemDataSO[] _recipeIngridients;

@@ -26,14 +26,14 @@ public class CombatLogPanel : MonoBehaviour, IDragHandler
     private void Start()
     {
         CombatManager.Instance.OnDamageDealt += CombatManager_OnDamageDealt;
-        CombatManager.Instance.OnEffectApplied += CombatManager_OnEffectAppliedDealt;
+        CombatManager.Instance.OnBuffApplied += CombatManager_OnBuffApplied;
     }
 
 
     private void OnDestroy()
     {
         CombatManager.Instance.OnDamageDealt -= CombatManager_OnDamageDealt;
-        CombatManager.Instance.OnEffectApplied -= CombatManager_OnEffectAppliedDealt;
+        CombatManager.Instance.OnBuffApplied -= CombatManager_OnBuffApplied;
 
 
     }
@@ -41,7 +41,7 @@ public class CombatLogPanel : MonoBehaviour, IDragHandler
     {
        LogDamage(attackWeapon.ItemName, targetName);
     }
-    private void CombatManager_OnEffectAppliedDealt(ItemEffectSO effect, string targetName)
+    private void CombatManager_OnBuffApplied(Buff effect, string targetName)
     {
         LogEffect(effect.Name, targetName);
     }

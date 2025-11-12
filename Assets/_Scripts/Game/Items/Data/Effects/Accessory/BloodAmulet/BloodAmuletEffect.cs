@@ -3,13 +3,25 @@ using UnityEngine;
 public class BloodAmuletEffect : MonoBehaviour, IItemEffect
 {
     private float _additionalHealth = 20f;
-    public void ApplyEffect(ItemBehaviour target, ItemEffectSO effectData)
-    {
-       Character targetCharacter = target.GetTarget() == ItemBehaviour.Target.Player 
-            ? PlayerCharacter.Instance : EnemyCharacter.Instance;
+    private Buff _bloodAmuletBuff;
 
-        CombatManager.Instance.ApplyEffect(target, effectData);
-        targetCharacter.BuffHealth(_additionalHealth);
+    private void Awake()
+    {
+        _bloodAmuletBuff = new Buff
+        {
+            Name = "BloodAmuletBuff",
+            Type = Buff.BuffType.Vampirism,
+            IsPositive = true,
+            Value = 2
+        };
+    }
+
+    public void ApplyEffect(ItemBehaviour target, Character targetCharacter)
+    {
+        targetCharacter.ChangeHealthValue(_additionalHealth);
+
+        CombatManager.Instance.ApplyBuff(_bloodAmuletBuff, targetCharacter);
+
     }
 
     public void RemoveEffect()

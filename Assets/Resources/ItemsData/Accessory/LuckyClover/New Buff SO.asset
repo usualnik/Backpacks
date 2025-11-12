@@ -9,10 +9,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b79b86a900e80214c8ed6aaae222bbf5, type: 3}
-  m_Name: CloverEffect
+  m_Script: {fileID: 11500000, guid: acba9448a58a0da4b8fefaadef0f98fd, type: 3}
+  m_Name: New Buff SO
   m_EditorClassIdentifier: 
-  _name: CloverEffect
-  _description: Adds 1 Luck
-  _effectType: 1
-  _isPositive: 1
+  _name: 
+  _buffType: 0
+  _isPositive: 0

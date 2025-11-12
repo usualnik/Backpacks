@@ -5,8 +5,7 @@ public class RangerBagEffect : MonoBehaviour, IItemEffect
 {
     private Bag _rangerBag;
 
-    [SerializeField]
-    private List<WeaponBehaviour> _weaponsToBuff;
+    private List<WeaponBehaviour> _weaponsToBuff = new List<WeaponBehaviour>();
     private ItemBehaviour _itemBehaviour;
     private Character _targetCharacter;
 
@@ -20,23 +19,30 @@ public class RangerBagEffect : MonoBehaviour, IItemEffect
         _rangerBag = GetComponent<Bag>();
     }
 
-    public void ApplyEffect(ItemBehaviour target, ItemEffectSO effectData)
+    public void ApplyEffect(ItemBehaviour item, Character targetCharacter)
     {
-        _itemBehaviour = target;
+        _itemBehaviour = item;
+        _targetCharacter = targetCharacter;
 
-
-        foreach (var item in _rangerBag.ItemsInbag)
+        if (_rangerBag.ItemsInbag.Count > 0)
         {
-            if (item is WeaponBehaviour)
+            foreach (var i in _rangerBag.ItemsInbag)
             {
-                _weaponsToBuff.Add(item as WeaponBehaviour);               
+                if (i is WeaponBehaviour)
+                {
+                    _weaponsToBuff.Add(i as WeaponBehaviour);
+                }
             }
         }
 
-        foreach (var weapon in _weaponsToBuff)
+        if (_weaponsToBuff.Count > 0)
         {
-            weapon.AddCritHitChanceToWeapon(CalculateFinalCritHitChance());
+            foreach (var weapon in _weaponsToBuff)
+            {
+                weapon?.AddCritHitChanceToWeapon(CalculateFinalCritHitChance());
+            }
         }
+       
     }
 
     public void RemoveEffect()
@@ -45,17 +51,8 @@ public class RangerBagEffect : MonoBehaviour, IItemEffect
 
     private float CalculateFinalCritHitChance()
     {
-        float finalCritChance = 0f;
-        
-        if (_itemBehaviour.GetTarget() == ItemBehaviour.Target.Player)
-        {
-            _targetCharacter = PlayerCharacter.Instance;
-        }
-        else if(_itemBehaviour.GetTarget() == ItemBehaviour.Target.Enemy)
-        {
-            _targetCharacter = EnemyCharacter.Instance;
-        }
-
+        float finalCritChance = 0f;       
+       
         finalCritChance = _critHitChanceBuff + (_targetCharacter.GetLuckStacks() * CRIT_HIT_CHANCE_PER_LUCK_AMOUNT);
 
         return finalCritChance;

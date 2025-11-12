@@ -9,7 +9,10 @@ public class GamePlayInfoPanel : MonoBehaviour
     [Header("HEALTH")]
     [SerializeField] private Image _healthBarImage;
     [SerializeField] private TextMeshProUGUI _characterHealthText;
-    
+
+    [Header("BLOCK")]
+    [SerializeField] private TextMeshProUGUI _blockValueText;
+
     [Header("STAMINA")]
     [SerializeField] private TextMeshProUGUI _characterStaminaText;
     [SerializeField] private Image _staminaBarImage;
@@ -30,7 +33,7 @@ public class GamePlayInfoPanel : MonoBehaviour
     private void Start()
     {
         CombatManager.Instance.OnCombatStarted += CombatManager_OnCombatStarted;
-        CombatManager.Instance.OnCombatFinished += CombatManager_OnCombatFinished;        
+        CombatManager.Instance.OnCombatFinished += CombatManager_OnCombatFinished;
 
         InitPanel();
     }
@@ -44,7 +47,7 @@ public class GamePlayInfoPanel : MonoBehaviour
     {
         CombatManager.Instance.OnCombatStarted -= CombatManager_OnCombatStarted;
         _character.OnCharacterStatsChanged -= Character_OnCharacterStatsChanged;
-        _character.OnNewEffectApplied -= Character_OnNewEffectApplied;
+        _character.OnNewBuffApplied -= Character_OnNewEffectApplied;
         CombatManager.Instance.OnCombatFinished -= CombatManager_OnCombatFinished;
     }
     private void InitPanel()
@@ -56,13 +59,13 @@ public class GamePlayInfoPanel : MonoBehaviour
                 _character = CombatManager.Instance.GetPlayerCharacter();
                 _characterNickText.text = _character.NickName;
                 _character.OnCharacterStatsChanged += Character_OnCharacterStatsChanged;
-                _character.OnNewEffectApplied += Character_OnNewEffectApplied;
+                _character.OnNewBuffApplied += Character_OnNewEffectApplied;
                 break;
             case PanelType.Enemy:
                 _character = CombatManager.Instance.GetEnemyCharacter();
                 _characterNickText.text = _character.NickName;
                 _character.OnCharacterStatsChanged += Character_OnCharacterStatsChanged;
-                _character.OnNewEffectApplied += Character_OnNewEffectApplied;
+                _character.OnNewBuffApplied += Character_OnNewEffectApplied;
 
                 break;
             default:
@@ -75,17 +78,10 @@ public class GamePlayInfoPanel : MonoBehaviour
         ClearBuffsText();
     }
 
-    private void Character_OnNewEffectApplied(ItemEffectSO.EffectType type, bool isBuff)
+    private void Character_OnNewEffectApplied(Buff.BuffType type, bool isBuff)
     {
-        //HACK: Добавить какую-то идентификацию того, должен ли эффект быть показан в списке бафов и дебафов
-        //if (type == ItemEffectSO.EffectType.Armor)
-        //{
-        //    // No visual if its Armor
-        //}
-        //else
-        //{
-            UpdateBuffText(type.ToString(), isBuff);
-       //}
+        UpdateBuffText(type.ToString(), isBuff);
+
     }
 
     private void Character_OnCharacterStatsChanged(Character.CharacterStats obj)
@@ -102,6 +98,8 @@ public class GamePlayInfoPanel : MonoBehaviour
     {
         _characterHealthText.text = "Health: " + _character.Stats.Health.ToString("F1");
         _healthBarImage.fillAmount = _character.Stats.Health / _character.Stats.HealthMax;
+
+        _blockValueText.text = _character.Stats.Armor.ToString();
 
         _characterStaminaText.text = "Stamina: " + _character.Stats.Stamina.ToString("F1");
         _staminaBarImage.fillAmount = _character.Stats.Stamina / _character.Stats.StaminaMax;

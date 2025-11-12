@@ -151,7 +151,6 @@ public class DraggableBag : MonoBehaviour,
             // —умку можно разместить - прив€зываем к €чейкам инвентар€
             PlaceBagInInventoryCells();
             _itemBehaviour.SetItemState(ItemBehaviour.ItemState.Inventory);
-            Debug.Log("Bag placed successfully!");
         }
         else
         {

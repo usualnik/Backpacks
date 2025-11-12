@@ -2,7 +2,6 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
 public abstract class Character : MonoBehaviour, IDamageable, IStaminable
 {
     [System.Serializable]
@@ -11,12 +10,13 @@ public abstract class Character : MonoBehaviour, IDamageable, IStaminable
         public int GoldAmount = 0;
         public float Health = 0f;
         public float HealthMax = 0f;
+        public float Armor = 0f;
         public float Stamina = 0f;
         public float StaminaMax = 0f;
     }
 
     public event Action<CharacterStats> OnCharacterStatsChanged;
-    public event Action<ItemEffectSO.EffectType, bool> OnNewEffectApplied;
+    public event Action<Buff.BuffType, bool> OnNewBuffApplied;
     public event Action OnCharacterDeath;
     public event Action OnStaminaEmpty;
 
@@ -26,10 +26,8 @@ public abstract class Character : MonoBehaviour, IDamageable, IStaminable
 
     [SerializeField] protected bool _isDead = false;
     [SerializeField] protected CharacterStats _stats = new CharacterStats();
-    [SerializeField] private List<ItemEffectSO> _buffs;
-    [SerializeField] private List<ItemEffectSO> _debuffs;
-
-
+    [SerializeField] private List<Buff> _buffs;
+    [SerializeField] private List<Buff> _debuffs;
 
     private const float STAMINA_REGEN_STEP = 0.1f;
     private Coroutine _staminaRegenCoroutine;
@@ -42,10 +40,15 @@ public abstract class Character : MonoBehaviour, IDamageable, IStaminable
     /*first element is class default health*/
     private int[] _levelHealthData = { 0, 35, 45, 55, 70, 85, 100, 115, 130, 150, 170, 190, 210, 230, 260, 290, 320, 350 };
 
-
-
     private const int ACCURACY_PER_STACK = 5;
 
+    #region Init + Events
+
+    private void Awake()
+    {
+        _buffs = new List<Buff>();
+        _debuffs = new List<Buff>();
+    }
     private void Start()
     {
         InitializeCharacter();
@@ -74,7 +77,7 @@ public abstract class Character : MonoBehaviour, IDamageable, IStaminable
     {
         AddHealthAndGoldAfterCombat(levelIndex);
     }
-
+    #endregion
     #region WeaponDamage
     public void TakeDamage(float damage)
     {
@@ -117,27 +120,84 @@ public abstract class Character : MonoBehaviour, IDamageable, IStaminable
         }
         _staminaRegenCoroutine = null;
     }
-    #endregion
-
-    #region Effects
-    public void ApplyEffect(ItemEffectSO itemEffectSO)
+    #endregion   
+    #region Getters
+    public float GetAccuracy()
     {
-        if (itemEffectSO.IsPositive)
+        float accuracy = 0;
+        foreach (var buff in _buffs)
         {
-            _buffs.Add(itemEffectSO);
+            if (buff.Type == Buff.BuffType.Luck)
+            {
+                accuracy += ACCURACY_PER_STACK;
+            }
         }
-        else
+
+        foreach (var debuff in _debuffs)
         {
-            _debuffs.Add(itemEffectSO);
+            if (debuff.Type == Buff.BuffType.Blindness)
+            {
+                accuracy -= ACCURACY_PER_STACK;
+            }
         }
 
-        OnNewEffectApplied?.Invoke(itemEffectSO.Type, itemEffectSO.IsPositive);
-
-
+        return accuracy;
     }
 
-    #endregion
+    public float GetLuckStacks()
+    {
+        float luckStacks = 0;
 
+        foreach (var buff in _buffs)
+        {
+            if (buff.Type == Buff.BuffType.Luck)
+            {
+                luckStacks++;
+            }
+        }
+
+        return luckStacks;
+    }
+
+    public float GetArmorStacks()
+    {     
+        return _stats.Armor;
+    }
+
+    public float GetThornsStacks()
+    {
+        float thornsStacks = 0;
+        foreach (var buff in _buffs)
+        {
+            if (buff.Type == Buff.BuffType.Thorns)
+            {
+                thornsStacks++;
+            }
+        }
+
+        return thornsStacks;
+    }
+    public string NickName => _nickname;
+    public string ClassName => _className;
+    public CharacterStats Stats => _stats;
+    public bool IsDead => _isDead;
+
+    #endregion
+    #region Setters
+    public void ChangeHealthValue(float value)
+    {
+        _stats.HealthMax += value;
+        _stats.Health += value;
+        InvokeStatsChanged(_stats);       
+    }
+
+    public void ChangeArmorValue(float value)
+    {
+        _stats.Armor += value;
+        InvokeStatsChanged(_stats);
+    }
+    #endregion
+    #region GameLogic
     private void AddHealthAndGoldAfterCombat(int levelIndex)
     {
         _stats.HealthMax = _levelHealthData[levelIndex];
@@ -162,81 +222,62 @@ public abstract class Character : MonoBehaviour, IDamageable, IStaminable
     {
         OnCharacterStatsChanged?.Invoke(stats);
     }
-    public float GetAccuracy()
+
+    public void ApplyBuff(Buff buff)
     {
-        float accuracy = 0;
-        foreach (var buff in _buffs)
+        if (buff.IsPositive)
         {
-            if (buff.Type == ItemEffectSO.EffectType.Luck)
+            _buffs.Add(buff);
+        }
+        else
+        {
+            _debuffs.Add(buff);
+        }
+
+        OnNewBuffApplied?.Invoke(buff.Type, buff.IsPositive);
+    }
+
+    public void RemoveBuff(Buff.BuffType buffTypeToRemove, int removeAmount)
+    {
+        if (removeAmount <= 0) return;
+
+        for (int i = _buffs.Count - 1; i >= 0; i--)
+        {
+            if (_buffs[i].Type == buffTypeToRemove)
             {
-                accuracy += ACCURACY_PER_STACK;
+                Buff updatedBuff = _buffs[i];
+                updatedBuff.Value -= removeAmount;
+
+                if (updatedBuff.Value <= 0)
+                {
+                    _buffs.RemoveAt(i);
+                }
+                else
+                {
+                    _buffs[i] = updatedBuff; 
+                }
             }
         }
 
-        foreach (var debuff in _debuffs)
+        for (int i = _debuffs.Count - 1; i >= 0; i--)
         {
-            if (debuff.Type == ItemEffectSO.EffectType.Blindness)
+            if (_debuffs[i].Type == buffTypeToRemove)
             {
-                accuracy -= ACCURACY_PER_STACK;
+                Buff updatedBuff = _debuffs[i];
+                updatedBuff.Value -= removeAmount;
+
+                if (updatedBuff.Value <= 0)
+                {
+                    _debuffs.RemoveAt(i);
+                }
+                else
+                {
+                    _debuffs[i] = updatedBuff; 
+                }
             }
         }
-
-        return accuracy;
     }
 
-    public float GetLuckStacks()
-    {
-        float luckStacks = 0;
+    #endregion
 
-        foreach (var buff in _buffs)
-        {
-            if (buff.Type == ItemEffectSO.EffectType.Luck)
-            {
-                luckStacks++;
-            }
-        }
-
-        return luckStacks;
-    }
-
-    public float GetArmorStacks()
-    {
-        float armorStacks = 0;
-
-        foreach (var buff in _buffs)
-        {
-            if (buff.Type == ItemEffectSO.EffectType.Armor)
-            {
-                armorStacks++;
-            }
-        }
-
-        return armorStacks;
-
-    }
-
-    public float GetThornsStacks()
-    {
-        float thornsStacks = 0;
-        foreach (var buff in _buffs)
-        {
-            if (buff.Type == ItemEffectSO.EffectType.Thorns)
-            {
-                thornsStacks++;
-            }
-        }
-
-        return thornsStacks;
-    }
-
-    public void BuffHealth(float value)
-    {
-        _stats.HealthMax += value;
-        _stats.Health += value;
-        InvokeStatsChanged(_stats);       
-    }
-    public string NickName => _nickname;
-    public string ClassName => _className;
-    public CharacterStats Stats => _stats;
-    public bool IsDead => _isDead;
 }

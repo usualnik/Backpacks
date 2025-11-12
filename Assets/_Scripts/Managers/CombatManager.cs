@@ -9,9 +9,10 @@ public class CombatManager : MonoBehaviour
 
     public event Action OnCombatStarted;
     public event Action<CombatResult> OnCombatFinished;
+    public event Action<Buff,string> OnBuffApplied;
+
 
     public event Action<ItemDataSO, string> OnDamageDealt;
-    public event Action<ItemEffectSO, string> OnEffectApplied;
     public event Action<int> OnFatigueDamageApplied;
 
     [SerializeField] private PlayerCharacter _playerCharacter;
@@ -226,26 +227,12 @@ public class CombatManager : MonoBehaviour
     public EnemyCharacter GetEnemyCharacter() => _enemyCharacter;
     #endregion
 
-    #region Effects
-    public void ApplyEffect(ItemBehaviour target, ItemEffectSO itemEffectSO)
-    {
-        if (target == null)
-            return;
+    #region Buffs
+    public void ApplyBuff(Buff buff, Character targetCharacter)
+    {     
+        targetCharacter.ApplyBuff(buff);
+        OnBuffApplied?.Invoke(buff,targetCharacter.NickName);
 
-        switch (target.GetTarget())
-        {
-            case ItemBehaviour.Target.Player:
-                _playerCharacter.ApplyEffect(itemEffectSO);
-                OnEffectApplied?.Invoke(itemEffectSO, target.GetTarget().ToString());
-                break;
-            case ItemBehaviour.Target.Enemy:
-                _enemyCharacter.ApplyEffect(itemEffectSO);
-                OnEffectApplied?.Invoke(itemEffectSO, target.GetTarget().ToString());
-                break;
-            default:
-                Debug.LogWarning($"Unknown target: {target.GetTarget()}");
-                break;
-        }
     }
     #endregion
 

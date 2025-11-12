@@ -2,10 +2,23 @@ using UnityEngine;
 
 public class WalrusTuskEffect : MonoBehaviour, IItemEffect
 {
+    private Buff _walrusTuskBuff;
 
-    public void ApplyEffect(ItemBehaviour target, ItemEffectSO effectData)
+    private void Awake()
     {
-       CombatManager.Instance.ApplyEffect(target, effectData);
+
+        _walrusTuskBuff = new Buff
+        {
+            Name = "WalrusTuskBuff",
+            Type = Buff.BuffType.Thorns,
+            IsPositive = true,
+            Value = 1
+        };
+
+    }
+    public void ApplyEffect(ItemBehaviour item, Character targetCharacter)
+    {      
+        CombatManager.Instance.ApplyBuff(_walrusTuskBuff, targetCharacter);
     }
 
     public void RemoveEffect()

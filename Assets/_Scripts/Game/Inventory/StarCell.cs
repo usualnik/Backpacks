@@ -1,16 +1,20 @@
 using UnityEngine;
 using UnityEngine.UI;
+using static UnityEditor.Progress;
 
 public class StarCell : MonoBehaviour
 {
-    [SerializeField] private Sprite _starEmpty;
-    [SerializeField] private Sprite _starFilled;
+    [SerializeField] protected ItemDataSO.ItemType _starEffectTarget;
 
-    private Image _starImage;
-    private OnHoverItem _onHoverItem;
-    private bool _isFilled = false;
+    [Header("System")]
+    [SerializeField] protected Sprite _starEmpty;
+    [SerializeField] protected Sprite _starFilled;
 
-    private ItemBehaviour _itemBehaviour;
+    protected Image _starImage;
+    protected OnHoverItem _onHoverItem;
+    protected bool _isFilled = false;
+    protected IStarEffect _starEffect;
+    protected ItemBehaviour _item;
 
     private void Awake()
     {
@@ -22,7 +26,8 @@ public class StarCell : MonoBehaviour
     private void Start()
     {
         _onHoverItem = GetComponentInParent<OnHoverItem>();
-        _itemBehaviour = GetComponentInParent<ItemBehaviour>();
+        _starEffect = GetComponentInParent<IStarEffect>();
+        _item = GetComponentInParent<ItemBehaviour>();
 
         _onHoverItem.OnHover += OnHoverItem_OnHover;
         _onHoverItem.OnHoverExit += OnHoverItem_OnHoverExit;
@@ -56,27 +61,37 @@ public class StarCell : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.TryGetComponent(out ItemBehaviour otherItem))
-            //&& _itemBehaviour.ItemData.StarEffect.Target.HasFlag(otherItem.ItemData.Type))
+        if (collision.TryGetComponent(out ItemBehaviour otherItem)
+            && otherItem.ItemData.Type.HasFlag(_starEffectTarget))
         {
-            //_starImage.sprite = _starFilled;
-            //_isFilled = true;
-
-            //_itemBehaviour.ItemData.StarEffect.ApplyStarEffect(otherItem);
+            ApplyStarEffect(otherItem);
         }
     }
+
     private void OnTriggerExit2D(Collider2D collision)
     {
-        if (collision.TryGetComponent(out ItemBehaviour otherItem))
-        //    && _itemBehaviour.ItemData.StarEffect.Target.HasFlag(otherItem.ItemData.Type))
-       {
-        //    _starImage.sprite = _starEmpty;
-        //    _isFilled = false;
-
-        //    _itemBehaviour.ItemData.StarEffect.RemoveStarEffect(otherItem);
-
+        if (collision.TryGetComponent(out ItemBehaviour otherItem)
+            && otherItem.ItemData.Type.HasFlag(_starEffectTarget))
+        {
+           RemoveStarEffect(otherItem);
         }
     }
+    protected virtual void ApplyStarEffect(ItemBehaviour otherItem)
+    {
+        _isFilled = true;
+        _starImage.sprite = _starFilled;
 
+        _starEffect?.ApplyStarEffect(_item, otherItem, this);
+    }
+
+    protected virtual void RemoveStarEffect(ItemBehaviour otherItem)
+    {
+        _isFilled = false;
+        _starImage.sprite = _starEmpty;
+
+        _starEffect?.RemoveStarEffect(_item, otherItem, this);
+    }
     public bool IsFilled => _isFilled;
 }
+
+

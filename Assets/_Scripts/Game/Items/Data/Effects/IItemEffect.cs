@@ -2,6 +2,6 @@ using UnityEngine;
 
 public interface IItemEffect
 {
-    public void ApplyEffect(ItemBehaviour target, ItemEffectSO effectData);
+    public void ApplyEffect(ItemBehaviour item, Character targetCharacter);
     public void RemoveEffect();
 }
