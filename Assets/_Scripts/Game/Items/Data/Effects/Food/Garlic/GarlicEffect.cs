@@ -29,7 +29,7 @@ public class GarlicEffect : MonoBehaviour, IItemEffect
     }
 
    
-    public void ApplyEffect(ItemBehaviour item, Character targetCharacter)
+    public void ApplyEffect(ItemBehaviour item, Character sourceCharacter, Character targetCharacter)
     {      
         if (item == null)
             return;

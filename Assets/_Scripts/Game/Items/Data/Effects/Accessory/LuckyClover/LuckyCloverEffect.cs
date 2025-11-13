@@ -14,7 +14,7 @@ public class LuckyCloverEffect : MonoBehaviour, IItemEffect
             Value = 1
         };
     }
-    public void ApplyEffect(ItemBehaviour item, Character targetCharacter)
+    public void ApplyEffect(ItemBehaviour item, Character sourceCharacter, Character targetCharacter)
     {
         CombatManager.Instance.ApplyBuff(_luckyCloverBuff, targetCharacter);
     }

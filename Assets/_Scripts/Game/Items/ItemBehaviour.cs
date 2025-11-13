@@ -16,6 +16,7 @@ public class ItemBehaviour : MonoBehaviour
     private IItemEffect _effect;
 
     private Character _targetCharacter;
+    private Character _sourceCharacter;
 
 
     [Flags]
@@ -71,16 +72,20 @@ public class ItemBehaviour : MonoBehaviour
             switch (GetTarget())
             {
                 case Target.Player:
-                    _targetCharacter = PlayerCharacter.Instance; break;
+                    _targetCharacter = PlayerCharacter.Instance; 
+                    _sourceCharacter = EnemyCharacter.Instance; 
+                    break;
                 case Target.Enemy:
-                    _targetCharacter = EnemyCharacter.Instance; break;
+                    _targetCharacter = EnemyCharacter.Instance;
+                    _sourceCharacter = PlayerCharacter.Instance;
+                    break;
             }
 
 
             _itemData.PerformAction(_target,this);
             OnItemActionPerformed?.Invoke(this, _targetCharacter);
             
-            _effect?.ApplyEffect(this,_targetCharacter);
+            _effect?.ApplyEffect(this,_sourceCharacter,_targetCharacter);
         }       
     }
 

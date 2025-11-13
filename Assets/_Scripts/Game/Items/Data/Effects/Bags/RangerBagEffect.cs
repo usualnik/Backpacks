@@ -19,7 +19,7 @@ public class RangerBagEffect : MonoBehaviour, IItemEffect
         _rangerBag = GetComponent<Bag>();
     }
 
-    public void ApplyEffect(ItemBehaviour item, Character targetCharacter)
+    public void ApplyEffect(ItemBehaviour item, Character sourceCharacter, Character targetCharacter)
     {
         _itemBehaviour = item;
         _targetCharacter = targetCharacter;

@@ -15,7 +15,7 @@ public class PocketSendEffect : MonoBehaviour, IItemEffect
         };
     }
 
-    public void ApplyEffect(ItemBehaviour item, Character targetCharacter)
+    public void ApplyEffect(ItemBehaviour item, Character sourceCharacter, Character targetCharacter)
     {
         CombatManager.Instance.ApplyBuff(_pocketSendBuff, targetCharacter);
     }

@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static UnityEngine.Rendering.DebugUI;
 public abstract class Character : MonoBehaviour, IDamageable, IStaminable
 {
     [System.Serializable]
@@ -42,12 +43,15 @@ public abstract class Character : MonoBehaviour, IDamageable, IStaminable
 
     private const int ACCURACY_PER_STACK = 5;
 
+    private CharacterDamageHandler _damageHandler;
+
     #region Init + Events
 
     private void Awake()
     {
         _buffs = new List<Buff>();
         _debuffs = new List<Buff>();
+
     }
     private void Start()
     {
@@ -61,6 +65,8 @@ public abstract class Character : MonoBehaviour, IDamageable, IStaminable
 
     protected virtual void InitializeCharacter()
     {
+        _damageHandler = GetComponent<CharacterDamageHandler>();
+
         _stats.Health = _stats.HealthMax;
         _stats.Stamina = _stats.StaminaMax;
 
@@ -81,16 +87,29 @@ public abstract class Character : MonoBehaviour, IDamageable, IStaminable
     #region WeaponDamage
     public void TakeDamage(float damage)
     {
-        if (_stats.Health - damage > 0)
+        // TODO: Сейчас фильтруется только MeleeDamage
+
+        float finalDamage = damage;
+
+        if (_damageHandler != null)
         {
-            _stats.Health -= damage;
+            finalDamage = _damageHandler.FilterMeleeDamage(damage);
+        }
+
+
+        if (_stats.Health - finalDamage > 0)
+        {
+            _stats.Health -= finalDamage;
             InvokeStatsChanged(_stats);
         }
         else
         {
             OnCharacterDeath?.Invoke();
         }
+
     }
+
+
 
     public void UseStamina(float amount)
     {
@@ -160,7 +179,7 @@ public abstract class Character : MonoBehaviour, IDamageable, IStaminable
     }
 
     public float GetArmorStacks()
-    {     
+    {
         return _stats.Armor;
     }
 
@@ -184,11 +203,36 @@ public abstract class Character : MonoBehaviour, IDamageable, IStaminable
 
     #endregion
     #region Setters
+
+    public void ChangeMaxHealthValue(float value)
+    {
+        if (_stats.Health + value > _stats.HealthMax)
+        {
+            _stats.Health = _stats.HealthMax;
+        }
+        else if (_stats.Health + value < 0)
+        {
+            _stats.Health = 0;
+        }
+        else
+        {
+            _stats.Health += value;
+        }
+    }
     public void ChangeHealthValue(float value)
     {
-        _stats.HealthMax += value;
-        _stats.Health += value;
-        InvokeStatsChanged(_stats);       
+
+        _stats.Health = Mathf.Min(_stats.Health + value, _stats.HealthMax);      
+
+        InvokeStatsChanged(_stats);
+    }
+    public void AddStamina(float value)
+    {
+        if (value > 0)
+        {
+            _stats.Stamina = Mathf.Min(_stats.Stamina + value, _stats.StaminaMax);
+            InvokeStatsChanged(_stats);
+        }
     }
 
     public void ChangeArmorValue(float value)
@@ -254,7 +298,7 @@ public abstract class Character : MonoBehaviour, IDamageable, IStaminable
                 }
                 else
                 {
-                    _buffs[i] = updatedBuff; 
+                    _buffs[i] = updatedBuff;
                 }
             }
         }
@@ -272,7 +316,7 @@ public abstract class Character : MonoBehaviour, IDamageable, IStaminable
                 }
                 else
                 {
-                    _debuffs[i] = updatedBuff; 
+                    _debuffs[i] = updatedBuff;
                 }
             }
         }

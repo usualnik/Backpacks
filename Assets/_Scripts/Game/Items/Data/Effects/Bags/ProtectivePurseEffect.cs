@@ -4,7 +4,7 @@ public class ProtectivePurseEffect : MonoBehaviour, IItemEffect
 {
     private float _buffArmorAmount = 15f;
 
-    public void ApplyEffect(ItemBehaviour item, Character targetCharacter)
+    public void ApplyEffect(ItemBehaviour item, Character sourceCharacter, Character targetCharacter)
     {
         targetCharacter.ChangeArmorValue(_buffArmorAmount);
     }

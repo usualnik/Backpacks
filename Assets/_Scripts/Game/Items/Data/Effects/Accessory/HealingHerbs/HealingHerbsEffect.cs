@@ -1,28 +1,27 @@
 using UnityEngine;
 
-public class WalrusTuskEffect : MonoBehaviour, IItemEffect
+public class HealingHerbsEffect : MonoBehaviour,IItemEffect
 {
-    private Buff _walrusTuskBuff;
+    private Buff _healingHerbsBuff;
 
     private void Awake()
     {
-
-        _walrusTuskBuff = new Buff
+        _healingHerbsBuff = new Buff
         {
-            Name = "WalrusTuskBuff",
-            Type = Buff.BuffType.Thorns,
+            Name = "HealingHerbsEffect",
+            Type = Buff.BuffType.Regeneration,
             IsPositive = true,
-            Value = 1
+            Value = 2
         };
-
     }
     public void ApplyEffect(ItemBehaviour item, Character sourceCharacter, Character targetCharacter)
-    {      
-        CombatManager.Instance.ApplyBuff(_walrusTuskBuff, targetCharacter);
+    {
+        targetCharacter.ApplyBuff(_healingHerbsBuff);
     }
 
     public void RemoveEffect()
     {
         throw new System.NotImplementedException();
     }
+
 }
