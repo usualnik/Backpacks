@@ -53,7 +53,7 @@ public class StorageCoffinEffect : MonoBehaviour, IItemEffect
         
         if (isProc)
         {
-            CombatManager.Instance.ApplyBuff(_storageCoffinBuff, targetCharacter);
+            targetCharacter.ApplyBuff(_storageCoffinBuff);
         }
     }
 

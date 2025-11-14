@@ -2,6 +2,7 @@ using UnityEngine;
 
 public class WeaponBehaviour : ItemBehaviour
 {
+    public WeaponDataSO WeaponDataSO => _weaponDataSO;
     public float WeaponDamageMin => _weaponDamageMin;
     public float WeaponDamageMax => _weaponDamageMax;
     public float CritHitChance => _critHitChance;

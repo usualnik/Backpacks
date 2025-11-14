@@ -26,31 +26,22 @@ public class CombatLogPanel : MonoBehaviour, IDragHandler
     private void Start()
     {
         CombatManager.Instance.OnDamageDealt += CombatManager_OnDamageDealt;
-        CombatManager.Instance.OnBuffApplied += CombatManager_OnBuffApplied;
     }
 
 
     private void OnDestroy()
     {
         CombatManager.Instance.OnDamageDealt -= CombatManager_OnDamageDealt;
-        CombatManager.Instance.OnBuffApplied -= CombatManager_OnBuffApplied;
-
-
     }
-    private void CombatManager_OnDamageDealt(ItemDataSO attackWeapon, string targetName)
+    private void CombatManager_OnDamageDealt(WeaponBehaviour attackWeapon, string targetName)
     {
-       LogDamage(attackWeapon.ItemName, targetName);
-    }
-    private void CombatManager_OnBuffApplied(Buff effect, string targetName)
-    {
-        LogEffect(effect.Name, targetName);
+       LogDamage(attackWeapon.ItemData.ItemName, targetName);
     }
 
     public void ShowPanel()
     {
         _mainPanel.SetActive(!_mainPanel.activeInHierarchy);
     }
-
 
     private void LogDamage(string weaponName, string targetName)
     {
@@ -65,20 +56,6 @@ public class CombatLogPanel : MonoBehaviour, IDragHandler
         _damageText.text = combatTimeText + " Damage Dealt " + "(" + weaponName + ")";
 
         _damageText.color = targetName == "Player" ? _playerColor : _enemyColor;
-    }
-    private void LogEffect(string effectName, string targetName)
-    {
-        string combatTimeText = "[" + TimeControlPanel.Instance.GetTimePassed().ToString("F1") + "]";
-
-        GameObject newEffectLog = Instantiate(_logMessage, _content.transform.position, Quaternion.identity);
-        newEffectLog.transform.SetParent(_content.transform, false);
-
-        TextMeshProUGUI _effectText = newEffectLog.GetComponent<TextMeshProUGUI>();
-
-        _effectText.text = combatTimeText + " AffectApplied " + "(" + effectName + ")";
-
-        _effectText.color = targetName == "Player" ? _playerColor : _enemyColor;
-
     }
 
     public void OnDrag(PointerEventData eventData)

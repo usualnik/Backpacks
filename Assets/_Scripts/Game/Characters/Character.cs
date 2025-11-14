@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using static UnityEngine.Rendering.DebugUI;
 public abstract class Character : MonoBehaviour, IDamageable, IStaminable
@@ -20,6 +21,7 @@ public abstract class Character : MonoBehaviour, IDamageable, IStaminable
     public event Action<Buff.BuffType, bool> OnNewBuffApplied;
     public event Action OnCharacterDeath;
     public event Action OnStaminaEmpty;
+    public event Action<float> OnDamageRecived;
 
     [SerializeField] protected string _nickname = string.Empty;
     [SerializeField] protected string _className = string.Empty;
@@ -96,10 +98,11 @@ public abstract class Character : MonoBehaviour, IDamageable, IStaminable
             finalDamage = _damageHandler.FilterMeleeDamage(damage);
         }
 
-
         if (_stats.Health - finalDamage > 0)
         {
             _stats.Health -= finalDamage;
+            OnDamageRecived?.Invoke(finalDamage);
+
             InvokeStatsChanged(_stats);
         }
         else
@@ -108,8 +111,6 @@ public abstract class Character : MonoBehaviour, IDamageable, IStaminable
         }
 
     }
-
-
 
     public void UseStamina(float amount)
     {
@@ -321,6 +322,27 @@ public abstract class Character : MonoBehaviour, IDamageable, IStaminable
             }
         }
     }
+
+
+
+    //TODO: Добавить логгинг эффектов
+    //------------------------ LOGGER LOGIC -------------
+
+    //private void LogEffect(string effectName, string targetName)
+    //{
+    //    string combatTimeText = "[" + TimeControlPanel.Instance.GetTimePassed().ToString("F1") + "]";
+
+    //    GameObject newEffectLog = Instantiate(_logMessage, _content.transform.position, Quaternion.identity);
+    //    newEffectLog.transform.SetParent(_content.transform, false);
+
+    //    TextMeshProUGUI _effectText = newEffectLog.GetComponent<TextMeshProUGUI>();
+
+    //    _effectText.text = combatTimeText + " AffectApplied " + "(" + effectName + ")";
+
+    //    _effectText.color = targetName == "Player" ? _playerColor : _enemyColor;
+
+    //}
+
 
     #endregion
 

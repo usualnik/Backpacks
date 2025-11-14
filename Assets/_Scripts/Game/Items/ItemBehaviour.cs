@@ -10,6 +10,7 @@ public class ItemBehaviour : MonoBehaviour
     public ItemState PreviousState => _previousState;
     public ItemDataSO ItemData => _itemData;
     public Character TargetCharacter => _targetCharacter;
+    public Character SourceCharacter => _sourceCharacter;
 
     [SerializeField] private ItemDataSO _itemData;
 
@@ -53,16 +54,21 @@ public class ItemBehaviour : MonoBehaviour
         _itemVisual = GetComponentInChildren<ItemVisual>();
         _effect = GetComponent<IItemEffect>();
 
+
+        
     }
 
     private void Start()
     {
         CombatManager.Instance.OnCombatStarted += CombatManager_OnCombatStarted;
+
+        
+
+
     }
     private void OnDestroy()
     {
         CombatManager.Instance.OnCombatStarted -= CombatManager_OnCombatStarted;
-
     }
 
     private void CombatManager_OnCombatStarted()
@@ -72,16 +78,14 @@ public class ItemBehaviour : MonoBehaviour
             switch (GetTarget())
             {
                 case Target.Player:
-                    _targetCharacter = PlayerCharacter.Instance; 
-                    _sourceCharacter = EnemyCharacter.Instance; 
+                    _targetCharacter = PlayerCharacter.Instance;
+                    _sourceCharacter = EnemyCharacter.Instance;
                     break;
                 case Target.Enemy:
                     _targetCharacter = EnemyCharacter.Instance;
                     _sourceCharacter = PlayerCharacter.Instance;
                     break;
             }
-
-
             _itemData.PerformAction(_target,this);
             OnItemActionPerformed?.Invoke(this, _targetCharacter);
             

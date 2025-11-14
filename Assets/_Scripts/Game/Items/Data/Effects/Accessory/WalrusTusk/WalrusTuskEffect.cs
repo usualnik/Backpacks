@@ -18,7 +18,7 @@ public class WalrusTuskEffect : MonoBehaviour, IItemEffect
     }
     public void ApplyEffect(ItemBehaviour item, Character sourceCharacter, Character targetCharacter)
     {      
-        CombatManager.Instance.ApplyBuff(_walrusTuskBuff, targetCharacter);
+       targetCharacter.ApplyBuff(_walrusTuskBuff);
     }
 
     public void RemoveEffect()
