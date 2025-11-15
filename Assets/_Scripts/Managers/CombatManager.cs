@@ -219,7 +219,7 @@ public class CombatManager : MonoBehaviour
                 if (sourceCharacter.HasStaminaToAttack(staminaCost))
                 {
                     sourceCharacter.UseStamina(staminaCost);
-                    targetCharacter.TakeDamage(damage);
+                    targetCharacter.TakeDamage(damage, weapon.WeaponDataSO.Type);
 
                     DealThornsDamageToAttacker(targetCharacter, sourceCharacter, damage);
 
@@ -272,11 +272,11 @@ public class CombatManager : MonoBehaviour
 
         if (thornsStacks <= damageToVictim)
         {
-            attacker.TakeDamage(thornsStacks);
+            attacker.TakeDamage(thornsStacks, ItemDataSO.ItemType.None);
         }
         else
         {
-            attacker.TakeDamage(damageToVictim);
+            attacker.TakeDamage(damageToVictim, ItemDataSO.ItemType.None);
         }
     }
 
@@ -397,11 +397,12 @@ public class CombatManager : MonoBehaviour
             return;
         }
 
+        Debug.Log("Extra attack");
 
         if (sourceCharacter.HasStaminaToAttack(weapon.WeaponDataSO.StaminaCost))
         {
             sourceCharacter.UseStamina(weapon.WeaponDataSO.StaminaCost);
-            targetCharacter.TakeDamage(damage);
+            targetCharacter.TakeDamage(damage, weapon.WeaponDataSO.Type);
 
             DealThornsDamageToAttacker(targetCharacter, sourceCharacter, damage);
             OnDamageDealt?.Invoke(weapon, targetCharacter.name);
@@ -446,8 +447,8 @@ public class CombatManager : MonoBehaviour
         while (_isInCombat)
         {
             _fatigueDamageAmount++;
-            _playerCharacter.TakeDamage(_fatigueDamageAmount);
-            _enemyCharacter.TakeDamage(_fatigueDamageAmount);
+            _playerCharacter.TakeDamage(_fatigueDamageAmount,ItemDataSO.ItemType.None);
+            _enemyCharacter.TakeDamage(_fatigueDamageAmount, ItemDataSO.ItemType.None);
             OnFatigueDamageApplied?.Invoke(_fatigueDamageAmount);
 
             yield return new WaitForSeconds(FATIGUE_DAMAGE_STEP);

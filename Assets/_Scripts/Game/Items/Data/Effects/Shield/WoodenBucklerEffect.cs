@@ -2,8 +2,11 @@ using UnityEngine;
 
 public class WoodenBucklerEffect : MonoBehaviour, IItemEffect, IDamagePreventionEffect
 {
+    [SerializeField]
     private float _chanceToPreventDamage = 30f;
+    [SerializeField]
     private float _preventedDamageAmount = 7f;
+    [SerializeField]
     private float _removedStaminaAmount = 0.3f;
 
     private Character _targetCharacter;

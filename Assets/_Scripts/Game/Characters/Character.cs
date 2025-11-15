@@ -1,9 +1,9 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using TMPro;
+using Unity.Mathematics;
 using UnityEngine;
-using static UnityEngine.Rendering.DebugUI;
+
 public abstract class Character : MonoBehaviour, IDamageable, IStaminable
 {
     [System.Serializable]
@@ -87,16 +87,31 @@ public abstract class Character : MonoBehaviour, IDamageable, IStaminable
     }
     #endregion
     #region WeaponDamage
-    public void TakeDamage(float damage)
-    {
-        // TODO: Сейчас фильтруется только MeleeDamage
-
+    public void TakeDamage(float damage, ItemDataSO.ItemType weaponType)
+    { 
         float finalDamage = damage;
 
-        if (_damageHandler != null)
-        {
-            finalDamage = _damageHandler.FilterMeleeDamage(damage);
-        }
+        switch (weaponType)
+        {          
+            case ItemDataSO.ItemType.None:
+                //Любой источник урона, например Fatigue или Thorns стаки и пр.
+                break;
+            case ItemDataSO.ItemType.MeleeWeapons:
+                if (_damageHandler != null)
+                {
+                    finalDamage = _damageHandler.FilterMeleeDamage(damage);
+                }
+                break;
+
+            case ItemDataSO.ItemType.RangedWeapons:
+                if (_damageHandler != null)
+                {
+                    finalDamage = _damageHandler.FilterRangedDamage(damage);
+                }
+                break;
+            default:
+                break;
+        }      
 
         if (_stats.Health - finalDamage > 0)
         {
@@ -206,24 +221,12 @@ public abstract class Character : MonoBehaviour, IDamageable, IStaminable
     #region Setters
 
     public void ChangeMaxHealthValue(float value)
-    {
-        if (_stats.Health + value > _stats.HealthMax)
-        {
-            _stats.Health = _stats.HealthMax;
-        }
-        else if (_stats.Health + value < 0)
-        {
-            _stats.Health = 0;
-        }
-        else
-        {
-            _stats.Health += value;
-        }
+    {      
+        _stats.HealthMax += MathF.Max(0, value);
     }
     public void ChangeHealthValue(float value)
     {
-
-        _stats.Health = Mathf.Min(_stats.Health + value, _stats.HealthMax);      
+        _stats.Health = Mathf.Min(_stats.Health + value, _stats.HealthMax);     
 
         InvokeStatsChanged(_stats);
     }

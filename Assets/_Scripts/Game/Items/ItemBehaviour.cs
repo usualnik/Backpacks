@@ -16,8 +16,8 @@ public class ItemBehaviour : MonoBehaviour
 
     private IItemEffect _effect;
 
-    private Character _targetCharacter;
-    private Character _sourceCharacter;
+    protected Character _targetCharacter;
+    protected Character _sourceCharacter;
 
 
     [Flags]
@@ -52,18 +52,12 @@ public class ItemBehaviour : MonoBehaviour
         //Эта строчка существет потому что цена объекта зафиксирована в SO и она readonly, из-за природы SO
         _itemPrice = _itemData.Price;
         _itemVisual = GetComponentInChildren<ItemVisual>();
-        _effect = GetComponent<IItemEffect>();
-
-
-        
+        _effect = GetComponent<IItemEffect>();        
     }
 
     private void Start()
     {
-        CombatManager.Instance.OnCombatStarted += CombatManager_OnCombatStarted;
-
-        
-
+        CombatManager.Instance.OnCombatStarted += CombatManager_OnCombatStarted;      
 
     }
     private void OnDestroy()
@@ -86,7 +80,11 @@ public class ItemBehaviour : MonoBehaviour
                     _sourceCharacter = PlayerCharacter.Instance;
                     break;
             }
-            _itemData.PerformAction(_target,this);
+
+            //_itemData.PerformAction(_target,this);
+
+            PerformAction();
+
             OnItemActionPerformed?.Invoke(this, _targetCharacter);
             
             _effect?.ApplyEffect(this,_sourceCharacter,_targetCharacter);
@@ -97,7 +95,7 @@ public class ItemBehaviour : MonoBehaviour
 
     public void SetItemState(ItemState state)
     {
-        //HACK: Я не уверен, что упраление состоянием работает правильно, нужно за нима следить
+        //HACK: Я не уверен, что упраление состоянием работает правильно, нужно за ним следить
         if (_currentState != state)
         {
             _previousState = _currentState;
@@ -135,4 +133,8 @@ public class ItemBehaviour : MonoBehaviour
     public ItemVisual GetItemVisual() => _itemVisual;
     public ItemBehaviour.Target GetTarget() => _target;
 
+    private void PerformAction()
+    {
+
+    }
 }

@@ -9,23 +9,42 @@ public class WeaponBehaviour : ItemBehaviour
 
     [SerializeField] private WeaponDataSO _weaponDataSO;
 
+    [SerializeField]
     private float _weaponDamageMin;
+    [SerializeField]
     private float _weaponDamageMax;
 
-    
-    private float _critHitChance = 0;  
+    private float _critHitChance = 0;
 
+    private float _coolDownSpeed = 0;
+    private float _currentCooldownMultiplier = 1f;
 
     private void Awake()
     {
         _weaponDamageMin = _weaponDataSO.DamageMin;
         _weaponDamageMax = _weaponDataSO.DamageMax;
         _critHitChance = _weaponDataSO.BaseCritChance;
+        _coolDownSpeed = _weaponDataSO.Cooldown;
     }
+
     private void Start()
     {
         CombatManager.Instance.OnCombatStarted += CombatManager_OnCombatStarted;
+
+        switch (GetTarget())
+        {
+            case Target.Player:
+                _targetCharacter = PlayerCharacter.Instance;
+                _sourceCharacter = EnemyCharacter.Instance;
+                break;
+            case Target.Enemy:
+                _targetCharacter = EnemyCharacter.Instance;
+                _sourceCharacter = PlayerCharacter.Instance;
+                break;
+        }
+
     }
+
     private void OnDestroy()
     {
         CombatManager.Instance.OnCombatStarted -= CombatManager_OnCombatStarted;
@@ -36,7 +55,9 @@ public class WeaponBehaviour : ItemBehaviour
     {
         if (CurrentState.HasFlag(ItemState.Inventory))
         {
-            _weaponDataSO.PerformWeaponAction(_target, this);           
+            CombatManager.Instance.StartAutoAttack(GetTarget(), this,
+            WeaponDamageMin, WeaponDamageMax,
+            _weaponDataSO.StaminaCost, _coolDownSpeed / _currentCooldownMultiplier, _weaponDataSO.Accuracy);
         }
     }
 
@@ -49,6 +70,11 @@ public class WeaponBehaviour : ItemBehaviour
     public void AddCritHitChanceToWeapon(float value)
     {
         _critHitChance += value;
+    }
+
+    public void IncreaseSpeed(float percentageIncrease)
+    {
+        _currentCooldownMultiplier += percentageIncrease;       
     }
 
 }

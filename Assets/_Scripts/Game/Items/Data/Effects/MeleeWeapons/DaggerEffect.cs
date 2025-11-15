@@ -11,16 +11,22 @@ public class DaggerEffect : MonoBehaviour, IItemEffect
     private void Start()
     {
        CombatManager.Instance.OnCharacterStuned += CombatManager_OnCharacterStuned;
-        Debug.Log(_daggerBehaviour.TargetCharacter);
-
     }
     private void OnDestroy()
     {
       CombatManager.Instance.OnCharacterStuned -= CombatManager_OnCharacterStuned;
     }
-    private void CombatManager_OnCharacterStuned(Character arg1, float arg2)
+    private void CombatManager_OnCharacterStuned(Character stunnedCharacter, float stunDuration)
     {
-        Debug.Log(arg1);
+        if (!_daggerBehaviour.SourceCharacter)
+        {
+            return;
+        }
+
+        if (stunnedCharacter != null && stunnedCharacter == _daggerBehaviour.SourceCharacter)
+        {
+            CombatManager.Instance.AttackCharacterOnce(_daggerBehaviour.SourceCharacter, _daggerBehaviour.TargetCharacter, _daggerBehaviour);
+        }
     }
 
     public void ApplyEffect(ItemBehaviour item, Character sourceCharacter, Character targetCharacter)

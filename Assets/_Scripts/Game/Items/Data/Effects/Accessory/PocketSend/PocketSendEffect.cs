@@ -2,18 +2,8 @@ using UnityEngine;
 
 public class PocketSendEffect : MonoBehaviour, IItemEffect
 {
-    private Buff _pocketSendBuff;
-
-    private void Awake()
-    {
-        _pocketSendBuff = new Buff
-        {
-            Name = "PocketSendBuff",
-            Type = Buff.BuffType.Blindness,
-            IsPositive = false,
-            Value = 1
-        };
-    }
+    [SerializeField]
+    private Buff _pocketSendBuff;    
 
     public void ApplyEffect(ItemBehaviour item, Character sourceCharacter, Character targetCharacter)
     {

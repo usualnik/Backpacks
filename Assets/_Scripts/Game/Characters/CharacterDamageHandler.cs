@@ -38,8 +38,14 @@ public class CharacterDamageHandler : MonoBehaviour
             }
         }
 
+        return Mathf.Max(0f, remainingDamage);
+    }
 
-
+    public float FilterRangedDamage(float originalDamage)
+    {
+        float remainingDamage = originalDamage;
+        
+        // Обработка урона, как с мили вариантом
 
         return Mathf.Max(0f, remainingDamage);
     }

@@ -2,22 +2,18 @@ using UnityEngine;
 
 public class PumpkinEffect : MonoBehaviour, IItemEffect
 {
+    [SerializeField]
     private float _chanceToStun = 50f;
+    [SerializeField]
     private float _stunDuration = 0.5f;
 
+    [SerializeField]
     private Buff _pumpkinBuff;
+
     private WeaponBehaviour _pumpkinWeapon;
 
     private void Awake()
     {
-        _pumpkinBuff = new Buff
-        {
-            Name = "PumpkinBuff",
-            Type = Buff.BuffType.Heat,
-            IsPositive = true,
-            Value = 10
-        };
-
         _pumpkinWeapon = GetComponent<WeaponBehaviour>();
         if (_pumpkinWeapon == null)
             _pumpkinWeapon = GetComponentInParent<WeaponBehaviour>();
@@ -37,7 +33,7 @@ public class PumpkinEffect : MonoBehaviour, IItemEffect
     }
     private void CombatManager_OnFatigueDamageStarted()
     {
-        _pumpkinWeapon.SourceCharacter.ApplyBuff( _pumpkinBuff );
+        _pumpkinWeapon.SourceCharacter?.ApplyBuff(_pumpkinBuff);
     }
     public void ApplyEffect(ItemBehaviour item, Character sourceCharacter, Character targetCharacter)
     {

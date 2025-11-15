@@ -1,89 +1,113 @@
-using System.Collections;
+﻿using System.Collections;
 using UnityEngine;
 
 public class GarlicEffect : MonoBehaviour, IItemEffect
 {
-    private float _effectCooldown = 4f;
-
+    [SerializeField]
+    private float _baseEffectCooldown = 4f; 
+    [SerializeField]
     private float _armorBuffValue = 1f;
+    [SerializeField]
+    private float _chanceToRemoveVampirism = 30f;
+    [SerializeField]
+    private int _removeVampirismAmount = 2;
 
     private Character _targetCharacterToBuffArmor;
 
-    private const float CHANCE_TO_REMOVE_VAMPIRISM_FROM_OPPONENT = 30f;
-    private const int REMOVE_VAMPIRISM_AMOUNT = 2;
+    private float _currentCooldownMultiplier = 1f;
+    private Coroutine _garlicRoutine;
 
     private void Start()
     {
         CombatManager.Instance.OnCombatFinished += Combatmanager_OnCombatFinished;
     }
 
-   
     private void OnDestroy()
     {
         CombatManager.Instance.OnCombatFinished -= Combatmanager_OnCombatFinished;
+
+        if (_garlicRoutine != null)
+            StopCoroutine(_garlicRoutine);
     }
 
     private void Combatmanager_OnCombatFinished(CombatManager.CombatResult obj)
     {
-        StopCoroutine(GarlicArmorRoutine());
+        if (_garlicRoutine != null)
+        {
+            StopCoroutine(_garlicRoutine);
+            _garlicRoutine = null;
+        }
     }
 
-   
     public void ApplyEffect(ItemBehaviour item, Character sourceCharacter, Character targetCharacter)
-    {      
-        if (item == null)
-            return;
-
-        if (targetCharacter == null)
+    {
+        if (item == null || targetCharacter == null)
             return;
 
         _targetCharacterToBuffArmor = targetCharacter;
 
         _targetCharacterToBuffArmor.ChangeArmorValue(_armorBuffValue);
+        TryRemoveVampirism();
 
-        bool isProcRemoveVampirism = UnityEngine.Random.Range(0,100) <= CHANCE_TO_REMOVE_VAMPIRISM_FROM_OPPONENT ? true : false;
-        if (isProcRemoveVampirism)
-            GetOpponentCharacter().RemoveBuff(Buff.BuffType.Vampirism, REMOVE_VAMPIRISM_AMOUNT);
+        if (_garlicRoutine != null)
+            StopCoroutine(_garlicRoutine);
 
-
-        StartCoroutine(GarlicArmorRoutine());
-       
+        _garlicRoutine = StartCoroutine(GarlicArmorRoutine());
     }
 
     public void RemoveEffect()
     {
-
+        if (_garlicRoutine != null)
+        {
+            StopCoroutine(_garlicRoutine);
+            _garlicRoutine = null;
+        }
     }
+
     private IEnumerator GarlicArmorRoutine()
     {
         while (true)
         {
-            yield return new WaitForSeconds(_effectCooldown);
-            _targetCharacterToBuffArmor.ChangeArmorValue(_armorBuffValue);
+            float currentCooldown = _baseEffectCooldown / _currentCooldownMultiplier;
+            yield return new WaitForSeconds(currentCooldown);
 
-            bool isProcRemoveVampirism = UnityEngine.Random.Range(0, 100) <= CHANCE_TO_REMOVE_VAMPIRISM_FROM_OPPONENT ? true : false;
-            if (isProcRemoveVampirism)
-                GetOpponentCharacter().RemoveBuff(Buff.BuffType.Vampirism, REMOVE_VAMPIRISM_AMOUNT);
+            _targetCharacterToBuffArmor.ChangeArmorValue(_armorBuffValue);
+            TryRemoveVampirism();
+        }
+    }
+
+    private void TryRemoveVampirism()
+    {
+        bool isProcRemoveVampirism = UnityEngine.Random.Range(0, 100) <= _chanceToRemoveVampirism;
+        if (isProcRemoveVampirism)
+        {
+            Character opponent = GetOpponentCharacter();
+            if (opponent != null)
+                opponent.RemoveBuff(Buff.BuffType.Vampirism, _removeVampirismAmount);
         }
     }
 
     private Character GetOpponentCharacter()
     {
-        if(_targetCharacterToBuffArmor == PlayerCharacter.Instance)
-        {
+        if (_targetCharacterToBuffArmor == PlayerCharacter.Instance)
             return EnemyCharacter.Instance;
-        }
-        else if(_targetCharacterToBuffArmor == EnemyCharacter.Instance)
-        {
+        else if (_targetCharacterToBuffArmor == EnemyCharacter.Instance)
             return PlayerCharacter.Instance;
-        }
         else
         {
-            Debug.Log("No target character to remove Vampirism find");
+            Debug.LogWarning("No target character to remove Vampirism found");
             return null;
-
         }
     }
 
+    public void IncreaseSpeed(float percentageIncrease)
+    {
+        _currentCooldownMultiplier += percentageIncrease;
 
+        if (_garlicRoutine != null)
+        {
+            StopCoroutine(_garlicRoutine);
+            _garlicRoutine = StartCoroutine(GarlicArmorRoutine());
+        }
+    }
 }

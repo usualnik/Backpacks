@@ -2,30 +2,22 @@ using UnityEngine;
 
 public class BloodAmuletEffect : MonoBehaviour, IItemEffect
 {
+    [SerializeField]
     private float _additionalHealth = 20f;
-    private Buff _bloodAmuletBuff;
 
-    private void Awake()
-    {
-        _bloodAmuletBuff = new Buff
-        {
-            Name = "BloodAmuletBuff",
-            Type = Buff.BuffType.Vampirism,
-            IsPositive = true,
-            Value = 2
-        };
-    }
+    [SerializeField]
+    private Buff _bloodAmuletBuff;
 
     public void ApplyEffect(ItemBehaviour target, Character sourceCharacter, Character targetCharacter)
     {
         targetCharacter.ChangeMaxHealthValue(_additionalHealth);
+        targetCharacter.ChangeHealthValue(_additionalHealth);
 
         targetCharacter.ApplyBuff(_bloodAmuletBuff);
-
     }
 
     public void RemoveEffect()
     {
-        throw new System.NotImplementedException();
+
     }
 }

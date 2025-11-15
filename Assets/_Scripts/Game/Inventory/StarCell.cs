@@ -1,6 +1,6 @@
 using UnityEngine;
 using UnityEngine.UI;
-using static UnityEditor.Progress;
+using static ItemDataSO;
 
 public class StarCell : MonoBehaviour
 {
@@ -61,21 +61,33 @@ public class StarCell : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.TryGetComponent(out ItemBehaviour otherItem)
-            && otherItem.ItemData.Type.HasFlag(_starEffectTarget))
+        if (collision.TryGetComponent(out ItemBehaviour otherItem))
         {
-            ApplyStarEffect(otherItem);
+            if (HasMatchingTypes(otherItem.ItemData.Type))
+            {
+                ApplyStarEffect(otherItem);
+            }           
+        }
+    }
+    private void OnTriggerExit2D(Collider2D collision)
+    {
+        if (collision.TryGetComponent(out ItemBehaviour otherItem))
+        {
+            if (HasMatchingTypes(otherItem.ItemData.Type))
+            {
+                RemoveStarEffect(otherItem);
+            }
         }
     }
 
-    private void OnTriggerExit2D(Collider2D collision)
+    private bool HasMatchingTypes(ItemType itemType)
     {
-        if (collision.TryGetComponent(out ItemBehaviour otherItem)
-            && otherItem.ItemData.Type.HasFlag(_starEffectTarget))
-        {
-           RemoveStarEffect(otherItem);
-        }
+        if (itemType == ItemType.None)
+            return false;
+
+        return (_starEffectTarget & itemType) != ItemType.None;
     }
+
     protected virtual void ApplyStarEffect(ItemBehaviour otherItem)
     {
         _isFilled = true;
@@ -91,7 +103,6 @@ public class StarCell : MonoBehaviour
 
         _starEffect?.RemoveStarEffect(_item, otherItem, this);
     }
+
     public bool IsFilled => _isFilled;
 }
-
-

@@ -19,10 +19,6 @@ public abstract class WeaponDataSO : ItemDataSO
     [SerializeField] protected float _accuracy;
     private float _baseCritHitChance;
 
-    [SerializeField] protected int _socketsAmount;
-    public virtual void PerformWeaponAction(ItemBehaviour.Target target, WeaponBehaviour performedItem)
-    {
-
-    }
+    [SerializeField] protected int _socketsAmount;   
 
 }

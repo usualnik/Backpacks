@@ -1,24 +1,24 @@
 using UnityEngine;
 
-public class GarlicStarEffect : MonoBehaviour, IStarEffect
+public class PumpkinStarEffect : MonoBehaviour, IStarEffect
 {
     [Tooltip("Speed increase per unique STAR food type (e.g., 0.1 = 10% faster)")]
-    [SerializeField] private float speedInrease = 0.1f;
-    private GarlicEffect _garlicEffect;
+    [SerializeField] private float _speedInrease = 0.1f;
 
-    private void Start()
+    private WeaponBehaviour _pumpkin;
+
+    private void Awake()
     {
-        _garlicEffect = GetComponent<GarlicEffect>();
+        _pumpkin = GetComponent<WeaponBehaviour>();
     }
-
     public void ApplyStarEffect(ItemBehaviour sourceItem, ItemBehaviour targetItem, StarCell starCell)
     {
-        _garlicEffect.IncreaseSpeed(speedInrease);
+        _pumpkin.IncreaseSpeed(_speedInrease);
     }
 
     public void RemoveStarEffect(ItemBehaviour sourceItem, ItemBehaviour targetItem, StarCell starCell)
     {
-       _garlicEffect.IncreaseSpeed(-speedInrease);
+        _pumpkin.IncreaseSpeed(-_speedInrease);
+
     }
-    
 }

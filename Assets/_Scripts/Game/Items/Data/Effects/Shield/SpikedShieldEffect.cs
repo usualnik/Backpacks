@@ -1,31 +1,23 @@
 using UnityEngine;
 
-public class SpikedShieldEfect : MonoBehaviour, IItemEffect, IDamagePreventionEffect
+public class SpikedShieldEffect : MonoBehaviour, IItemEffect, IDamagePreventionEffect
 {
+    [SerializeField]
     private float _chanceToPreventDamage = 30f;
+    [SerializeField]
     private float _preventedDamageAmount = 9f;
+    [SerializeField]
     private float _removedStaminaAmount = 0.3f;
-    
+    [SerializeField]
+    private int _maxgainedThornsPerProc = 5;
+
     private int _gainedThornsAmount = 0;
-
-    private const int MAX_GAINED_THORNS_PER_PROC = 5;
-
 
     private Character _targetCharacter;
     private Character _sourceCharacter;
 
+    [SerializeField]
     private Buff _spikedShieldBuff;
-
-    private void Awake()
-    {
-        _spikedShieldBuff = new Buff
-        {
-            Name = "SpikedShieldBuff",
-            Type = Buff.BuffType.Thorns,
-            IsPositive = true,
-            Value = 1
-        };
-    }
 
 
     private void Start()
@@ -53,7 +45,7 @@ public class SpikedShieldEfect : MonoBehaviour, IItemEffect, IDamagePreventionEf
 
             _gainedThornsAmount++;
 
-            if (_gainedThornsAmount <= MAX_GAINED_THORNS_PER_PROC)
+            if (_gainedThornsAmount <= _maxgainedThornsPerProc)
             {
                 _sourceCharacter.ApplyBuff(_spikedShieldBuff);
             }

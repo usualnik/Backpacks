@@ -6,11 +6,14 @@ public class RangerBagEffect : MonoBehaviour, IItemEffect
     private Bag _rangerBag;
 
     private List<WeaponBehaviour> _weaponsToBuff = new List<WeaponBehaviour>();
+
     private ItemBehaviour _itemBehaviour;
     private Character _targetCharacter;
 
+    [SerializeField]
     private float _critHitChanceBuff = 10f;
-    private const float CRIT_HIT_CHANCE_PER_LUCK_AMOUNT = 3f;
+    [SerializeField]
+    private float _critPerStackAcount = 3f;
 
 
 
@@ -53,7 +56,7 @@ public class RangerBagEffect : MonoBehaviour, IItemEffect
     {
         float finalCritChance = 0f;       
        
-        finalCritChance = _critHitChanceBuff + (_targetCharacter.GetLuckStacks() * CRIT_HIT_CHANCE_PER_LUCK_AMOUNT);
+        finalCritChance = _critHitChanceBuff + (_targetCharacter.GetLuckStacks() * _critPerStackAcount);
 
         return finalCritChance;
     }

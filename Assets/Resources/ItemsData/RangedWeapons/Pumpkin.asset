@@ -22,8 +22,6 @@ MonoBehaviour:
   _shapeWidth: 2
   _shapeHeight: 2
   _shapeArray: 01010101
-  _effects:
-  - {fileID: 11400000, guid: 17aa27dc6f7d66d42b902a4df43ad08d, type: 2}
   _recipeIngridients: []
   _recipeResult: {fileID: 0}
   _price: 8

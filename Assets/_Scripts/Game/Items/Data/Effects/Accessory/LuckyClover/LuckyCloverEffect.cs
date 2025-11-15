@@ -2,18 +2,8 @@ using UnityEngine;
 
 public class LuckyCloverEffect : MonoBehaviour, IItemEffect
 {
+    [SerializeField]
     private Buff _luckyCloverBuff;
-
-    private void Awake()
-    {
-        _luckyCloverBuff = new Buff
-        {
-            Name = "LuckyCloverBuff",
-            Type = Buff.BuffType.Luck,
-            IsPositive = true,
-            Value = 1
-        };
-    }
     public void ApplyEffect(ItemBehaviour item, Character sourceCharacter, Character targetCharacter)
     {
         targetCharacter.ApplyBuff(_luckyCloverBuff);
