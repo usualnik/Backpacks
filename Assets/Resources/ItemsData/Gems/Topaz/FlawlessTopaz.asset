@@ -1,0 +1,28 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9669f27b6358e1547956612e733c2136, type: 3}
+  m_Name: FlawlessTopaz
+  m_EditorClassIdentifier: 
+  _itemName: FlawlessTopaz
+  _icon: {fileID: -8994095360910817265, guid: e5570c82c6104174285dea3dc8240337, type: 3}
+  _prefab: {fileID: 98611140532912634, guid: bc2dc44be4614284aa5ec8f5fa980f72, type: 3}
+  _isSpawnableInShop: 0
+  _itemType: 4
+  _itemSubType: 0
+  _rarity: 0
+  _shapeWidth: 1
+  _shapeHeight: 1
+  _shapeArray: 01
+  _recipeIngridients: []
+  _recipeResult: {fileID: 0}
+  _price: 8
+  _gemRarity: 3

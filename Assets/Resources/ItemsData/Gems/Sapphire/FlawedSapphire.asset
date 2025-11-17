@@ -1,0 +1,28 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9669f27b6358e1547956612e733c2136, type: 3}
+  m_Name: FlawedSapphire
+  m_EditorClassIdentifier: 
+  _itemName: FlawedSapphire
+  _icon: {fileID: 6991976036052855186, guid: d0fda57101f8a184d9358e7cde733985, type: 3}
+  _prefab: {fileID: 98611140532912634, guid: ed83249c8d6f4d343acfbe865bd14156, type: 3}
+  _isSpawnableInShop: 0
+  _itemType: 4
+  _itemSubType: 0
+  _rarity: 0
+  _shapeWidth: 1
+  _shapeHeight: 1
+  _shapeArray: 01
+  _recipeIngridients: []
+  _recipeResult: {fileID: 0}
+  _price: 2
+  _gemRarity: 1
