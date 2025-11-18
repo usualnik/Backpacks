@@ -15,9 +15,6 @@ public class BagCell : MonoBehaviour
     private Bag _parentBag;
 
 
-
-
-
     private void Awake()
     {
         _bagCellImage = GetComponent<Image>();

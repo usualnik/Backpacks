@@ -170,6 +170,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 329016987711949224, guid: 137870c767bf8b84f9c550357331a0cf, type: 3}
       insertIndex: -1
       addedObject: {fileID: 2739370674762799568}
+    - targetCorrespondingSourceObject: {fileID: 329016987711949224, guid: 137870c767bf8b84f9c550357331a0cf, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 8360964951147686785}
   m_SourcePrefab: {fileID: 100100000, guid: 137870c767bf8b84f9c550357331a0cf, type: 3}
 --- !u!1 &98611140532912634 stripped
 GameObject:
@@ -192,6 +195,49 @@ MonoBehaviour:
   _currentState: 0
   _previousState: 0
   _target: 0
+--- !u!114 &8360964951147686785
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 98611140532912634}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 479a33950f0de0e4ba03172f11896a0e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _amethysts:
+  - {fileID: 98611140532912634, guid: f11572629a3e0f54a951399060132acc, type: 3}
+  - {fileID: 98611140532912634, guid: 33fed22450aab5f428b82440b7446a3c, type: 3}
+  - {fileID: 98611140532912634, guid: 0bbac872758709049806f3fceeab9ace, type: 3}
+  - {fileID: 98611140532912634, guid: 62625f00b96f03b47ac2f253e5c41b7b, type: 3}
+  - {fileID: 98611140532912634, guid: dcf7f2d5550ef52409826db638872905, type: 3}
+  _emeralds:
+  - {fileID: 98611140532912634, guid: 979ae24cdf8d0164dab0852d58f6edfe, type: 3}
+  - {fileID: 98611140532912634, guid: b5a06f47a4abcda45a749e8ba0a16cc8, type: 3}
+  - {fileID: 98611140532912634, guid: 0d02e406a908c4c4585d7191d3ca06d9, type: 3}
+  - {fileID: 98611140532912634, guid: 1e5372a944cd3b344948d5426ebf13d9, type: 3}
+  - {fileID: 98611140532912634, guid: de4b482bd0f46a2428fe83969d3c282b, type: 3}
+  _rubys:
+  - {fileID: 98611140532912634, guid: ccbd025399ed6154d86e433502cf7f2b, type: 3}
+  - {fileID: 98611140532912634, guid: eb06720951e72674d95a6d20a298da2f, type: 3}
+  - {fileID: 98611140532912634, guid: 9c5dfa68ae1d5e242a8fd16a11e6d7c4, type: 3}
+  - {fileID: 98611140532912634, guid: f15713614d50b684ab99c788775e72a4, type: 3}
+  - {fileID: 98611140532912634, guid: f0f58cc524f9ae44a87e05ea69b72eda, type: 3}
+  _sapphires:
+  - {fileID: 98611140532912634, guid: 3df893831fcd94145845c146e2348bab, type: 3}
+  - {fileID: 98611140532912634, guid: ed83249c8d6f4d343acfbe865bd14156, type: 3}
+  - {fileID: 98611140532912634, guid: 8bbf76be6bcc22a48803e669890dab0d, type: 3}
+  - {fileID: 98611140532912634, guid: cc50575d16d139e44b3d5c4db237e06a, type: 3}
+  - {fileID: 98611140532912634, guid: ed3e0f8be1334814aa36031a6d6e2c0e, type: 3}
+  _topazes:
+  - {fileID: 98611140532912634, guid: 1461ccd4fe0ad4946b271781bda10abf, type: 3}
+  - {fileID: 98611140532912634, guid: 712fe0338acf1ae4ca0154d26502fa35, type: 3}
+  - {fileID: 98611140532912634, guid: 080cd161ce97cb544813c7859eb5c0f5, type: 3}
+  - {fileID: 98611140532912634, guid: bc2dc44be4614284aa5ec8f5fa980f72, type: 3}
+  - {fileID: 98611140532912634, guid: ae13eb6a4a6fd764eb0204d6b922e2ab, type: 3}
+  _canSpawngems: 0
 --- !u!114 &5282576982308912559 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 5512910330479703549, guid: 137870c767bf8b84f9c550357331a0cf, type: 3}

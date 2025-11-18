@@ -397,7 +397,6 @@ public class CombatManager : MonoBehaviour
             return;
         }
 
-        Debug.Log("Extra attack");
 
         if (sourceCharacter.HasStaminaToAttack(weapon.WeaponDataSO.StaminaCost))
         {

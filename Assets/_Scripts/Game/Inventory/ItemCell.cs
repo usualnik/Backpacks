@@ -3,9 +3,9 @@ using UnityEngine.UI;
 
 public class ItemCell : MonoBehaviour
 {
-    private Image _itemCellImage;
-    public bool CanBePlaced { get; private set; }
-    public BagCell CurrentBagCell { get; private set; }
+    protected Image _itemCellImage;
+    public bool CanBePlaced { get; protected set; }
+    public BagCell CurrentBagCell { get; protected set; }
 
     private void Awake()
     {
@@ -14,6 +14,22 @@ public class ItemCell : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
+        HandleTriggerEnter(collision);
+    }
+
+    private void OnTriggerExit2D(Collider2D collision)
+    {
+        HandleTriggerExit(collision);
+    }
+
+    private void OnTriggerStay2D(Collider2D collision)
+    {
+       HandleTriggerStay(collision);
+    }
+
+
+    protected virtual void HandleTriggerEnter(Collider2D collision)
+    {
         if (collision.TryGetComponent(out BagCell bagCell) && !bagCell.IsOccupied)
         {
             CanBePlaced = true;
@@ -21,8 +37,7 @@ public class ItemCell : MonoBehaviour
             _itemCellImage.color = new Color(0, 1, 0, 0.5f);
         }
     }
-
-    private void OnTriggerExit2D(Collider2D collision)
+    protected virtual void HandleTriggerExit(Collider2D collision)
     {
         if (collision.TryGetComponent(out BagCell bagCell))
         {
@@ -31,8 +46,7 @@ public class ItemCell : MonoBehaviour
             _itemCellImage.color = new Color(1, 0, 0, 0.5f);
         }
     }
-
-    private void OnTriggerStay2D(Collider2D collision)
+    protected virtual void HandleTriggerStay(Collider2D collision)
     {
         if (collision.TryGetComponent(out BagCell bagCell))
         {

@@ -5,12 +5,11 @@ using UnityEngine.UI;
 public class DraggableItem : MonoBehaviour,
     IBeginDragHandler, IDragHandler, IEndDragHandler, IDraggable
 {
-
     public ItemBehaviour ItemBehaviour => _itemBehaviour;
 
     [SerializeField] protected Image _image;
-    [SerializeField] private ItemCell[] _itemCells;
-    [SerializeField] private bool _isCanBeSelled = false;
+    [SerializeField] protected ItemCell[] _itemCells;
+    [SerializeField] protected bool _isCanBeSelled = false;
 
     protected bool _isDragging;
     protected Rigidbody2D _rb;
@@ -18,16 +17,16 @@ public class DraggableItem : MonoBehaviour,
     protected bool _canRotate;
     protected Canvas _canvas;
 
-    private ItemBehaviour _itemBehaviour;
-    private BagCell[] _targetBagCells;
+    protected ItemBehaviour _itemBehaviour;
+    protected BagCell[] _targetBagCells;
 
-    private int _neededSlotsToBePlaced;
-    private int _currentSlotsToBePlaced = 0;
-    private bool _isPlacedInBag = false;
+    protected int _neededSlotsToBePlaced;
+    protected int _currentSlotsToBePlaced = 0;
+    protected bool _isPlaced = false;
 
-    private Vector3 _originalPosition;
-    private Quaternion _originalRotation;
-    private Transform _originalParent;
+    protected Vector3 _originalPosition;
+    protected Quaternion _originalRotation;
+    protected Transform _originalParent;
 
     private void Awake()
     {
@@ -70,7 +69,7 @@ public class DraggableItem : MonoBehaviour,
         }
 
         // ≈сли предмет уже в сумке - освобождаем €чейки при начале перетаскивани€
-        if (_isPlacedInBag)
+        if (_isPlaced)
         {
             ReleaseBagCells();
         }
@@ -168,7 +167,7 @@ public class DraggableItem : MonoBehaviour,
     }
 
 
-    private void CheckCanBePlaced()
+    protected virtual void CheckCanBePlaced()
     {
         _currentSlotsToBePlaced = 0;
 
@@ -197,7 +196,7 @@ public class DraggableItem : MonoBehaviour,
         }
     }
 
-    private void PlaceItemInBagCells()
+    protected virtual void PlaceItemInBagCells()
     {
         if (_targetBagCells[0] == null) return;
 
@@ -223,7 +222,7 @@ public class DraggableItem : MonoBehaviour,
             }
         }
 
-        _isPlacedInBag = true;
+        _isPlaced = true;
 
         // —брасываем цвет
         ResetColor();
@@ -240,7 +239,7 @@ public class DraggableItem : MonoBehaviour,
             }
         }
 
-        _isPlacedInBag = false;
+        _isPlaced = false;
 
         // ќчищаем массив целевых €чеек
         for (int i = 0; i < _targetBagCells.Length; i++)
@@ -249,7 +248,7 @@ public class DraggableItem : MonoBehaviour,
         }
     }
 
-    private Vector2 CalculateCenterPosition()
+    protected virtual Vector2 CalculateCenterPosition()
     {
         Vector2 sum = Vector2.zero;
         int count = 0;
@@ -273,7 +272,7 @@ public class DraggableItem : MonoBehaviour,
 
     public void ForceReleaseFromBag()
     {
-        if (_isPlacedInBag)
+        if (_isPlaced)
         {
             ReleaseBagCells();
             FreeFall();
@@ -325,7 +324,7 @@ public class DraggableItem : MonoBehaviour,
     private void OnDestroy()
     {
         // Release any occupied cells when destroyed
-        if (_isPlacedInBag)
+        if (_isPlaced)
         {
             ReleaseBagCells();
         }

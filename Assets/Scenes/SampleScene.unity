@@ -3901,8 +3901,8 @@ MonoBehaviour:
   _isDead: 0
   _stats:
     GoldAmount: 5
-    Health: 150
-    HealthMax: 150
+    Health: 25
+    HealthMax: 25
     Armor: 0
     Stamina: 5
     StaminaMax: 5
@@ -4747,6 +4747,7 @@ GameObject:
   - component: {fileID: 740968420}
   - component: {fileID: 740968419}
   - component: {fileID: 740968421}
+  - component: {fileID: 740968422}
   m_Layer: 5
   m_Name: Storage
   m_TagString: Untagged
@@ -4861,6 +4862,18 @@ BoxCollider2D:
   m_AutoTiling: 0
   m_Size: {x: 400, y: 300}
   m_EdgeRadius: 0
+--- !u!114 &740968422
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 740968417}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a83b318a4a61b26439d6421f2468a7a8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &741759681
 GameObject:
   m_ObjectHideFlags: 0
@@ -8167,6 +8180,7 @@ MonoBehaviour:
   - {fileID: 57946914}
   _allSpawnebleItems:
   - {fileID: 11400000, guid: f934c01ae82a6e84ca47fa878f243c8a, type: 2}
+  - {fileID: 11400000, guid: 60e23440bb3614f4c9c62fef2b55d093, type: 2}
   - {fileID: 11400000, guid: f86d852500e149b449b9ef08e36d868f, type: 2}
   - {fileID: 11400000, guid: 55e7aafd18b11154888f8a39ef508b03, type: 2}
   - {fileID: 11400000, guid: 75338b8312d486b4fb26603fdb921585, type: 2}
@@ -10898,8 +10912,8 @@ MonoBehaviour:
   _isDead: 0
   _stats:
     GoldAmount: 50
-    Health: 150
-    HealthMax: 150
+    Health: 25
+    HealthMax: 25
     Armor: 0
     Stamina: 5
     StaminaMax: 5
