@@ -56,6 +56,7 @@ public abstract class Character : MonoBehaviour, IDamageable, IStaminable
     private float _healthRegenMultiplier = 1f;
 
     //----------------RESISTS---------------------
+    [SerializeField]
     private float _poisonResistValue = 0f;
 
 

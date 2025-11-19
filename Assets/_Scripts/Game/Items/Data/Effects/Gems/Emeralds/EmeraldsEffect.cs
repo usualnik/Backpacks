@@ -169,11 +169,11 @@ public class EmeraldsEffect : MonoBehaviour, IItemEffect
     private void ApplyArmorOrOtherEffect(ItemBehaviour armorOrOtherItem)
     {
         _armorOrOtherItem = armorOrOtherItem;
-        _armorOrOtherItem.SourceCharacter.AddPoisonResistAmount(_increaseResistPoisonValue);
+        _armorOrOtherItem?.SourceCharacter?.AddPoisonResistAmount(_increaseResistPoisonValue);
     }
     private void RemoveArmorOrOtherEffect()
     {
-        _armorOrOtherItem.SourceCharacter.AddPoisonResistAmount(-_increaseResistPoisonValue);
+        _armorOrOtherItem?.SourceCharacter?.AddPoisonResistAmount(-_increaseResistPoisonValue);
         _armorOrOtherItem = null;
 
     }
@@ -183,12 +183,10 @@ public class EmeraldsEffect : MonoBehaviour, IItemEffect
     #region Interface
     public void ApplyEffect(ItemBehaviour item, Character sourceCharacter, Character targetCharacter)
     {
-        throw new System.NotImplementedException();
     }
 
     public void RemoveEffect()
     {
-        throw new System.NotImplementedException();
     }
     #endregion
 
