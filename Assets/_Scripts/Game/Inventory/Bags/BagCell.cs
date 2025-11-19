@@ -3,7 +3,7 @@ using UnityEngine.UI;
 
 public class BagCell : MonoBehaviour
 {
-    private Image _bagCellImage;
+    public ItemBehaviour BagItem => _bagItem;
     public bool CanBePlaced { get; private set; }
     public InventoryCell CurrentInventoryCell { get; private set; }
     public bool IsOccupied { get; private set; }
@@ -13,12 +13,16 @@ public class BagCell : MonoBehaviour
     private Color _canbePlacedColor = Color.green;
     private Color _normalColor;
     private Bag _parentBag;
+    private ItemBehaviour _bagItem;
+    private Image _bagCellImage;
+
 
 
     private void Awake()
     {
         _bagCellImage = GetComponent<Image>();
         _parentBag = GetComponentInParent<Bag>();
+        _bagItem = GetComponentInParent<ItemBehaviour>();
 
         _normalColor = _bagCellImage.color;
     }

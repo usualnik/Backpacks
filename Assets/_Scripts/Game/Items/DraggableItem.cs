@@ -229,7 +229,7 @@ public class DraggableItem : MonoBehaviour,
     }
 
     // ћетод дл€ освобождени€ €чеек сумки
-    private void ReleaseBagCells()
+    protected virtual void ReleaseBagCells()
     {
         foreach (var bagCell in _targetBagCells)
         {

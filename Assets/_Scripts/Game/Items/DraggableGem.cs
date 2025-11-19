@@ -1,7 +1,12 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 public class DraggableGem : DraggableItem
 {
+    public event Action<ItemBehaviour> OnGemPlacedInItem;
+    public event Action<ItemBehaviour> OnGemRemovedFromItem;
+
+
     private GemSocket[] _targetGemCells;
     private bool _isTryingToPutInSocket = false;
 
@@ -66,8 +71,7 @@ public class DraggableGem : DraggableItem
     }
 
     protected override void PlaceItemInBagCells()
-    {
-        
+    {       
 
         if (_isTryingToPutInSocket && _targetGemCells[0] != null)
         {
@@ -79,6 +83,7 @@ public class DraggableGem : DraggableItem
                 if (gemSocket != null)
                 {
                     gemSocket.SetOccupied(true, this);
+                    OnGemPlacedInItem?.Invoke(gemSocket.Item);
                 }
             }
 
@@ -87,6 +92,7 @@ public class DraggableGem : DraggableItem
         }
         else if (_targetBagCells[0] != null)
         {
+            OnGemPlacedInItem?.Invoke(_targetBagCells[0].BagItem);
             base.PlaceItemInBagCells();
         }
         else
@@ -95,16 +101,15 @@ public class DraggableGem : DraggableItem
 
         ResetColor();
     }
-
-    private new void ReleaseBagCells()
+    protected override void ReleaseBagCells()
     {
-
         // Освобождаем ячейки сумки
         foreach (var bagCell in _targetBagCells)
         {
             if (bagCell != null)
             {
                 bagCell.SetOccupied(false, this);
+                OnGemRemovedFromItem?.Invoke(bagCell.BagItem);
             }
         }
 
@@ -114,6 +119,7 @@ public class DraggableGem : DraggableItem
             if (gemSocket != null)
             {
                 gemSocket.SetOccupied(false, this);
+                OnGemRemovedFromItem.Invoke(gemSocket.Item);
             }
         }
 

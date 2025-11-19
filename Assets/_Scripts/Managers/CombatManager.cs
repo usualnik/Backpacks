@@ -36,6 +36,8 @@ public class CombatManager : MonoBehaviour
     public event Action<WeaponBehaviour, string> OnDamageDealt;
     public event Action<Character,float> OnCharacterStuned;
 
+    public bool IsInCombat => _isInCombat;
+
     public event Action<int> OnFatigueDamageApplied;
     public event Action OnFatigueDamageStarted;
 
@@ -48,6 +50,7 @@ public class CombatManager : MonoBehaviour
         EnemyWin,
         Tie
     }
+
     private CombatResult _result;
 
     private bool _isInCombat = false;

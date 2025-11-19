@@ -57,7 +57,19 @@ public class ItemBehaviour : MonoBehaviour
 
     private void Start()
     {
-        CombatManager.Instance.OnCombatStarted += CombatManager_OnCombatStarted;      
+        CombatManager.Instance.OnCombatStarted += CombatManager_OnCombatStarted;
+
+        switch (GetTarget())
+        {
+            case Target.Player:
+                _targetCharacter = PlayerCharacter.Instance;
+                _sourceCharacter = EnemyCharacter.Instance;
+                break;
+            case Target.Enemy:
+                _targetCharacter = EnemyCharacter.Instance;
+                _sourceCharacter = PlayerCharacter.Instance;
+                break;
+        }
 
     }
     private void OnDestroy()
@@ -69,17 +81,7 @@ public class ItemBehaviour : MonoBehaviour
     {
         if (CurrentState.HasFlag(ItemState.Inventory))
         {
-            switch (GetTarget())
-            {
-                case Target.Player:
-                    _targetCharacter = PlayerCharacter.Instance;
-                    _sourceCharacter = EnemyCharacter.Instance;
-                    break;
-                case Target.Enemy:
-                    _targetCharacter = EnemyCharacter.Instance;
-                    _sourceCharacter = PlayerCharacter.Instance;
-                    break;
-            }
+           
 
             //_itemData.PerformAction(_target,this);
 

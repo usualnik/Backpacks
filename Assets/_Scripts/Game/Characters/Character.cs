@@ -32,9 +32,7 @@ public abstract class Character : MonoBehaviour, IDamageable, IStaminable
     [SerializeField] private List<Buff> _buffs;
     [SerializeField] private List<Buff> _debuffs;
 
-    private const float STAMINA_REGEN_STEP = 0.1f;
-    private Coroutine _staminaRegenCoroutine;
-
+  
     /*first element is default gold*/
     private int[] _levelGoldData = { 0, 8, 9, 9, 10, 10, 11, 11, 12, 12, 13, 13, 14, 14, 15, 15, 15, 15 };
     private const int SEVENTH_LEVEL_GOLD_BONUS = 10;
@@ -43,9 +41,24 @@ public abstract class Character : MonoBehaviour, IDamageable, IStaminable
     /*first element is class default health*/
     private int[] _levelHealthData = { 0, 35, 45, 55, 70, 85, 100, 115, 130, 150, 170, 190, 210, 230, 260, 290, 320, 350 };
 
+    //----------------STAMINA---------------------
+    private const float STAMINA_REGEN_STEP = 0.1f;
+    private Coroutine _staminaRegenCoroutine;
+
+
+    //----------------ACCURACY---------------------
     private const int ACCURACY_PER_STACK = 5;
 
+    //----------------DAMAGE---------------------
     private CharacterDamageHandler _damageHandler;
+
+    //----------------HEALTH---------------------
+    private float _healthRegenMultiplier = 1f;
+
+    //----------------RESISTS---------------------
+    private float _poisonResistValue = 0f;
+
+
 
     #region Init + Events
 
@@ -220,6 +233,7 @@ public abstract class Character : MonoBehaviour, IDamageable, IStaminable
     #endregion
     #region Setters
 
+    //----------------HEALTH---------------------
     public void ChangeMaxHealthValue(float value)
     {      
         _stats.HealthMax += MathF.Max(0, value);
@@ -230,6 +244,19 @@ public abstract class Character : MonoBehaviour, IDamageable, IStaminable
 
         InvokeStatsChanged(_stats);
     }
+
+    //TODO: Реген здоровья пока не готов, сделать
+    public void AddHealthRegenMultiplier(float value)
+    {
+        _healthRegenMultiplier += value;
+    }
+
+    public void HealthRegen()
+    {
+        //Использовать _healthRegenMutiplier 
+    }
+
+    //----------------STAMINA---------------------
     public void AddStamina(float value)
     {
         if (value > 0)
@@ -239,11 +266,22 @@ public abstract class Character : MonoBehaviour, IDamageable, IStaminable
         }
     }
 
+
+    //----------------ARMOR---------------------
+
     public void ChangeArmorValue(float value)
     {
         _stats.Armor += value;
         InvokeStatsChanged(_stats);
     }
+
+    //----------------RESISTS---------------------
+    //TODO: Описать резисты и фильтровать процесс добавления бафа через соответсвующие резисты
+    public void AddPoisonResistAmount(float value)
+    {
+        _poisonResistValue += value;
+    }
+
     #endregion
     #region GameLogic
     private void AddHealthAndGoldAfterCombat(int levelIndex)
