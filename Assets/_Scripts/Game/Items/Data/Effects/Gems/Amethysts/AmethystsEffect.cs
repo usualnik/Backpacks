@@ -167,11 +167,11 @@ public class AmethystsEffect : MonoBehaviour, IItemEffect
     private void ApplyArmorOrOtherEffect(ItemBehaviour armorOrOtherItem)
     {
         _armorOrOtherItem = armorOrOtherItem;
-        _armorOrOtherItem.SourceCharacter.AddHealthRegenMultiplier(-_reduceOpponentHealingPercentage);
+        _armorOrOtherItem.TargetCharacter.AddHealthRegenMultiplier(-_reduceOpponentHealingPercentage);
     }
     private void RemoveArmorOrOtherEffect()
     {
-        _armorOrOtherItem.SourceCharacter.AddHealthRegenMultiplier(_reduceOpponentHealingPercentage);
+        _armorOrOtherItem.TargetCharacter.AddHealthRegenMultiplier(_reduceOpponentHealingPercentage);
         _armorOrOtherItem = null;
 
     }

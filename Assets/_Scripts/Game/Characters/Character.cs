@@ -41,8 +41,13 @@ public abstract class Character : MonoBehaviour, IDamageable, IStaminable
     /*first element is class default health*/
     private int[] _levelHealthData = { 0, 35, 45, 55, 70, 85, 100, 115, 130, 150, 170, 190, 210, 230, 260, 290, 320, 350 };
 
+    //This is just 100%
+    private const float MAX_CHANCE = 100;
+
     //----------------STAMINA---------------------
     private const float STAMINA_REGEN_STEP = 0.1f;
+    private float _staminaRegenStepMultipler = 1f;
+
     private Coroutine _staminaRegenCoroutine;
 
 
@@ -51,13 +56,24 @@ public abstract class Character : MonoBehaviour, IDamageable, IStaminable
 
     //----------------DAMAGE---------------------
     private CharacterDamageHandler _damageHandler;
+    //TODO: Не реализовано
+    [SerializeField] private float _ignoreArmorChance;
 
     //----------------HEALTH---------------------
+    //TODO: Не реализовано
     private float _healthRegenMultiplier = 1f;
 
     //----------------RESISTS---------------------
-    [SerializeField]
+    //TODO: Не реализовано - переделать на шанс, тоесть макс 100% 
     private float _poisonResistValue = 0f;
+
+    //TODO: Не реализовано
+    private float _stunResistChance = 0f;
+    private float _criticalHitResistChance = 0f;
+
+    //----------------Vampirism/Lifesteal---------
+    //TODO: Не реализовано
+    private float _lifestealMultiplier = 1f;
 
 
 
@@ -108,7 +124,7 @@ public abstract class Character : MonoBehaviour, IDamageable, IStaminable
         switch (weaponType)
         {          
             case ItemDataSO.ItemType.None:
-                //Любой источник урона, например Fatigue или Thorns стаки и пр.
+                //Любой источник урона, например Fatigue или Thorns стаки, effect damage и пр.
                 break;
             case ItemDataSO.ItemType.MeleeWeapons:
                 if (_damageHandler != null)
@@ -163,7 +179,7 @@ public abstract class Character : MonoBehaviour, IDamageable, IStaminable
     {
         while (!_isDead && _stats.Stamina < _stats.StaminaMax)
         {
-            _stats.Stamina += STAMINA_REGEN_STEP;
+            _stats.Stamina += STAMINA_REGEN_STEP * _staminaRegenStepMultipler;
             InvokeStatsChanged(_stats);
             yield return new WaitForSeconds(0.1f);
         }
@@ -230,6 +246,8 @@ public abstract class Character : MonoBehaviour, IDamageable, IStaminable
     public string ClassName => _className;
     public CharacterStats Stats => _stats;
     public bool IsDead => _isDead;
+    public float LifeStealMultiplier => _lifestealMultiplier;
+    public float IgnoreArmorChance => _ignoreArmorChance;
 
     #endregion
     #region Setters
@@ -266,7 +284,10 @@ public abstract class Character : MonoBehaviour, IDamageable, IStaminable
             InvokeStatsChanged(_stats);
         }
     }
-
+    public void AddStaminaRegenStepMultiplier(float value)
+    {
+        _staminaRegenStepMultipler += value;
+    }
 
     //----------------ARMOR---------------------
 
@@ -276,11 +297,45 @@ public abstract class Character : MonoBehaviour, IDamageable, IStaminable
         InvokeStatsChanged(_stats);
     }
 
+    public void AddIgnoreArmorChance(float chance)
+    {
+        _ignoreArmorChance += chance;
+    }
+
     //----------------RESISTS---------------------
     //TODO: Описать резисты и фильтровать процесс добавления бафа через соответсвующие резисты
     public void AddPoisonResistAmount(float value)
     {
         _poisonResistValue += value;
+    }
+
+    public void AddStunResistChance(float chance)
+    {
+        if (_stunResistChance + chance > MAX_CHANCE)
+        {
+            _stunResistChance = MAX_CHANCE;            
+        }
+        else
+        {
+            _stunResistChance += chance;
+        }        
+    }
+    public void AddCriticalHitResistChance(float chance)
+    {
+        if (_criticalHitResistChance + chance > MAX_CHANCE)
+        {
+            _criticalHitResistChance = MAX_CHANCE;
+        }
+        else
+        {
+            _criticalHitResistChance += chance;
+        }
+    }
+
+    //----------------Vampirism/Lifesteal----------
+    public void AddLifestealMultiplier(float value)
+    {
+        _lifestealMultiplier += value;
     }
 
     #endregion

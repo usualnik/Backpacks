@@ -72,9 +72,9 @@ public class WeaponBehaviour : ItemBehaviour
         _critHitChance += value;
     }
 
-    public void IncreaseSpeed(float percentageIncrease)
+    public void IncreaseSpeedMultiplier(float value)
     {
-        _currentCooldownMultiplier += percentageIncrease;       
+        _currentCooldownMultiplier += value;       
     }
 
 }

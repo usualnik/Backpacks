@@ -2,6 +2,22 @@ using UnityEngine;
 
 public class TopazesEffect : MonoBehaviour, IItemEffect
 {
+    [Header("Weapon Effects")]
+    [SerializeField] private float _increaseSpeedMultiplier = 10f;
+    private WeaponBehaviour _gemedWeapon;
+
+    [Header("Bag Effects")]
+    [SerializeField] private float _gainStaminaRegenValue = 0.08f;
+    private ItemBehaviour _bagItem;
+
+
+    [Header("ArmorAndOther Effects")]
+    [SerializeField] private float _gainChanceToResistStun = 10f;
+    [SerializeField] private float _gainChanceToCriticalHit = 5f;
+
+    private ItemBehaviour _armorOrOtherItem;
+   
+
     private DraggableGem _draggableGem;
 
     private void Awake()
@@ -28,7 +44,10 @@ public class TopazesEffect : MonoBehaviour, IItemEffect
 
         switch (itemData.Type)
         {
-            case ItemDataSO.ItemType.MeleeWeapons | ItemDataSO.ItemType.RangedWeapons:
+            case ItemDataSO.ItemType.MeleeWeapons:
+                RemoveWeaponEffect();
+                break;
+            case ItemDataSO.ItemType.RangedWeapons:
                 RemoveWeaponEffect();
                 break;
             case ItemDataSO.ItemType.Bags:
@@ -44,66 +63,88 @@ public class TopazesEffect : MonoBehaviour, IItemEffect
     {
         ItemDataSO itemData = itemWithSocket.ItemData;
 
+        WeaponBehaviour weaponBehaviour = null;
+
+        if (itemWithSocket is WeaponBehaviour)
+        {
+            weaponBehaviour = itemWithSocket as WeaponBehaviour;
+        }
 
         switch (itemData.Type)
         {
-            case ItemDataSO.ItemType.MeleeWeapons | ItemDataSO.ItemType.RangedWeapons:
-                ApplyWeaponEffect();
+            case ItemDataSO.ItemType.MeleeWeapons:
+                ApplyWeaponEffect(weaponBehaviour);
+                break;
+            case ItemDataSO.ItemType.RangedWeapons:
+                ApplyWeaponEffect(weaponBehaviour);
                 break;
             case ItemDataSO.ItemType.Bags:
-                ApplyBagEffect();
+                ApplyBagEffect(itemWithSocket);
                 break;
             default:
-                ApplyArmorOrOtherEffect();
+                ApplyArmorOrOtherEffect(itemWithSocket);
                 break;
         }
     }
 
     #region Weapons
-    private void ApplyWeaponEffect()
+    private void ApplyWeaponEffect(WeaponBehaviour weaponBehaviour)
     {
+        if (weaponBehaviour == null) return;
+        _gemedWeapon = weaponBehaviour;
+        _gemedWeapon.IncreaseSpeedMultiplier(_increaseSpeedMultiplier);
 
     }
 
     private void RemoveWeaponEffect()
     {
-
+        _gemedWeapon.IncreaseSpeedMultiplier(-_increaseSpeedMultiplier);
+        _gemedWeapon = null;
     }
 
     #endregion
 
     #region Bags
-    private void ApplyBagEffect()
+    private void ApplyBagEffect(ItemBehaviour bagItem)
     {
-
+        _bagItem = bagItem;
+        _bagItem.SourceCharacter.AddStaminaRegenStepMultiplier(_gainStaminaRegenValue);       
     }
+
+
     private void RemoveBagEffect()
     {
-
+        _bagItem.SourceCharacter.AddStaminaRegenStepMultiplier(-_gainStaminaRegenValue);
+        _bagItem = null;
+      
     }
+
     #endregion
 
     #region Armor + other
-    private void ApplyArmorOrOtherEffect()
+    private void ApplyArmorOrOtherEffect(ItemBehaviour armorOrOtherItem)
     {
+        _armorOrOtherItem = armorOrOtherItem;
+        _armorOrOtherItem?.SourceCharacter?.AddStunResistChance(_gainChanceToResistStun);
+        _armorOrOtherItem?.SourceCharacter?.AddCriticalHitResistChance(_gainChanceToCriticalHit);
 
     }
     private void RemoveArmorOrOtherEffect()
     {
+        _armorOrOtherItem?.SourceCharacter?.AddStunResistChance(-_gainChanceToResistStun);
+        _armorOrOtherItem?.SourceCharacter?.AddCriticalHitResistChance(-_gainChanceToCriticalHit);
 
+        _armorOrOtherItem = null;
     }
     #endregion
-
 
     #region Interface
     public void ApplyEffect(ItemBehaviour item, Character sourceCharacter, Character targetCharacter)
     {
-        throw new System.NotImplementedException();
     }
 
     public void RemoveEffect()
     {
-        throw new System.NotImplementedException();
     }
     #endregion
 
