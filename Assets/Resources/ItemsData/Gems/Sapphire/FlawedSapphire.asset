@@ -15,7 +15,7 @@ MonoBehaviour:
   _itemName: FlawedSapphire
   _icon: {fileID: 6991976036052855186, guid: d0fda57101f8a184d9358e7cde733985, type: 3}
   _prefab: {fileID: 98611140532912634, guid: ed83249c8d6f4d343acfbe865bd14156, type: 3}
-  _isSpawnableInShop: 0
+  _isSpawnableInShop: 1
   _itemType: 4
   _itemSubType: 0
   _rarity: 0

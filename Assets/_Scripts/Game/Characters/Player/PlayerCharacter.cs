@@ -7,7 +7,7 @@ public class PlayerCharacter : Character
     public static PlayerCharacter Instance { get; private set; }
     public event Action<int> OnTrophiesValueChanged;
     public event Action<int> OnLivesValueChanged;
-
+    public event Action<ClassDataSO> OnPlayerClassChanged;
 
     [Header("Player specific")]
     [SerializeField] protected string RankName = string.Empty;
@@ -21,7 +21,11 @@ public class PlayerCharacter : Character
         if (Instance == null)
             Instance = this;
         else
+        {
             Debug.LogError("More than one instance of player character");
+            Destroy(gameObject);
+            return;
+        }
     }
 
 
@@ -32,6 +36,7 @@ public class PlayerCharacter : Character
 
         CombatManager.Instance.OnCombatFinished += CombatManager_OnCombatFinished;
         SelectedItemManager.Instance.OnItemSelected += SelectedItemManager_OnItemSelected;
+        SwitchClassButton.OnSwitchClassButtonPressed += SwitchClassButton_OnSwitchClassButtonPressed;
     }
 
     //This is OnDestroy()
@@ -40,10 +45,22 @@ public class PlayerCharacter : Character
         base.DestroyCharacter();
         CombatManager.Instance.OnCombatFinished -= CombatManager_OnCombatFinished;
         SelectedItemManager.Instance.OnItemSelected -= SelectedItemManager_OnItemSelected;
+        SwitchClassButton.OnSwitchClassButtonPressed -= SwitchClassButton_OnSwitchClassButtonPressed;
+
 
         if (_currentSelectedItem != null)
         {
             _currentSelectedItem.OnItemStateChanged -= SelectedItem_OnItemStateChanged;
+        }
+
+        //Static events
+        try
+        {
+            SwitchClassButton.OnSwitchClassButtonPressed -= SwitchClassButton_OnSwitchClassButtonPressed;
+        }
+        catch (Exception e)
+        {
+            Debug.LogWarning($"Error unsubscribing from static event: {e.Message}");
         }
     }
     private void SelectedItemManager_OnItemSelected(ItemBehaviour newItem)
@@ -92,6 +109,25 @@ public class PlayerCharacter : Character
 
     }
 
+
+    private void SwitchClassButton_OnSwitchClassButtonPressed()
+    {
+        _currentClassIndex++;
+
+        if (GameManager.Instance != null && 
+            _currentClassIndex < GameManager.Instance.AllPlayableClasses.Length)
+        {
+            _classData = GameManager.Instance.AllPlayableClasses[_currentClassIndex];
+            OnPlayerClassChanged?.Invoke(ClassData);
+        }
+        else
+        {
+            _currentClassIndex = 0;
+            _classData = GameManager.Instance.AllPlayableClasses[_currentClassIndex];
+            OnPlayerClassChanged?.Invoke(ClassData);
+        }
+    }
+
     public void SpendMoney(int moneyAmount)
     {
         if (Stats.GoldAmount - moneyAmount >= 0)
@@ -117,6 +153,8 @@ public class PlayerCharacter : Character
 
         _currentSelectedItem.DestroySelf();
     }
+
+
 
 
     public string Rank => RankName;

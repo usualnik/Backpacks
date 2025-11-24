@@ -1,7 +1,6 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using Unity.Mathematics;
 using UnityEngine;
 
 public abstract class Character : MonoBehaviour, IDamageable, IStaminable
@@ -24,7 +23,8 @@ public abstract class Character : MonoBehaviour, IDamageable, IStaminable
     public event Action<float> OnDamageRecived;
 
     [SerializeField] protected string _nickname = string.Empty;
-    [SerializeField] protected string _className = string.Empty;
+    [SerializeField] protected ClassDataSO _classData;
+    [SerializeField] protected int _currentClassIndex = 0;
 
 
     [SerializeField] protected bool _isDead = false;
@@ -47,7 +47,6 @@ public abstract class Character : MonoBehaviour, IDamageable, IStaminable
     //----------------STAMINA---------------------
     private const float STAMINA_REGEN_STEP = 0.1f;
     private float _staminaRegenStepMultipler = 1f;
-
     private Coroutine _staminaRegenCoroutine;
 
 
@@ -55,9 +54,8 @@ public abstract class Character : MonoBehaviour, IDamageable, IStaminable
     private const int ACCURACY_PER_STACK = 5;
 
     //----------------DAMAGE---------------------
-    private CharacterDamageHandler _damageHandler;
-    //TODO: Не реализовано
-    [SerializeField] private float _ignoreArmorChance;
+    private CharacterDamageHandler _damageHandler;    
+    private float _ignoreArmorChance;
 
     //----------------HEALTH---------------------
     //TODO: Не реализовано
@@ -65,7 +63,7 @@ public abstract class Character : MonoBehaviour, IDamageable, IStaminable
 
     //----------------RESISTS---------------------
     //TODO: Не реализовано - переделать на шанс, тоесть макс 100% 
-    private float _poisonResistValue = 0f;
+    private float _poisonResistChance = 0f;
 
     //TODO: Не реализовано
     private float _stunResistChance = 0f;
@@ -243,11 +241,11 @@ public abstract class Character : MonoBehaviour, IDamageable, IStaminable
         return thornsStacks;
     }
     public string NickName => _nickname;
-    public string ClassName => _className;
     public CharacterStats Stats => _stats;
     public bool IsDead => _isDead;
     public float LifeStealMultiplier => _lifestealMultiplier;
     public float IgnoreArmorChance => _ignoreArmorChance;
+    public ClassDataSO ClassData => _classData;
 
     #endregion
     #region Setters
@@ -304,9 +302,16 @@ public abstract class Character : MonoBehaviour, IDamageable, IStaminable
 
     //----------------RESISTS---------------------
     //TODO: Описать резисты и фильтровать процесс добавления бафа через соответсвующие резисты
-    public void AddPoisonResistAmount(float value)
+    public void AddPoisonResistChance(float chance)
     {
-        _poisonResistValue += value;
+        if (_stunResistChance + chance > MAX_CHANCE)
+        {
+            _poisonResistChance += chance;
+        }
+        else
+        {
+            _poisonResistChance += chance;
+        }
     }
 
     public void AddStunResistChance(float chance)

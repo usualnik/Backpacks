@@ -3,7 +3,7 @@ using UnityEngine;
 public class GarlicStarEffect : MonoBehaviour, IStarEffect
 {
     [Tooltip("Speed increase per unique STAR food type (e.g., 0.1 = 10% faster)")]
-    [SerializeField] private float speedInrease = 0.1f;
+    [SerializeField] private float speedInreaseValue = 0.1f;
     private GarlicEffect _garlicEffect;
 
     private void Start()
@@ -13,12 +13,12 @@ public class GarlicStarEffect : MonoBehaviour, IStarEffect
 
     public void ApplyStarEffect(ItemBehaviour sourceItem, ItemBehaviour targetItem, StarCell starCell)
     {
-        _garlicEffect.IncreaseSpeed(speedInrease);
+        _garlicEffect.IncreaseSpeed(speedInreaseValue);
     }
 
     public void RemoveStarEffect(ItemBehaviour sourceItem, ItemBehaviour targetItem, StarCell starCell)
     {
-       _garlicEffect.IncreaseSpeed(-speedInrease);
+       _garlicEffect.IncreaseSpeed(-speedInreaseValue);
     }
     
 }

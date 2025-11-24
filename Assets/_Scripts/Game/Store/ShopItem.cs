@@ -5,6 +5,7 @@ using UnityEngine.EventSystems;
 public class ShopItem : MonoBehaviour, IPointerClickHandler
 {
     [SerializeField] private bool _isItemReserved;
+    [SerializeField] private bool _isSpawnableInShop;
 
     private ItemBehaviour _itemBehaviour;
     private ReservedImage _reservedImage;
@@ -17,6 +18,7 @@ public class ShopItem : MonoBehaviour, IPointerClickHandler
     private void Start()
     {
         _reservedImage = GetComponentInChildren<ReservedImage>(true);
+        _isSpawnableInShop = _itemBehaviour.ItemData.IsSpawnableInShop;
     }
 
     public void OnPointerClick(PointerEventData eventData)
@@ -33,4 +35,10 @@ public class ShopItem : MonoBehaviour, IPointerClickHandler
 
     public bool GetCanBeSpawnedInShop() => _itemBehaviour.ItemData.IsSpawnableInShop;
     public bool GetIsItemReserved() => _isItemReserved;
+    public bool IsSpawnable => _isSpawnableInShop;
+
+    public void SetSpawnableInShop(bool isSpawnableInShop)
+    {
+        _isSpawnableInShop = isSpawnableInShop;
+    }
 }

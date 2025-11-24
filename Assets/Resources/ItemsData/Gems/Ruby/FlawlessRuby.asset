@@ -15,7 +15,7 @@ MonoBehaviour:
   _itemName: FlawlessRuby
   _icon: {fileID: 7353058628392319611, guid: aa5515d13dfb858408b215cdf3f56f88, type: 3}
   _prefab: {fileID: 98611140532912634, guid: f15713614d50b684ab99c788775e72a4, type: 3}
-  _isSpawnableInShop: 0
+  _isSpawnableInShop: 1
   _itemType: 4
   _itemSubType: 0
   _rarity: 0

@@ -15,7 +15,7 @@ MonoBehaviour:
   _itemName: FlawedEmerald
   _icon: {fileID: -805571325405721873, guid: 1222b3f8e8f4ba446912fd7f0ebcd4e9, type: 3}
   _prefab: {fileID: 98611140532912634, guid: b5a06f47a4abcda45a749e8ba0a16cc8, type: 3}
-  _isSpawnableInShop: 0
+  _isSpawnableInShop: 1
   _itemType: 4
   _itemSubType: 0
   _rarity: 0

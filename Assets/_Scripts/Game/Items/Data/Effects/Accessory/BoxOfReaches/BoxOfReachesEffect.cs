@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class BoxOfReachesEffect : MonoBehaviour, IItemEffect
@@ -9,14 +10,15 @@ public class BoxOfReachesEffect : MonoBehaviour, IItemEffect
     [SerializeField] private GameObject[] _sapphires;
     [SerializeField] private GameObject[] _topazes;
 
+    [SerializeField] private List<ItemDataSO> _currentGems;
+
     private Transform _spawnGemTransform;
-    private Vector3 _spawnGemOffset = new Vector3(0, 100,0);
+    private Vector3 _spawnGemOffset = new Vector3(0, 100, 0);
 
 
     private ItemBehaviour _itemBehaviour;
     private Storage storage;
 
-    [SerializeField]
     private bool _canSpawngems = false;
 
     private void Awake()
@@ -49,22 +51,47 @@ public class BoxOfReachesEffect : MonoBehaviour, IItemEffect
         if (currentState.HasFlag(ItemBehaviour.ItemState.Inventory))
         {
             _canSpawngems = true;
+            AddGemsToShop();
         }
         else
         {
             _canSpawngems = false;
+            RemoveGemsFromShop();
         }
 
     }
 
-    public void ApplyEffect(ItemBehaviour item, Character sourceCharacter, Character targetCharacter)
+    private void AddGemsToShop()
     {
+        foreach (var gemArray in new List<GameObject[]> { _amethysts, _emeralds, _rubys, _sapphires, _topazes })
+        {
+            foreach (var gemObject in gemArray)
+            {
+                if (gemObject != null)
+                {
+                    ItemBehaviour gemItemBehaviour = gemObject.GetComponent<ItemBehaviour>();
+                    if (gemItemBehaviour != null && gemItemBehaviour.ItemData != null)
+                    {
+                        _currentGems.Add(gemItemBehaviour.ItemData);
+                    }
+                }
+            }
+        }
 
+        if (Shop.Instance != null && _currentGems.Count > 0)
+        {
+            Shop.Instance.AddGemsToShop(_currentGems);
+        }
     }
 
-    public void RemoveEffect()
+    private void RemoveGemsFromShop()
     {
-        throw new System.NotImplementedException();
+        // Убираем гемы из магазина
+        if (Shop.Instance != null && _currentGems.Count > 0)
+        {
+            Shop.Instance.RemoveGemsFromShop(_currentGems);
+            _currentGems.Clear();
+        }
     }
 
     private void ShopEntered()
@@ -85,14 +112,23 @@ public class BoxOfReachesEffect : MonoBehaviour, IItemEffect
             _allSpawnebleGems.Add(_topazes[0]);
 
 
-           int randomGemIndex = Random.Range(0,_allSpawnebleGems.Count);
-            
+            int randomGemIndex = Random.Range(0, _allSpawnebleGems.Count);
+
             GameObject spawnedGem = Instantiate(
                 _allSpawnebleGems[randomGemIndex],
                 _spawnGemTransform.position + _spawnGemOffset,
                 Quaternion.identity);
 
-            spawnedGem.transform.SetParent(transform, true);  
+            spawnedGem.transform.SetParent(transform, true);
         }
+    }
+    public void ApplyEffect(ItemBehaviour item, Character sourceCharacter, Character targetCharacter)
+    {
+
+    }
+
+    public void RemoveEffect()
+    {
+
     }
 }

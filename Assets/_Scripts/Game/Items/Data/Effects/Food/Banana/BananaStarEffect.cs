@@ -3,7 +3,7 @@ using UnityEngine;
 public class BananaStarEffect : MonoBehaviour, IStarEffect
 {
     [Tooltip("Speed increase per unique STAR food type (e.g., 0.1 = 10% faster)")]
-    [SerializeField] private float speedInrease = 0.1f;
+    [SerializeField] private float speedInreaseValue;
     private BananaEffect _bananaEffect;
 
     private void Awake()
@@ -13,12 +13,12 @@ public class BananaStarEffect : MonoBehaviour, IStarEffect
 
     public void ApplyStarEffect(ItemBehaviour sourceItem, ItemBehaviour targetItem, StarCell starCell)
     {
-        _bananaEffect.IncreaseSpeed(speedInrease);
+        _bananaEffect.IncreaseSpeed(speedInreaseValue);
     }
 
     public void RemoveStarEffect(ItemBehaviour sourceItem, ItemBehaviour targetItem, StarCell starCell)
     {
-        _bananaEffect.IncreaseSpeed(-speedInrease);
+        _bananaEffect.IncreaseSpeed(-speedInreaseValue);
 
     }
 

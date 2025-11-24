@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 015aff186f903dc40a8b5ddbe33f6114, type: 3}
+  m_Name: Ranger
+  m_EditorClassIdentifier: 
+  _className: Ranger
+  _classSprite: {fileID: 21300000, guid: 14d8fdaea869bf24bbc7f0acbd5c6675, type: 3}
+  _startingUniqueBag: {fileID: 98611140532912634, guid: 31c08e4acc2691945a801582794bdfff, type: 3}
+  _startingItems:
+  - {fileID: 98611140532912634, guid: 6768a74b6aef0194199dc3df3efbd0b9, type: 3}
+  - {fileID: 98611140532912634, guid: 6768a74b6aef0194199dc3df3efbd0b9, type: 3}
+  - {fileID: 98611140532912634, guid: 4b561236f6f17d7458cacee86a434681, type: 3}
+  - {fileID: 98611140532912634, guid: 2f2635880fbbe034a95f93b5a1e2922f, type: 3}

@@ -15,7 +15,7 @@ MonoBehaviour:
   _itemName: ChippedTopaz
   _icon: {fileID: -2565412153524644095, guid: e5570c82c6104174285dea3dc8240337, type: 3}
   _prefab: {fileID: 98611140532912634, guid: 1461ccd4fe0ad4946b271781bda10abf, type: 3}
-  _isSpawnableInShop: 0
+  _isSpawnableInShop: 1
   _itemType: 4
   _itemSubType: 0
   _rarity: 0

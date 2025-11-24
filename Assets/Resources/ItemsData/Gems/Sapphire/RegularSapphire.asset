@@ -15,7 +15,7 @@ MonoBehaviour:
   _itemName: RegularSapphire
   _icon: {fileID: 2335179089683419289, guid: d0fda57101f8a184d9358e7cde733985, type: 3}
   _prefab: {fileID: 98611140532912634, guid: 8bbf76be6bcc22a48803e669890dab0d, type: 3}
-  _isSpawnableInShop: 0
+  _isSpawnableInShop: 1
   _itemType: 4
   _itemSubType: 0
   _rarity: 0

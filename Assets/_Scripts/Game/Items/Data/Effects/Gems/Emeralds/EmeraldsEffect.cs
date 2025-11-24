@@ -15,7 +15,7 @@ public class EmeraldsEffect : MonoBehaviour, IItemEffect
     private ItemBehaviour _bagItem;
 
     [Header("ArmorAndOther Effects")]
-    [SerializeField] private float _increaseResistPoisonValue = 0.1f;
+    [SerializeField] private float _increaseResistPoisonChance = 0.1f;
     private ItemBehaviour _armorOrOtherItem;
    
     private DraggableGem _draggableGem;
@@ -169,11 +169,11 @@ public class EmeraldsEffect : MonoBehaviour, IItemEffect
     private void ApplyArmorOrOtherEffect(ItemBehaviour armorOrOtherItem)
     {
         _armorOrOtherItem = armorOrOtherItem;
-        _armorOrOtherItem?.SourceCharacter?.AddPoisonResistAmount(_increaseResistPoisonValue);
+        _armorOrOtherItem?.SourceCharacter?.AddPoisonResistChance(_increaseResistPoisonChance);
     }
     private void RemoveArmorOrOtherEffect()
     {
-        _armorOrOtherItem?.SourceCharacter?.AddPoisonResistAmount(-_increaseResistPoisonValue);
+        _armorOrOtherItem?.SourceCharacter?.AddPoisonResistChance(-_increaseResistPoisonChance);
         _armorOrOtherItem = null;
 
     }

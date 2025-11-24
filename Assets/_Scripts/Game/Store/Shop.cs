@@ -18,7 +18,7 @@ public class Shop : MonoBehaviour
     [SerializeField] private GameObject[] _salePricesObjects;
 
     [Header("SYSTEM")]
-    [SerializeField] private ItemDataSO[] _allSpawnebleItems;
+    [SerializeField] private List<ItemDataSO> _allSpawnebleItems;
 
     private const float SALE_CHANCE = 0.2f;
     private const int MAX_SPAWN_ATTEMPTS = 50; // Защита от бесконечного цикла
@@ -113,12 +113,12 @@ public class Shop : MonoBehaviour
     private GameObject SpawnRandomItemInSlot(int slotIndex)
     {
         int attempts = 0;
-
+      
         while (attempts < MAX_SPAWN_ATTEMPTS)
         {
             attempts++;
 
-            int randomIndex = Random.Range(0, _allSpawnebleItems.Length);
+            int randomIndex = Random.Range(0, _allSpawnebleItems.Count);
             GameObject itemPrefab = _allSpawnebleItems[randomIndex].Prefab;
 
             if (itemPrefab == null)
@@ -192,10 +192,10 @@ public class Shop : MonoBehaviour
     private void InitShopItems()
     {
         _allSpawnebleItems = Resources.LoadAll<ItemDataSO>("ItemsData")
-            .Where(item => item.IsSpawnableInShop)
-            .ToArray();
+            .Where(item => item.IsSpawnableInShop && !item.Type.HasFlag(ItemDataSO.ItemType.Gems))
+            .ToList();
 
-        Debug.Log($"Loaded {_allSpawnebleItems.Length} items");
+        Debug.Log($"Loaded {_allSpawnebleItems.Count} items");
 
         foreach (var itemData in _allSpawnebleItems)
         {
@@ -216,6 +216,28 @@ public class Shop : MonoBehaviour
     {
         _rerollPrice = INITIAL_REROLL_PRICE;
         OnRerollPriceChanged?.Invoke();
+    }
+
+    public void AddGemsToShop(List<ItemDataSO> gemsToAdd)
+    {
+        foreach (var gem in gemsToAdd)
+        {
+            if (!_allSpawnebleItems.Contains(gem))
+            {
+                _allSpawnebleItems.Add(gem);
+            }
+        }
+    }
+
+    public void RemoveGemsFromShop(List<ItemDataSO> gemsToRemove)
+    {
+        foreach (var gem in gemsToRemove)
+        {
+            if (_allSpawnebleItems.Contains(gem))
+            {
+                _allSpawnebleItems.Remove(gem);
+            }               
+        }
     }
     public int GetCurrentRerollPrice() => _rerollPrice;
 }

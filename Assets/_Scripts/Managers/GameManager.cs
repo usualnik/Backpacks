@@ -7,17 +7,20 @@ public class GameManager : MonoBehaviour
     public static GameManager Instance { get; private set; }
 
     public event Action<GameState> OnGameStateChanged;
-    //public event Action OnGameOver;
+
+    public ClassDataSO[] AllPlayableClasses => _allPlayableClasses;
 
     public enum GameState
     {
         Menu,
         Store,
         Gameplay
-    }
+    }    
 
     private GameState _state = GameState.Menu;
-     
+
+    [SerializeField] private ClassDataSO[] _allPlayableClasses;
+
 
     private void Awake()
     {
@@ -48,7 +51,7 @@ public class GameManager : MonoBehaviour
     {
         if (playerLives <= 0)
         {
-            //Stub - reload game if lives less than 0
+            //TODO: - reload game if lives less than 0
             SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
             //OnGameOver?.Invoke();
         }

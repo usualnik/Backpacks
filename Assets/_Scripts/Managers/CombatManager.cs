@@ -244,23 +244,23 @@ public class CombatManager : MonoBehaviour
 
     }
 
-    private float CalculateFinalDamage(Character sourceCharacter, Character targetCharcter,
-        WeaponBehaviour weapon)
+    private float CalculateFinalDamage(Character sourceCharacter, Character targetCharacter, WeaponBehaviour weapon)
     {
-        bool isCrit = UnityEngine.Random.Range(0f, 100f) <= weapon.CritHitChance ? true : false;
+        bool isCrit = UnityEngine.Random.Range(0f, 100f) <= weapon.CritHitChance;
+        bool isIgnoreArmor = UnityEngine.Random.Range(0f, 100f) <= sourceCharacter.IgnoreArmorChance; // От атакующего!
+
+        float armorStacks = isIgnoreArmor ? 0f : targetCharacter.GetArmorStacks();
+
+        float baseDamage = UnityEngine.Random.Range(weapon.WeaponDamageMin, weapon.WeaponDamageMax);
 
         if (isCrit)
         {
-            return UnityEngine.Random.Range
-                ((weapon.WeaponDamageMin - targetCharcter.GetArmorStacks()) * 2,
-                (weapon.WeaponDamageMax - targetCharcter.GetArmorStacks()) * 2);
+            baseDamage *= 2f; 
         }
-        else
-        {
-            return UnityEngine.Random.Range
-                (weapon.WeaponDamageMin - targetCharcter.GetArmorStacks(),
-                weapon.WeaponDamageMax - targetCharcter.GetArmorStacks());
-        }
+
+        float finalDamage = Mathf.Max(baseDamage - armorStacks, weapon.WeaponDamageMin * 0.1f); // Минимум 10% от минимального урона
+
+        return finalDamage;
     }
 
     private float CalculateFinalAccuracy(Character attacker, float weaponAccuracy)

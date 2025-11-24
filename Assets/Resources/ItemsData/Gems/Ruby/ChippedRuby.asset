@@ -15,7 +15,7 @@ MonoBehaviour:
   _itemName: ChippedRuby
   _icon: {fileID: -1941785716963399232, guid: aa5515d13dfb858408b215cdf3f56f88, type: 3}
   _prefab: {fileID: 98611140532912634, guid: ccbd025399ed6154d86e433502cf7f2b, type: 3}
-  _isSpawnableInShop: 0
+  _isSpawnableInShop: 1
   _itemType: 4
   _itemSubType: 0
   _rarity: 0

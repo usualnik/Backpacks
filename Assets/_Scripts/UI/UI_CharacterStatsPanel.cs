@@ -16,12 +16,15 @@ public class UI_CharacterStatsPanel : MonoBehaviour
         InitText();
 
         PlayerCharacter.Instance.OnCharacterStatsChanged += PlayerCharacter_OnCharacterStatsChanged;
+        PlayerCharacter.Instance.OnPlayerClassChanged += PlayerCharacter_OnPlayerClassChanged;
 
     }
+
+
     private void OnDestroy()
     {
         PlayerCharacter.Instance.OnCharacterStatsChanged -= PlayerCharacter_OnCharacterStatsChanged;
-
+        PlayerCharacter.Instance.OnPlayerClassChanged -= PlayerCharacter_OnPlayerClassChanged;
     }
 
     private void PlayerCharacter_OnCharacterStatsChanged(Character.CharacterStats stats)
@@ -29,10 +32,14 @@ public class UI_CharacterStatsPanel : MonoBehaviour
         UpdateText(stats);
     }
 
+    private void PlayerCharacter_OnPlayerClassChanged(ClassDataSO newPlayerClass)
+    {
+        UpdatePlayerClassText(newPlayerClass.ClassName);
+    }
     private void InitText()
     {
         _playerNickText.text = "Name: " + PlayerCharacter.Instance.NickName;
-        _playeClassText.text = "Class: " + PlayerCharacter.Instance.ClassName;
+        _playeClassText.text = "Class: " + PlayerCharacter.Instance.ClassData.ClassName;
         _goldAmountText.text = "Gold: " + PlayerCharacter.Instance.Stats.GoldAmount;
         _healthAmountText.text = "Health: " + PlayerCharacter.Instance.Stats.Health;
         _staminaAmountText.text = "Stamina: " + PlayerCharacter.Instance.Stats.Stamina;
@@ -44,7 +51,11 @@ public class UI_CharacterStatsPanel : MonoBehaviour
         
         _goldAmountText.text = "Gold: " + stats.GoldAmount;
         _healthAmountText.text = "Health: " + stats.Health;
-        //_staminaAmountText.text = "Stamina: " + stats.Stamina;
-        
+        //_staminaAmountText.text = "Stamina: " + stats.Stamina;        
+    }
+
+    private void UpdatePlayerClassText(string newClassName)
+    {
+        _playeClassText.text = "Class: " + newClassName;
     }
 }
