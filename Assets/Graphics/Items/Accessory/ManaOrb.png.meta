@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: 64a3117ae3b9238478d2b6562fc3071f
+guid: 9bd385105967333468e735ead50d302b
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -6158262401024974142
-    second: BoxofRiches_0
+      213: 640736666624311677
+    second: ManaOrb_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -96,17 +96,30 @@ TextureImporter:
     ignorePlatformSupport: 0
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Android
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: BoxofRiches_0
+      name: ManaOrb_0
       rect:
         serializedVersion: 2
-        x: 2
-        y: 1
-        width: 288
-        height: 173
+        x: 1
+        y: 0
+        width: 130
+        height: 130
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -115,8 +128,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 2c2234169f4798aa0800000000000000
-      internalID: -6158262401024974142
+      spriteID: d71c5b08a9a54e800800000000000000
+      internalID: 640736666624311677
       vertices: []
       indices: 
       edges: []
@@ -135,7 +148,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      BoxofRiches_0: -6158262401024974142
+      ManaOrb_0: 640736666624311677
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

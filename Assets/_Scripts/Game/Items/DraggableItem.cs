@@ -68,6 +68,12 @@ public class DraggableItem : MonoBehaviour,
             Debug.LogWarning("SelectedItemManager instance not found!");
         }
 
+        if (_itemBehaviour.ItemData.Rarity == ItemDataSO.RarityType.Unique)
+        {
+            //Check for unique items in player inventory
+            
+        }
+
         // Если предмет уже в сумке - освобождаем ячейки при начале перетаскивания
         if (_isPlaced)
         {

@@ -18,12 +18,10 @@ MonoBehaviour:
   _isSpawnableInShop: 1
   _itemType: 1
   _itemSubType: 0
-  _rarity: 8
+  _rarity: 3
   _shapeWidth: 1
   _shapeHeight: 1
   _shapeArray: 01
-  _effects:
-  - {fileID: 11400000, guid: bd910893ecfe95d49b0cd85e505a3234, type: 2}
   _recipeIngridients: []
   _recipeResult: {fileID: 0}
   _price: 8

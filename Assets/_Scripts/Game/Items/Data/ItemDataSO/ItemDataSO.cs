@@ -7,17 +7,13 @@ public abstract class ItemDataSO : ScriptableObject
     public string ItemName => _itemName;
     public Sprite Icon => _icon;
     public int Price => _price;
-
-    //public BuffSO[] Buffs => _buffs;
     public GameObject Prefab => _prefab;
     public ItemSubType SubType => _itemSubType;
     public RarityType Rarity => _rarity;
     public bool IsSpawnableInShop => _isSpawnableInShop;
-   // public StarEffectSO StarEffect => _starEffect;
     public ItemType Type => _itemType;
     public ItemDataSO[] RecipeIngridients => _recipeIngridients;
     public ItemDataSO RecipeResult => _recipeResult;
-
     public Vector2Int GetShapeSize() => new Vector2Int(_shapeWidth, _shapeHeight);
 
     [Flags]
@@ -35,6 +31,7 @@ public abstract class ItemDataSO : ScriptableObject
         Pets            = 1 << 8,  // 256
         Bags            = 1 << 9,  // 512
         Shields         = 1 << 10, // 1024
+        Helmets         = 1 << 11, // 2048   
     }
 
     [Flags]
@@ -48,17 +45,14 @@ public abstract class ItemDataSO : ScriptableObject
         Vampire     = 1 << 4,   // 16
     }
 
-    [Flags]
     public enum RarityType
     {
-        None        = 0,
-        Common      = 1 << 0,   // 1
-        Rare        = 1 << 1,   // 2
-        Epic        = 1 << 2,   // 4
-        Legendary   = 1 << 3,   // 8
-        Divine      = 1 << 4,   // 16
-        Unique      = 1 << 5,   // 32
-        Godly       = 1 << 6,   // 64
+        Common = 0,      
+        Rare = 1,        // 1  
+        Epic = 2,        // 2
+        Legendary = 3,   // 3
+        Godly = 4,       // 4
+        Unique = 5       // 5
     }
 
 
@@ -73,16 +67,12 @@ public abstract class ItemDataSO : ScriptableObject
     [SerializeField] private ItemSubType _itemSubType = ItemSubType.None;
 
     [Header("Rarity")]
-    [SerializeField] private RarityType _rarity = RarityType.None;
+    [SerializeField] private RarityType _rarity = RarityType.Common;
 
     [Header("Shape")]
     [SerializeField] private int _shapeWidth = 1;
     [SerializeField] private int _shapeHeight = 1;
     [SerializeField] private bool[] _shapeArray;
-
-       // [Header("StarEffect")]
-    //[SerializeField] private BuffSO[] _buffs;
-     //[SerializeField] private StarEffectSO _starEffect;
 
     [Header("Recipe")]
     [SerializeField] private ItemDataSO[] _recipeIngridients;
@@ -122,8 +112,4 @@ public abstract class ItemDataSO : ScriptableObject
             }
         }
     }
-
-
-   // public abstract void PerformAction(ItemBehaviour.Target target, ItemBehaviour performedItem);
-
 }

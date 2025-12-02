@@ -1,0 +1,28 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 530ff1f11d58a7c40a31c20329b5b650, type: 3}
+  m_Name: HolyArmor
+  m_EditorClassIdentifier: 
+  _itemName: HolyArmor
+  _icon: {fileID: 21300000, guid: 3e91f198d1fa8e24b823f85370b80803, type: 3}
+  _prefab: {fileID: 98611140532912634, guid: f8bf3eea909865c439e574159d1ae961, type: 3}
+  _isSpawnableInShop: 1
+  _itemType: 2
+  _itemSubType: 2
+  _rarity: 3
+  _shapeWidth: 2
+  _shapeHeight: 3
+  _shapeArray: 010101010101
+  _recipeIngridients: []
+  _recipeResult: {fileID: 0}
+  _price: 12
+  _socketsAmount: 3

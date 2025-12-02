@@ -1,0 +1,28 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d4a428925e9ac8943943aef736706fa9, type: 3}
+  m_Name: ShieldofValor
+  m_EditorClassIdentifier: 
+  _itemName: ShieldofValor
+  _icon: {fileID: 21300000, guid: bee7c9a721ae57742a231888e5d6b2b6, type: 3}
+  _prefab: {fileID: 98611140532912634, guid: ca14f961251ebdb4a844f978dd3a5556, type: 3}
+  _isSpawnableInShop: 1
+  _itemType: 1024
+  _itemSubType: 2
+  _rarity: 3
+  _shapeWidth: 2
+  _shapeHeight: 3
+  _shapeArray: 010101010101
+  _recipeIngridients: []
+  _recipeResult: {fileID: 0}
+  _price: 12
+  _socketsAmount: 2

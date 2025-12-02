@@ -18,7 +18,7 @@ MonoBehaviour:
   _isSpawnableInShop: 1
   _itemType: 136
   _itemSubType: 8
-  _rarity: 32
+  _rarity: 5
   _shapeWidth: 2
   _shapeHeight: 2
   _shapeArray: 01010101

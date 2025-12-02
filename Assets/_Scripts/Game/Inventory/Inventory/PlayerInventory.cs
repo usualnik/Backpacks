@@ -1,8 +1,10 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Inventory : MonoBehaviour
+public class PlayerInventory : BaseInventory
 {
+    public static PlayerInventory Instance {  get; private set; }
+
     [SerializeField] private GameObject _rangerStartItemsConfig;
     [SerializeField] private GameObject _reaperStartItemsConfig;
 
@@ -10,10 +12,19 @@ public class Inventory : MonoBehaviour
 
     private void Awake()
     {
+        if (Instance == null)
+        {
+            Instance = this;
+        }
+        else
+        {
+            Destroy(gameObject);
+            Debug.LogError("More than one instance of Player Inventory");
+        }
+
         _configs.Add(_rangerStartItemsConfig);
         _configs.Add(_reaperStartItemsConfig);
     }
-
     private void Start()
     {
         InitStartItems();

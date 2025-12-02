@@ -34,12 +34,12 @@ public abstract class Character : MonoBehaviour, IDamageable, IStaminable
 
   
     /*first element is default gold*/
-    private int[] _levelGoldData = { 0, 8, 9, 9, 10, 10, 11, 11, 12, 12, 13, 13, 14, 14, 15, 15, 15, 15 };
+    private int[] _levelGoldData = { 0, 12, 9, 9, 9, 10, 10, 11, 11, 12, 12, 13, 13, 14, 14, 15, 15, 15 };
     private const int SEVENTH_LEVEL_GOLD_BONUS = 10;
     private const int GOLD_BONUS_ROUND = 7;
 
     /*first element is class default health*/
-    private int[] _levelHealthData = { 0, 35, 45, 55, 70, 85, 100, 115, 130, 150, 170, 190, 210, 230, 260, 290, 320, 350 };
+    private int[] _levelHealthData = { 0, 25, 35, 45, 55, 70, 85, 100, 115, 130, 150, 170, 190, 210, 230, 260, 290, 320 };
 
     //This is just 100%
     private const float MAX_CHANCE = 100;
