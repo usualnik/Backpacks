@@ -1,0 +1,28 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2f7ee9af8a105c84e96c766b811d158e, type: 3}
+  m_Name: DragonskinBoots
+  m_EditorClassIdentifier: 
+  _itemName: DragonskinBoots
+  _icon: {fileID: 21300000, guid: 8cd365822ce4af642a2ff2acc26654c3, type: 3}
+  _prefab: {fileID: 98611140532912634, guid: cfc73a7c32f1e174e8db04868be28836, type: 3}
+  _isSpawnableInShop: 0
+  _itemType: 8192
+  _itemSubType: 0
+  _rarity: 2
+  _shapeWidth: 1
+  _shapeHeight: 2
+  _shapeArray: 0101
+  _recipeIngridients: []
+  _recipeResult: {fileID: 0}
+  _price: 6
+  _socketsAmount: 1

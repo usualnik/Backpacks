@@ -31,7 +31,9 @@ public abstract class ItemDataSO : ScriptableObject
         Pets            = 1 << 8,  // 256
         Bags            = 1 << 9,  // 512
         Shields         = 1 << 10, // 1024
-        Helmets         = 1 << 11, // 2048   
+        Helmets         = 1 << 11, // 2048  
+        Gloves          = 1 << 12, // 4096 
+        Boots           = 1 << 13, // 8192        
     }
 
     [Flags]
