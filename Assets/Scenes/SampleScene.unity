@@ -19154,6 +19154,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6518585351064401694, guid: 1cceeff54572734408c4d30164de11f6, type: 3}
+      propertyPath: imageOwner
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 8730142717465353158, guid: 1cceeff54572734408c4d30164de11f6, type: 3}
       propertyPath: m_Sprite
       value: 
@@ -25149,6 +25153,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Inventory
   _rangerStartItemsConfig: {fileID: 166130651}
   _reaperStartItemsConfig: {fileID: 758997511}
+  _itemsInIventory: []
 --- !u!224 &5676903702911961656
 RectTransform:
   m_ObjectHideFlags: 0
@@ -25562,7 +25567,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchoredPosition: {x: -30, y: -30}
   m_SizeDelta: {x: 800, y: 600}
   m_Pivot: {x: 1, y: 1}
 --- !u!114 &8368822341279542765
@@ -25577,6 +25582,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 516c932dd5c5ce940af2eea1f32987af, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _inventoryCells: []
 --- !u!1001 &8404962436487025650
 PrefabInstance:
   m_ObjectHideFlags: 0

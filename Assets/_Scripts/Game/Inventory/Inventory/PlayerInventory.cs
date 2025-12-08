@@ -10,6 +10,8 @@ public class PlayerInventory : BaseInventory
 
     private List<GameObject> _configs = new List<GameObject>();
 
+    [SerializeField] private List<ItemBehaviour> _itemsInIventory;
+
     private void Awake()
     {
         if (Instance == null)
@@ -42,13 +44,22 @@ public class PlayerInventory : BaseInventory
 
     private void InitStartItems()
     {
+        _itemsInIventory.Clear();
+
         switch (PlayerCharacter.Instance.ClassData.Class)
         {
             case ClassDataSO.ClassType.Ranger:
+
                 _rangerStartItemsConfig.gameObject.SetActive(true);
+
+                _itemsInIventory.AddRange(PlayerCharacter.Instance.ClassData.GetAllStartItems());
                 break;
+
             case ClassDataSO.ClassType.Reaper:
+
                 _reaperStartItemsConfig.gameObject.SetActive(true);
+
+                _itemsInIventory.AddRange(PlayerCharacter.Instance.ClassData.GetAllStartItems());
                 break;
             default:
                 break;
@@ -56,6 +67,8 @@ public class PlayerInventory : BaseInventory
     }
     private void UpdateItemsConfig(ClassDataSO.ClassType newPlayerClass)
     {
+        _itemsInIventory.Clear();
+
         foreach (var item in _configs)
         {
             item.gameObject.SetActive(false);
@@ -65,9 +78,15 @@ public class PlayerInventory : BaseInventory
         {
             case ClassDataSO.ClassType.Ranger:
                 _rangerStartItemsConfig.SetActive(true);
+
+                _itemsInIventory.AddRange(PlayerCharacter.Instance.ClassData.GetAllStartItems());
+
                 break;
             case ClassDataSO.ClassType.Reaper:
                 _reaperStartItemsConfig.SetActive(true);
+
+                _itemsInIventory.AddRange(PlayerCharacter.Instance.ClassData.GetAllStartItems());
+
                 break;
             default:
                 break;

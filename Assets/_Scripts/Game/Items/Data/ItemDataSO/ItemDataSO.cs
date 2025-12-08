@@ -15,6 +15,7 @@ public abstract class ItemDataSO : ScriptableObject
     public ItemDataSO[] RecipeIngridients => _recipeIngridients;
     public ItemDataSO RecipeResult => _recipeResult;
     public Vector2Int GetShapeSize() => new Vector2Int(_shapeWidth, _shapeHeight);
+    public float GearScore => _gearScore;
 
     [Flags]
     public enum ItemType
@@ -82,7 +83,7 @@ public abstract class ItemDataSO : ScriptableObject
 
     [Header("Properties")]
     [SerializeField] private int _price;
-
+    [SerializeField] private float _gearScore = 0.0f; 
 
     public bool[,] GetShape()
     {
