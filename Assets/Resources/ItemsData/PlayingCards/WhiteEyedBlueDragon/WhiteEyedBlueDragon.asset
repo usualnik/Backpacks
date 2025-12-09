@@ -1,0 +1,28 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7fd2ba25cdff21547a36043763a19945, type: 3}
+  m_Name: WhiteEyedBlueDragon
+  m_EditorClassIdentifier: 
+  _itemName: WhiteEyedBlueDragon
+  _icon: {fileID: 21300000, guid: 81fc792008a802548a4dd0230d631a55, type: 3}
+  _prefab: {fileID: 98611140532912634, guid: 35d093e072ad87f478096603bb4ba7f2, type: 3}
+  _isSpawnableInShop: 1
+  _itemType: 32
+  _itemExtraType: 512
+  _rarity: 2
+  _shapeWidth: 1
+  _shapeHeight: 2
+  _shapeArray: 0101
+  _recipeIngridients: []
+  _recipeResult: {fileID: 0}
+  _price: 4
+  _gearScore: 0

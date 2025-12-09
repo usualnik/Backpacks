@@ -115,29 +115,27 @@ public abstract class Character : MonoBehaviour, IDamageable, IStaminable
     }
     #endregion
     #region WeaponDamage
-    public void TakeDamage(float damage, ItemDataSO.ItemType weaponType)
+    public void TakeDamage(float damage, ItemDataSO.ExtraType weaponType)
     { 
         float finalDamage = damage;
 
         switch (weaponType)
         {          
-            case ItemDataSO.ItemType.None:
+            default:
                 //Любой источник урона, например Fatigue или Thorns стаки, effect damage и пр.
                 break;
-            case ItemDataSO.ItemType.MeleeWeapons:
+            case ItemDataSO.ExtraType.Melee:
                 if (_damageHandler != null)
                 {
                     finalDamage = _damageHandler.FilterMeleeDamage(damage);
                 }
                 break;
 
-            case ItemDataSO.ItemType.RangedWeapons:
+            case ItemDataSO.ExtraType.Ranged:
                 if (_damageHandler != null)
                 {
                     finalDamage = _damageHandler.FilterRangedDamage(damage);
                 }
-                break;
-            default:
                 break;
         }      
 

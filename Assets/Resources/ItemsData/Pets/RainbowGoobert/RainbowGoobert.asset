@@ -1,0 +1,28 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 17ee9c810ce0af3479468404e53cb729, type: 3}
+  m_Name: RainbowGoobert
+  m_EditorClassIdentifier: 
+  _itemName: RainbowGoobert
+  _icon: {fileID: 21300000, guid: 1ffda12ebd3e9974f8c77f006d8c1805, type: 3}
+  _prefab: {fileID: 98611140532912634, guid: e29c510398558884880db5c708740363, type: 3}
+  _isSpawnableInShop: 0
+  _itemType: 128
+  _itemExtraType: 168
+  _rarity: 4
+  _shapeWidth: 2
+  _shapeHeight: 2
+  _shapeArray: 01010101
+  _recipeIngridients: []
+  _recipeResult: {fileID: 0}
+  _price: 68
+  _gearScore: 0

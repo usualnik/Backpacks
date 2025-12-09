@@ -222,7 +222,7 @@ public class CombatManager : MonoBehaviour
                 if (sourceCharacter.HasStaminaToAttack(staminaCost))
                 {
                     sourceCharacter.UseStamina(staminaCost);
-                    targetCharacter.TakeDamage(damage, weapon.WeaponDataSO.Type);
+                    targetCharacter.TakeDamage(damage, weapon.WeaponDataSO.ItemExtraType);
 
                     DealThornsDamageToAttacker(targetCharacter, sourceCharacter, damage);
 
@@ -275,11 +275,11 @@ public class CombatManager : MonoBehaviour
 
         if (thornsStacks <= damageToVictim)
         {
-            attacker.TakeDamage(thornsStacks, ItemDataSO.ItemType.None);
+            attacker.TakeDamage(thornsStacks, ItemDataSO.ExtraType.Nature);
         }
         else
         {
-            attacker.TakeDamage(damageToVictim, ItemDataSO.ItemType.None);
+            attacker.TakeDamage(damageToVictim, ItemDataSO.ExtraType.Nature);
         }
     }
 
@@ -404,7 +404,7 @@ public class CombatManager : MonoBehaviour
         if (sourceCharacter.HasStaminaToAttack(weapon.WeaponDataSO.StaminaCost))
         {
             sourceCharacter.UseStamina(weapon.WeaponDataSO.StaminaCost);
-            targetCharacter.TakeDamage(damage, weapon.WeaponDataSO.Type);
+            targetCharacter.TakeDamage(damage, weapon.WeaponDataSO.ItemExtraType);
 
             DealThornsDamageToAttacker(targetCharacter, sourceCharacter, damage);
             OnDamageDealt?.Invoke(weapon, targetCharacter.name);
@@ -444,13 +444,14 @@ public class CombatManager : MonoBehaviour
         _fatigueDamageAmount = 0;
     }
 
+
     private IEnumerator FatigueDamageRoutine()
     {
         while (_isInCombat)
         {
             _fatigueDamageAmount++;
-            _playerCharacter.TakeDamage(_fatigueDamageAmount,ItemDataSO.ItemType.None);
-            _enemyCharacter.TakeDamage(_fatigueDamageAmount, ItemDataSO.ItemType.None);
+            _playerCharacter.TakeDamage(_fatigueDamageAmount,ItemDataSO.ExtraType.None);
+            _enemyCharacter.TakeDamage(_fatigueDamageAmount, ItemDataSO.ExtraType.None);
             OnFatigueDamageApplied?.Invoke(_fatigueDamageAmount);
 
             yield return new WaitForSeconds(FATIGUE_DAMAGE_STEP);

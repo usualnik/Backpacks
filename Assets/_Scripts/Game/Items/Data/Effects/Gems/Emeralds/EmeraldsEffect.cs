@@ -44,10 +44,10 @@ public class EmeraldsEffect : MonoBehaviour, IItemEffect
 
         switch (itemData.Type)
         {
-            case ItemDataSO.ItemType.MeleeWeapons | ItemDataSO.ItemType.RangedWeapons:
+            case ItemDataSO.ItemType.Weapon:
                 RemoveWeaponEffect();
                 break;
-            case ItemDataSO.ItemType.Bags:
+            case ItemDataSO.ItemType.Bag:
                 RemoveBagEffect();
                 break;
             default:
@@ -69,13 +69,10 @@ public class EmeraldsEffect : MonoBehaviour, IItemEffect
 
         switch (itemData.Type)
         {
-            case ItemDataSO.ItemType.MeleeWeapons:
+            case ItemDataSO.ItemType.Weapon:
                 ApplyWeaponEffect(weaponBehaviour);
-                break;
-            case ItemDataSO.ItemType.RangedWeapons:
-                ApplyWeaponEffect(weaponBehaviour);
-                break;
-            case ItemDataSO.ItemType.Bags:
+                break;           
+            case ItemDataSO.ItemType.Bag:
                 ApplyBagEffect(itemWithSocket);
                 break;
             default:

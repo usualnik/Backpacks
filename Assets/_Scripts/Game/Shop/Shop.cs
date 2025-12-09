@@ -401,7 +401,7 @@ public class Shop : MonoBehaviour
     private void InitShopItems()
     {
         _allSpawnebleItems = Resources.LoadAll<ItemDataSO>("ItemsData")
-            .Where(item => item.IsSpawnableInShop && !item.Type.HasFlag(ItemDataSO.ItemType.Gems))
+            .Where(item => item.IsSpawnableInShop && !item.Type.HasFlag(ItemDataSO.ItemType.Gemstone))
             .ToList();
 
         Debug.Log($"Loaded {_allSpawnebleItems.Count} items");

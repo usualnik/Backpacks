@@ -1,0 +1,28 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7fd2ba25cdff21547a36043763a19945, type: 3}
+  m_Name: TheLovers
+  m_EditorClassIdentifier: 
+  _itemName: TheLovers
+  _icon: {fileID: 21300000, guid: 8444e4e8d4987564cb8b7c948eb9ba63, type: 3}
+  _prefab: {fileID: 98611140532912634, guid: 791daf52c667f0e459672af0a4606aad, type: 3}
+  _isSpawnableInShop: 1
+  _itemType: 32
+  _itemExtraType: 0
+  _rarity: 0
+  _shapeWidth: 1
+  _shapeHeight: 2
+  _shapeArray: 0101
+  _recipeIngridients: []
+  _recipeResult: {fileID: 0}
+  _price: 3
+  _gearScore: 0

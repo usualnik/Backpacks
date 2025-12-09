@@ -8,7 +8,7 @@ public abstract class ItemDataSO : ScriptableObject
     public Sprite Icon => _icon;
     public int Price => _price;
     public GameObject Prefab => _prefab;
-    public ItemSubType SubType => _itemSubType;
+    public ExtraType ItemExtraType => _itemExtraType;
     public RarityType Rarity => _rarity;
     public bool IsSpawnableInShop => _isSpawnableInShop;
     public ItemType Type => _itemType;
@@ -23,29 +23,38 @@ public abstract class ItemDataSO : ScriptableObject
         None            = 0,
         Accessory       = 1 << 0,  // 1
         Armor           = 1 << 1,  // 2
-        Gems            = 1 << 2,  // 4
+        Gemstone        = 1 << 2,  // 4
         Food            = 1 << 3,  // 8
-        Potions         = 1 << 4,  // 16
-        PlayingCards    = 1 << 5,  // 32
-        MeleeWeapons    = 1 << 6,  // 64
-        RangedWeapons   = 1 << 7,  // 128
-        Pets            = 1 << 8,  // 256
-        Bags            = 1 << 9,  // 512
-        Shields         = 1 << 10, // 1024
-        Helmets         = 1 << 11, // 2048  
-        Gloves          = 1 << 12, // 4096 
-        Boots           = 1 << 13, // 8192        
+        Potion          = 1 << 4,  // 16
+        PlayingCard     = 1 << 5,  // 32
+        Weapon          = 1 << 6,  // 64
+        Pet             = 1 << 7,  // 128
+        Bag             = 1 << 8,  // 256
+        Shield          = 1 << 9,  // 512
+        Helmet          = 1 << 10, // 1024  
+        Gloves          = 1 << 11, // 2048
+        Shoes           = 1 << 12, // 4096
+        Skill           = 1 << 13, // 8192              
+        SpellScroll     = 1 << 14, // 16384
+        Book            = 1 << 15, // 32768
+        Chess           = 1 << 16, // 65536
     }
 
     [Flags]
-    public enum ItemSubType
+    public enum ExtraType
     {
         None        = 0,
-        Dark        = 1 << 0,   // 1
-        Holy        = 1 << 1,   // 2
-        Magical     = 1 << 2,   // 4
-        Natural     = 1 << 3,   // 8
-        Vampire     = 1 << 4,   // 16
+        Melee       = 1 << 0,       // 1
+        Ranged      = 1 << 1,       // 2      
+        Effect      = 1 << 2,       // 4
+        Nature      = 1 << 3,       // 8
+        Magic       = 1 << 4,       // 16
+        Holy        = 1 << 5,       // 32
+        Dark        = 1 << 6,       // 64
+        Vampiric    = 1 << 7,       // 128
+        Fire        = 1 << 8,       // 256
+        Ice         = 1 << 9,       // 512
+        Musical     = 1 << 10,      // 1024
     }
 
     public enum RarityType
@@ -67,7 +76,7 @@ public abstract class ItemDataSO : ScriptableObject
 
     [Header("SubType")]
     [SerializeField] private ItemType _itemType = ItemType.None;
-    [SerializeField] private ItemSubType _itemSubType = ItemSubType.None;
+    [SerializeField] private ExtraType _itemExtraType = ExtraType.None;
 
     [Header("Rarity")]
     [SerializeField] private RarityType _rarity = RarityType.Common;

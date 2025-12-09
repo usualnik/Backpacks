@@ -44,13 +44,10 @@ public class TopazesEffect : MonoBehaviour, IItemEffect
 
         switch (itemData.Type)
         {
-            case ItemDataSO.ItemType.MeleeWeapons:
+            case ItemDataSO.ItemType.Weapon:
                 RemoveWeaponEffect();
-                break;
-            case ItemDataSO.ItemType.RangedWeapons:
-                RemoveWeaponEffect();
-                break;
-            case ItemDataSO.ItemType.Bags:
+                break;           
+            case ItemDataSO.ItemType.Bag:
                 RemoveBagEffect();
                 break;
             default:
@@ -72,13 +69,10 @@ public class TopazesEffect : MonoBehaviour, IItemEffect
 
         switch (itemData.Type)
         {
-            case ItemDataSO.ItemType.MeleeWeapons:
+            case ItemDataSO.ItemType.Weapon:
                 ApplyWeaponEffect(weaponBehaviour);
-                break;
-            case ItemDataSO.ItemType.RangedWeapons:
-                ApplyWeaponEffect(weaponBehaviour);
-                break;
-            case ItemDataSO.ItemType.Bags:
+                break;          
+            case ItemDataSO.ItemType.Bag:
                 ApplyBagEffect(itemWithSocket);
                 break;
             default:

@@ -18,7 +18,7 @@ public class DescriptionBox : MonoBehaviour
 
         _itemNameText.text = "Item Name : " + _itemBehaviour.ItemData.ItemName;
         _itemPriceText.text = "Item Price : " + _itemBehaviour.GetItemPrice().ToString();
-        _itemSubTypeText.text = "Item SubType : " + _itemBehaviour.ItemData.SubType.ToString();
+        _itemSubTypeText.text = "Item SubType : " + _itemBehaviour.ItemData.ItemExtraType.ToString();
         _itemRarityText.text = "Item Rarity : " + _itemBehaviour.ItemData.Rarity.ToString();
     }
 }

@@ -56,13 +56,10 @@ public class RubysEffect : MonoBehaviour, IItemEffect
 
         switch (itemData.Type)
         {
-            case ItemDataSO.ItemType.MeleeWeapons:
+            case ItemDataSO.ItemType.Weapon:
                 RemoveWeaponEffect();
-                break;
-            case ItemDataSO.ItemType.RangedWeapons:
-                RemoveWeaponEffect();
-                break;
-            case ItemDataSO.ItemType.Bags:
+                break;           
+            case ItemDataSO.ItemType.Bag:
                 RemoveBagEffect();
                 break;
             default:
@@ -84,13 +81,10 @@ public class RubysEffect : MonoBehaviour, IItemEffect
 
         switch (itemData.Type)
         {
-            case ItemDataSO.ItemType.MeleeWeapons:
+            case ItemDataSO.ItemType.Weapon:
                 ApplyWeaponEffect(weaponBehaviour);
-                break;
-            case ItemDataSO.ItemType.RangedWeapons:
-                ApplyWeaponEffect(weaponBehaviour);
-                break;
-            case ItemDataSO.ItemType.Bags:
+                break;            
+            case ItemDataSO.ItemType.Bag:
                 ApplyBagEffect(itemWithSocket);
                 break;
             default:
@@ -171,7 +165,7 @@ public class RubysEffect : MonoBehaviour, IItemEffect
 
         if (_dealDamageTimer <= 0)
         {
-            _bagItem?.TargetCharacter?.TakeDamage(_effectDamageAmount, ItemDataSO.ItemType.None);
+            _bagItem?.TargetCharacter?.TakeDamage(_effectDamageAmount, ItemDataSO.ExtraType.Effect);
             _bagItem?.SourceCharacter?.AddLifestealMultiplier(_additionalLifesteal);
            _shouldDealDamage = false;
         }
