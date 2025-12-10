@@ -1,0 +1,28 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 17ee9c810ce0af3479468404e53cb729, type: 3}
+  m_Name: Jynxtorquilla
+  m_EditorClassIdentifier: 
+  _itemName: Jynxtorquilla
+  _icon: {fileID: 21300000, guid: fa1ca88bdfad39242abaed115ad88b36, type: 3}
+  _prefab: {fileID: 98611140532912634, guid: cf6ec09aeb5c0084fbf0375e4f2c0de3, type: 3}
+  _isSpawnableInShop: 1
+  _itemType: 128
+  _itemExtraType: 1032
+  _rarity: 3
+  _shapeWidth: 2
+  _shapeHeight: 2
+  _shapeArray: 01010001
+  _recipeIngridients: []
+  _recipeResult: {fileID: 0}
+  _price: 6
+  _gearScore: 0

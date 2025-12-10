@@ -9,9 +9,7 @@ public class WeaponBehaviour : ItemBehaviour
 
     [SerializeField] private WeaponDataSO _weaponDataSO;
 
-    [SerializeField]
     private float _weaponDamageMin;
-    [SerializeField]
     private float _weaponDamageMax;
 
     private float _critHitChance = 0;

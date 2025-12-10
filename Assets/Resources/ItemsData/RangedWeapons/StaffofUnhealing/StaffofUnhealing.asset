@@ -1,0 +1,34 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 09869a080ac0664449b43d0222c7ada2, type: 3}
+  m_Name: StaffofUnhealing
+  m_EditorClassIdentifier: 
+  _itemName: StaffofUnhealing
+  _icon: {fileID: 21300000, guid: 24913421fce8e7647bcd62b24c28395a, type: 3}
+  _prefab: {fileID: 98611140532912634, guid: d86d5eff677bf1041aa1247ec8e301fe, type: 3}
+  _isSpawnableInShop: 0
+  _itemType: 64
+  _itemExtraType: 82
+  _rarity: 4
+  _shapeWidth: 1
+  _shapeHeight: 4
+  _shapeArray: 01010101
+  _recipeIngridients: []
+  _recipeResult: {fileID: 0}
+  _price: 19
+  _gearScore: 0
+  _damageMin: 0
+  _damageMax: 0
+  _staminaCost: 1.5
+  _cooldown: 2
+  _accuracy: 0
+  _socketsAmount: 0

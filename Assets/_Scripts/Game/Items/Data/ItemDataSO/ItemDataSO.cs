@@ -55,6 +55,7 @@ public abstract class ItemDataSO : ScriptableObject
         Fire        = 1 << 8,       // 256
         Ice         = 1 << 9,       // 512
         Musical     = 1 << 10,      // 1024
+        Treasure    = 1 << 11,      // 2048          
     }
 
     public enum RarityType
