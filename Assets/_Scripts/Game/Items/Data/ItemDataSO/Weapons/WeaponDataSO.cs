@@ -15,8 +15,8 @@ public abstract class WeaponDataSO : ItemDataSO
     [SerializeField] protected float _damageMin;
     [SerializeField] protected float _damageMax;
     [SerializeField] protected float _staminaCost;
-    [SerializeField] protected float _cooldown;
     [SerializeField] protected float _accuracy;
+    [SerializeField] protected float _cooldown;
     private float _baseCritHitChance;
 
     [SerializeField] protected int _socketsAmount;   

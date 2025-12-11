@@ -1,0 +1,34 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 022187cc8b9c22f478b4a1bd367e097f, type: 3}
+  m_Name: FalconBlade
+  m_EditorClassIdentifier: 
+  _itemName: FalconBlade
+  _icon: {fileID: 21300000, guid: 87e96d1b1cdb1454bafa85912145c41c, type: 3}
+  _prefab: {fileID: 98611140532912634, guid: 571839eb8edd52e438652f52d8b307e7, type: 3}
+  _isSpawnableInShop: 0
+  _itemType: 64
+  _itemExtraType: 1
+  _rarity: 3
+  _shapeWidth: 1
+  _shapeHeight: 3
+  _shapeArray: 010101
+  _recipeIngridients: []
+  _recipeResult: {fileID: 0}
+  _price: 19
+  _gearScore: 0
+  _damageMin: 5
+  _damageMax: 6
+  _staminaCost: 1
+  _cooldown: 1.7
+  _accuracy: 90
+  _socketsAmount: 2

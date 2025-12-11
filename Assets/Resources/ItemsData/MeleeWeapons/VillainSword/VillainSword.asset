@@ -1,0 +1,34 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 022187cc8b9c22f478b4a1bd367e097f, type: 3}
+  m_Name: VillainSword
+  m_EditorClassIdentifier: 
+  _itemName: VillainSword
+  _icon: {fileID: 21300000, guid: ff9bfd44e3b60ff4892741ebeba60c0e, type: 3}
+  _prefab: {fileID: 98611140532912634, guid: 5b180fcb38435b040bcbc68e37b03d4e, type: 3}
+  _isSpawnableInShop: 1
+  _itemType: 64
+  _itemExtraType: 2113
+  _rarity: 5
+  _shapeWidth: 1
+  _shapeHeight: 2
+  _shapeArray: 0101
+  _recipeIngridients: []
+  _recipeResult: {fileID: 0}
+  _price: 7
+  _gearScore: 0
+  _damageMin: 2
+  _damageMax: 4
+  _staminaCost: 0.3
+  _cooldown: 1.3
+  _accuracy: 90
+  _socketsAmount: 1
