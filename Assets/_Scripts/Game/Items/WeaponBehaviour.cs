@@ -17,8 +17,11 @@ public class WeaponBehaviour : ItemBehaviour
     private float _coolDownSpeed = 0;
     private float _currentCooldownMultiplier = 1f;
 
+
     private void Awake()
     {
+        _ownerTargetHandler = GetComponent<OwnerTargetHandler>();
+
         _weaponDamageMin = _weaponDataSO.DamageMin;
         _weaponDamageMax = _weaponDataSO.DamageMax;
         _critHitChance = _weaponDataSO.BaseCritChance;
@@ -29,18 +32,7 @@ public class WeaponBehaviour : ItemBehaviour
     {
         CombatManager.Instance.OnCombatStarted += CombatManager_OnCombatStarted;
 
-        switch (GetTarget())
-        {
-            case Target.Player:
-                _targetCharacter = PlayerCharacter.Instance;
-                _sourceCharacter = EnemyCharacter.Instance;
-                break;
-            case Target.Enemy:
-                _targetCharacter = EnemyCharacter.Instance;
-                _sourceCharacter = PlayerCharacter.Instance;
-                break;
-        }
-
+        base.ConfigureItemOwnerTarget();
     }
 
     private void OnDestroy()

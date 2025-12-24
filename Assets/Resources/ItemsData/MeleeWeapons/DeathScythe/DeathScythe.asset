@@ -1,0 +1,34 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 022187cc8b9c22f478b4a1bd367e097f, type: 3}
+  m_Name: DeathScythe
+  m_EditorClassIdentifier: 
+  _itemName: DeathScythe
+  _icon: {fileID: 21300000, guid: 756f23176b52f114998800fca1076f01, type: 3}
+  _prefab: {fileID: 98611140532912634, guid: 25ed2fb5f8765e24eba8cb6df42b9fc0, type: 3}
+  _isSpawnableInShop: 1
+  _itemType: 64
+  _itemExtraType: 65
+  _rarity: 3
+  _shapeWidth: 3
+  _shapeHeight: 4
+  _shapeArray: 010101010100000001000000
+  _recipeIngridients: []
+  _recipeResult: {fileID: 0}
+  _price: 12
+  _gearScore: 11.2
+  _damageMin: 6
+  _damageMax: 10
+  _staminaCost: 1.2
+  _accuracy: 90
+  _cooldown: 1.4
+  _socketsAmount: 3

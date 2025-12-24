@@ -119,12 +119,12 @@ public class RubysEffect : MonoBehaviour, IItemEffect
     private void GainLifesteal()
     {
         _gainedAmount += _gainedLifeStealAmount;
-        _gemedWeapon?.SourceCharacter?.AddLifestealMultiplier(_gainedLifeStealAmount);
+        _gemedWeapon?.OwnerCharacter?.AddLifestealMultiplier(_gainedLifeStealAmount);
     }
 
     private void ResetLifestealAfterFight()
     {
-        _gemedWeapon?.SourceCharacter?.AddLifestealMultiplier(-_gainedAmount);
+        _gemedWeapon?.OwnerCharacter?.AddLifestealMultiplier(-_gainedAmount);
     }
 
     #endregion
@@ -154,7 +154,7 @@ public class RubysEffect : MonoBehaviour, IItemEffect
     private void CombatManager_OnCombatFinishedWithGemmedBag(CombatManager.CombatResult obj)
     {
         _shouldDealDamage = false;
-        _bagItem?.SourceCharacter?.AddLifestealMultiplier(-_additionalLifesteal);
+        _bagItem?.OwnerCharacter?.AddLifestealMultiplier(-_additionalLifesteal);
     }
 
     private void Update()
@@ -166,7 +166,7 @@ public class RubysEffect : MonoBehaviour, IItemEffect
         if (_dealDamageTimer <= 0)
         {
             _bagItem?.TargetCharacter?.TakeDamage(_effectDamageAmount, ItemDataSO.ExtraType.Effect);
-            _bagItem?.SourceCharacter?.AddLifestealMultiplier(_additionalLifesteal);
+            _bagItem?.OwnerCharacter?.AddLifestealMultiplier(_additionalLifesteal);
            _shouldDealDamage = false;
         }
 
@@ -179,11 +179,11 @@ public class RubysEffect : MonoBehaviour, IItemEffect
     private void ApplyArmorOrOtherEffect(ItemBehaviour armorOrOtherItem)
     {
         _armorOrOtherItem = armorOrOtherItem;
-        _armorOrOtherItem.SourceCharacter.AddHealthRegenMultiplier(_increaseHealingMultiplier);
+        _armorOrOtherItem.OwnerCharacter.AddHealthRegenMultiplier(_increaseHealingMultiplier);
     }
     private void RemoveArmorOrOtherEffect()
     {
-        _armorOrOtherItem.SourceCharacter.AddHealthRegenMultiplier(-_increaseHealingMultiplier);
+        _armorOrOtherItem.OwnerCharacter.AddHealthRegenMultiplier(-_increaseHealingMultiplier);
         _armorOrOtherItem = null;
 
     }

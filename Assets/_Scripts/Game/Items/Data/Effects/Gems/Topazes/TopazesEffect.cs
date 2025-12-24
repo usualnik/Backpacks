@@ -102,13 +102,13 @@ public class TopazesEffect : MonoBehaviour, IItemEffect
     private void ApplyBagEffect(ItemBehaviour bagItem)
     {
         _bagItem = bagItem;
-        _bagItem.SourceCharacter.AddStaminaRegenStepMultiplier(_gainStaminaRegenValue);       
+        _bagItem.OwnerCharacter.AddStaminaRegenStepMultiplier(_gainStaminaRegenValue);       
     }
 
 
     private void RemoveBagEffect()
     {
-        _bagItem.SourceCharacter.AddStaminaRegenStepMultiplier(-_gainStaminaRegenValue);
+        _bagItem.OwnerCharacter.AddStaminaRegenStepMultiplier(-_gainStaminaRegenValue);
         _bagItem = null;
       
     }
@@ -119,14 +119,14 @@ public class TopazesEffect : MonoBehaviour, IItemEffect
     private void ApplyArmorOrOtherEffect(ItemBehaviour armorOrOtherItem)
     {
         _armorOrOtherItem = armorOrOtherItem;
-        _armorOrOtherItem?.SourceCharacter?.AddStunResistChance(_gainChanceToResistStun);
-        _armorOrOtherItem?.SourceCharacter?.AddCriticalHitResistChance(_gainChanceToCriticalHit);
+        _armorOrOtherItem?.OwnerCharacter?.AddStunResistChance(_gainChanceToResistStun);
+        _armorOrOtherItem?.OwnerCharacter?.AddCriticalHitResistChance(_gainChanceToCriticalHit);
 
     }
     private void RemoveArmorOrOtherEffect()
     {
-        _armorOrOtherItem?.SourceCharacter?.AddStunResistChance(-_gainChanceToResistStun);
-        _armorOrOtherItem?.SourceCharacter?.AddCriticalHitResistChance(-_gainChanceToCriticalHit);
+        _armorOrOtherItem?.OwnerCharacter?.AddStunResistChance(-_gainChanceToResistStun);
+        _armorOrOtherItem?.OwnerCharacter?.AddCriticalHitResistChance(-_gainChanceToCriticalHit);
 
         _armorOrOtherItem = null;
     }

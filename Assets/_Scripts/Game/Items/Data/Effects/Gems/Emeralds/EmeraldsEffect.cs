@@ -153,7 +153,7 @@ public class EmeraldsEffect : MonoBehaviour, IItemEffect
 
         if (_gainRegenerationBuffTimer <= 0)
         {
-            _bagItem.SourceCharacter.ApplyBuff(_regenerationBuff);
+            _bagItem.OwnerCharacter.ApplyBuff(_regenerationBuff);
             _isShouldBuffRegen = false;
         }
 
@@ -166,11 +166,11 @@ public class EmeraldsEffect : MonoBehaviour, IItemEffect
     private void ApplyArmorOrOtherEffect(ItemBehaviour armorOrOtherItem)
     {
         _armorOrOtherItem = armorOrOtherItem;
-        _armorOrOtherItem?.SourceCharacter?.AddPoisonResistChance(_increaseResistPoisonChance);
+        _armorOrOtherItem?.OwnerCharacter?.AddPoisonResistChance(_increaseResistPoisonChance);
     }
     private void RemoveArmorOrOtherEffect()
     {
-        _armorOrOtherItem?.SourceCharacter?.AddPoisonResistChance(-_increaseResistPoisonChance);
+        _armorOrOtherItem?.OwnerCharacter?.AddPoisonResistChance(-_increaseResistPoisonChance);
         _armorOrOtherItem = null;
 
     }

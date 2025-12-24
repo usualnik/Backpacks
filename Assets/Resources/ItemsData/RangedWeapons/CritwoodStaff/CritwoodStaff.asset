@@ -25,10 +25,10 @@ MonoBehaviour:
   _recipeIngridients: []
   _recipeResult: {fileID: 0}
   _price: 16
-  _gearScore: 0
+  _gearScore: 9.6
   _damageMin: 6
   _damageMax: 8
   _staminaCost: 1
-  _cooldown: 1.8
   _accuracy: 90
+  _cooldown: 1.8
   _socketsAmount: 1

@@ -33,7 +33,7 @@ public class PumpkinEffect : MonoBehaviour, IItemEffect
     }
     private void CombatManager_OnFatigueDamageStarted()
     {
-        _pumpkinWeapon.SourceCharacter?.ApplyBuff(_pumpkinBuff);
+        _pumpkinWeapon.OwnerCharacter?.ApplyBuff(_pumpkinBuff);
     }
     public void ApplyEffect(ItemBehaviour item, Character sourceCharacter, Character targetCharacter)
     {

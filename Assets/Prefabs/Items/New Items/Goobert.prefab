@@ -12,6 +12,18 @@ PrefabInstance:
       propertyPath: m_Name
       value: Goobert
       objectReference: {fileID: 0}
+    - target: {fileID: 2686240260154758306, guid: 137870c767bf8b84f9c550357331a0cf, type: 3}
+      propertyPath: enemyConfigOwner
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2686240260154758306, guid: 137870c767bf8b84f9c550357331a0cf, type: 3}
+      propertyPath: enemyConfigTarget
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 2686240260154758306, guid: 137870c767bf8b84f9c550357331a0cf, type: 3}
+      propertyPath: playerConfigTarget
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 3722408764420827945, guid: 137870c767bf8b84f9c550357331a0cf, type: 3}
       propertyPath: _target
       value: 1

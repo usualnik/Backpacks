@@ -148,7 +148,7 @@ public class AmethystsEffect : MonoBehaviour, IItemEffect
 
         while (true)
         {
-            _bagItem?.SourceCharacter?.RemoveBuff(randomBuff, 1);
+            _bagItem?.OwnerCharacter?.RemoveBuff(randomBuff, 1);
             Debug.Log("Trying to remove debuff");
             yield return new WaitForSeconds(_cleanseDebuffTimer);
         }

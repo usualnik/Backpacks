@@ -12,11 +12,11 @@ public class AttackRoutineData
     public WeaponBehaviour Weapon { get; set; }
     public Character SourceCharacter { get; set; }
     public Character TargetCharacter { get; set; }
-    public ItemBehaviour.Target TargetType { get; set; }
+    public OwnerTargetHandler.Target TargetType { get; set; }
     public bool IsPaused { get; set; }
 
     public AttackRoutineData(Coroutine routine, WeaponBehaviour weapon, Character source,
-                           Character target, ItemBehaviour.Target targetType)
+                           Character target, OwnerTargetHandler.Target targetType)
     {
         Routine = routine;
         Weapon = weapon;
@@ -126,7 +126,7 @@ public class CombatManager : MonoBehaviour
     #endregion
 
     #region WeaponDamage
-    public void StartAutoAttack(ItemBehaviour.Target target, WeaponBehaviour weapon,
+    public void StartAutoAttack(OwnerTargetHandler.Target target, WeaponBehaviour weapon,
     float damageMin, float damageMax,
     float staminaCost, float cooldown, float accuracy)
     {
@@ -139,10 +139,10 @@ public class CombatManager : MonoBehaviour
         AttackRoutineData routineData = null;
         switch (target)
         {
-            case ItemBehaviour.Target.Player:
+            case OwnerTargetHandler.Target.Player:
                 routineData = CreateAttackRoutine(_enemyCharacter, _playerCharacter, weapon, target);
                 break;
-            case ItemBehaviour.Target.Enemy:
+            case OwnerTargetHandler.Target.Enemy:
                 routineData = CreateAttackRoutine(_playerCharacter, _enemyCharacter, weapon, target);
                 break;
             default:
@@ -175,7 +175,7 @@ public class CombatManager : MonoBehaviour
         }
     }
     private AttackRoutineData CreateAttackRoutine(Character sourceCharacter,
-    Character targetCharacter, WeaponBehaviour weapon, ItemBehaviour.Target targetType)
+    Character targetCharacter, WeaponBehaviour weapon,OwnerTargetHandler.Target targetType)
     {
         var routineData = new AttackRoutineData(null, weapon, sourceCharacter, targetCharacter, targetType);
         routineData.Routine = StartCoroutine(AutoAttackRoutine(routineData));

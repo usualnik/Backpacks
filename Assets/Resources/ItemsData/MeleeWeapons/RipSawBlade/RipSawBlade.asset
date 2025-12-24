@@ -1,0 +1,34 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 022187cc8b9c22f478b4a1bd367e097f, type: 3}
+  m_Name: RipSawBlade
+  m_EditorClassIdentifier: 
+  _itemName: RipSawBlade
+  _icon: {fileID: 21300000, guid: fed81247375377445b10fdcb78bdcdb8, type: 3}
+  _prefab: {fileID: 98611140532912634, guid: aef80deb554d61043af50305477ebe51, type: 3}
+  _isSpawnableInShop: 1
+  _itemType: 64
+  _itemExtraType: 1
+  _rarity: 3
+  _shapeWidth: 1
+  _shapeHeight: 4
+  _shapeArray: 01010101
+  _recipeIngridients: []
+  _recipeResult: {fileID: 0}
+  _price: 9
+  _gearScore: 8
+  _damageMin: 8
+  _damageMax: 10
+  _staminaCost: 1.5
+  _accuracy: 90
+  _cooldown: 1.8
+  _socketsAmount: 3

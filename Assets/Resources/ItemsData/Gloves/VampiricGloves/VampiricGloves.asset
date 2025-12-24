@@ -17,7 +17,7 @@ MonoBehaviour:
   _prefab: {fileID: 98611140532912634, guid: 0561eec771eb0ab41b4c0ecd051717c9, type: 3}
   _isSpawnableInShop: 0
   _itemType: 4096
-  _itemSubType: 16
+  _itemExtraType: 0
   _rarity: 4
   _shapeWidth: 2
   _shapeHeight: 1
@@ -25,3 +25,4 @@ MonoBehaviour:
   _recipeIngridients: []
   _recipeResult: {fileID: 0}
   _price: 12
+  _gearScore: 13

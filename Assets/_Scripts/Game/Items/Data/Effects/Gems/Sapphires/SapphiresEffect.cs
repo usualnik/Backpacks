@@ -94,14 +94,14 @@ public class SapphiresEffect : MonoBehaviour, IItemEffect
         if (weaponBehaviour == null) return;
 
         _gemedWeapon = weaponBehaviour;
-        _gemedWeapon.SourceCharacter.AddIgnoreArmorChance(_ignoreArmorChance);
+        _gemedWeapon.OwnerCharacter.AddIgnoreArmorChance(_ignoreArmorChance);
 
         CombatManager.Instance.OnDamageDealt += CombatManager_OnDamageDealt;
     }
 
     private void RemoveWeaponEffect()
     {
-        _gemedWeapon.SourceCharacter.AddIgnoreArmorChance(-_ignoreArmorChance);
+        _gemedWeapon.OwnerCharacter.AddIgnoreArmorChance(-_ignoreArmorChance);
 
         _gemedWeapon = null;
         CombatManager.Instance.OnDamageDealt -= CombatManager_OnDamageDealt;
@@ -129,7 +129,7 @@ public class SapphiresEffect : MonoBehaviour, IItemEffect
         bool isProc = UnityEngine.Random.Range(0f, 100f) <= _ignoreArmorChance ? true : false;
         if (isProc)
         {
-            _gemedWeapon?.SourceCharacter?.ApplyBuff(_gainedManaBuff);
+            _gemedWeapon?.OwnerCharacter?.ApplyBuff(_gainedManaBuff);
         }
     }
 
@@ -181,14 +181,14 @@ public class SapphiresEffect : MonoBehaviour, IItemEffect
     private void ApplyArmorOrOtherEffect(ItemBehaviour armorOrOtherItem)
     {
         _armorOrOtherItem = armorOrOtherItem;
-        _armorOrOtherItem.SourceCharacter.OnNewBuffApplied += SourceCharacter_OnNewBuffApplied;
+        _armorOrOtherItem.OwnerCharacter.OnNewBuffApplied += SourceCharacter_OnNewBuffApplied;
     }
 
    
 
     private void RemoveArmorOrOtherEffect()
     {
-        _armorOrOtherItem.SourceCharacter.OnNewBuffApplied -= SourceCharacter_OnNewBuffApplied;
+        _armorOrOtherItem.OwnerCharacter.OnNewBuffApplied -= SourceCharacter_OnNewBuffApplied;
         _armorOrOtherItem = null;
     }
 
@@ -200,7 +200,7 @@ public class SapphiresEffect : MonoBehaviour, IItemEffect
 
             if (_manaBuffGained == _manaBuffneeded)
             {
-                _armorOrOtherItem?.SourceCharacter?.ChangeArmorValue(_gainArmorAmount);
+                _armorOrOtherItem?.OwnerCharacter?.ChangeArmorValue(_gainArmorAmount);
                 _manaBuffGained = 0;
             }
         }

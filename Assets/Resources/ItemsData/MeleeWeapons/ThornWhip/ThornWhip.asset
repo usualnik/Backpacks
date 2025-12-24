@@ -1,0 +1,34 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 022187cc8b9c22f478b4a1bd367e097f, type: 3}
+  m_Name: ThornWhip
+  m_EditorClassIdentifier: 
+  _itemName: ThornWhip
+  _icon: {fileID: 21300000, guid: eceb6ace27b641c4f8e5a56428f7117a, type: 3}
+  _prefab: {fileID: 98611140532912634, guid: 44e2b5d937488c44ca2ea1a540f47ee7, type: 3}
+  _isSpawnableInShop: 1
+  _itemType: 64
+  _itemExtraType: 9
+  _rarity: 2
+  _shapeWidth: 3
+  _shapeHeight: 3
+  _shapeArray: 000001010101000001
+  _recipeIngridients: []
+  _recipeResult: {fileID: 0}
+  _price: 8
+  _gearScore: 4.8
+  _damageMin: 4
+  _damageMax: 9
+  _staminaCost: 2.2
+  _accuracy: 80
+  _cooldown: 2.2
+  _socketsAmount: 2

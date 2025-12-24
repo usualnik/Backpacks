@@ -10,14 +10,16 @@ public class ItemBehaviour : MonoBehaviour
     public ItemState PreviousState => _previousState;
     public ItemDataSO ItemData => _itemData;
     public Character TargetCharacter => _targetCharacter;
-    public Character SourceCharacter => _sourceCharacter;
+    public Character OwnerCharacter => _ownerCharacter;
 
     [SerializeField] private ItemDataSO _itemData;
 
     private IItemEffect _effect;
 
+    [SerializeField]
     protected Character _targetCharacter;
-    protected Character _sourceCharacter;
+    [SerializeField]
+    protected Character _ownerCharacter;
 
 
     [Flags]
@@ -38,63 +40,43 @@ public class ItemBehaviour : MonoBehaviour
     protected int _itemPrice;
     protected ItemVisual _itemVisual;
 
-    public enum Target
-    {
-        Player,
-        Enemy
-    }
-
-    [SerializeField] protected Target _target;
-
+   protected OwnerTargetHandler _ownerTargetHandler;
 
     private void Awake()
     {
-        //Эта строчка существет потому что цена объекта зафиксирована в SO и она readonly, из-за природы SO
         _itemPrice = _itemData.Price;
+
+        _ownerTargetHandler = GetComponent<OwnerTargetHandler>();
         _itemVisual = GetComponentInChildren<ItemVisual>();
-        _effect = GetComponent<IItemEffect>();        
+        _effect = GetComponent<IItemEffect>();
     }
 
     private void Start()
     {
         CombatManager.Instance.OnCombatStarted += CombatManager_OnCombatStarted;
 
-        switch (GetTarget())
-        {
-            case Target.Player:
-                _targetCharacter = PlayerCharacter.Instance;
-                _sourceCharacter = EnemyCharacter.Instance;
-                break;
-            case Target.Enemy:
-                _targetCharacter = EnemyCharacter.Instance;
-                _sourceCharacter = PlayerCharacter.Instance;
-                break;
-        }
-
+        ConfigureItemOwnerTarget();
     }
     private void OnDestroy()
     {
         CombatManager.Instance.OnCombatStarted -= CombatManager_OnCombatStarted;
     }
-
     private void CombatManager_OnCombatStarted()
     {
         if (CurrentState.HasFlag(ItemState.Inventory))
         {
-           
+
 
             //_itemData.PerformAction(_target,this);
 
             PerformAction();
 
             OnItemActionPerformed?.Invoke(this, _targetCharacter);
-            
-            _effect?.ApplyEffect(this,_sourceCharacter,_targetCharacter);
-        }       
+
+            _effect?.ApplyEffect(this, _ownerCharacter, _targetCharacter);
+        }
     }
-
     public ItemState GetItemState() { return _currentState; }
-
     public void SetItemState(ItemState state)
     {
         //HACK: Я не уверен, что упраление состоянием работает правильно, нужно за ним следить
@@ -112,18 +94,15 @@ public class ItemBehaviour : MonoBehaviour
             _previousState = _currentState;
         }
     }
-
     public void InitItemStateInStore()
     {
         _previousState = ItemState.Store;
         _currentState = ItemState.Store;
     }
-
     public void DestroySelf()
     {
         Destroy(gameObject);
     }
-
     public void CombineWithIngridient(ItemBehaviour ingridient, ItemDataSO recipeResult)
     {
         _itemData = recipeResult;
@@ -133,10 +112,39 @@ public class ItemBehaviour : MonoBehaviour
     public int GetItemPrice() => ItemData.Price;
     public void SetItemPrice(int value) => _itemPrice = value;
     public ItemVisual GetItemVisual() => _itemVisual;
-    public ItemBehaviour.Target GetTarget() => _target;
+    public OwnerTargetHandler.Target GetTarget() => _ownerTargetHandler.GetTarget();
+    public OwnerTargetHandler.Owner GetOwner() => _ownerTargetHandler.GetOwner();
 
     private void PerformAction()
     {
 
     }
+
+    protected void ConfigureItemOwnerTarget()
+    {
+        switch (GetTarget())
+        {
+            case OwnerTargetHandler.Target.Player:
+                _targetCharacter = PlayerCharacter.Instance;
+                break;
+            case OwnerTargetHandler.Target.Enemy:
+                _targetCharacter = EnemyCharacter.Instance;
+                break;
+            case OwnerTargetHandler.Target.None:
+                // У некоторых предметов нет цели, по дефолту ставится в цель игрок
+                _targetCharacter = PlayerCharacter.Instance;
+                break;
+        }
+
+        switch (GetOwner())
+        {
+            case OwnerTargetHandler.Owner.Player:
+                _ownerCharacter = PlayerCharacter.Instance;
+                break;
+            case OwnerTargetHandler.Owner.Enemy:
+                _ownerCharacter = EnemyCharacter.Instance;
+                break;
+        }
+    }
+
 }

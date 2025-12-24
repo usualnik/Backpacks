@@ -1,0 +1,34 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 022187cc8b9c22f478b4a1bd367e097f, type: 3}
+  m_Name: Pan
+  m_EditorClassIdentifier: 
+  _itemName: Pan
+  _icon: {fileID: 21300000, guid: e9178e4f3d4e135468fe2618c0426e0e, type: 3}
+  _prefab: {fileID: 98611140532912634, guid: e4e7e2fe51e0bda4cb7038da359729cd, type: 3}
+  _isSpawnableInShop: 1
+  _itemType: 64
+  _itemExtraType: 1
+  _rarity: 0
+  _shapeWidth: 2
+  _shapeHeight: 2
+  _shapeArray: 01000101
+  _recipeIngridients: []
+  _recipeResult: {fileID: 0}
+  _price: 4
+  _gearScore: 0.8
+  _damageMin: 5
+  _damageMax: 6
+  _staminaCost: 2
+  _accuracy: 85
+  _cooldown: 2.2
+  _socketsAmount: 1

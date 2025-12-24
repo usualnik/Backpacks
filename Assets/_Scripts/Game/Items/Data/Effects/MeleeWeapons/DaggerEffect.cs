@@ -18,14 +18,14 @@ public class DaggerEffect : MonoBehaviour, IItemEffect
     }
     private void CombatManager_OnCharacterStuned(Character stunnedCharacter, float stunDuration)
     {
-        if (!_daggerBehaviour.SourceCharacter)
+        if (!_daggerBehaviour.OwnerCharacter)
         {
             return;
         }
 
-        if (stunnedCharacter != null && stunnedCharacter == _daggerBehaviour.SourceCharacter)
+        if (stunnedCharacter != null && stunnedCharacter == _daggerBehaviour.OwnerCharacter)
         {
-            CombatManager.Instance.AttackCharacterOnce(_daggerBehaviour.SourceCharacter, _daggerBehaviour.TargetCharacter, _daggerBehaviour);
+            CombatManager.Instance.AttackCharacterOnce(_daggerBehaviour.OwnerCharacter, _daggerBehaviour.TargetCharacter, _daggerBehaviour);
         }
     }
 

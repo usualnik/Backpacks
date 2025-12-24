@@ -12,6 +12,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: GlovesOfHaste
       objectReference: {fileID: 0}
+    - target: {fileID: 2686240260154758306, guid: 137870c767bf8b84f9c550357331a0cf, type: 3}
+      propertyPath: enemyConfigOwner
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 3722408764420827945, guid: 137870c767bf8b84f9c550357331a0cf, type: 3}
       propertyPath: _itemData
       value: 
@@ -189,9 +193,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _itemData: {fileID: 11400000, guid: d47032c23a4744f41b7334a02a881e86, type: 2}
+  _targetCharacter: {fileID: 0}
+  _ownerCharacter: {fileID: 0}
   _currentState: 0
   _previousState: 0
-  _target: 0
 --- !u!114 &5282576982308912559 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 5512910330479703549, guid: 137870c767bf8b84f9c550357331a0cf, type: 3}

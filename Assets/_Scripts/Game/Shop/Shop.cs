@@ -376,6 +376,13 @@ public class Shop : MonoBehaviour
                 _priceTexts[slotIndex].text = shopObjectItemBehaviour.GetItemPrice().ToString();
             }
 
+
+            // 10. ”казываем, что нужно инициализировать предмет как предмет игрока
+
+            shopObject.GetComponent<OwnerTargetHandler>().SetPlayerItem(true);
+
+
+
             return shopObject;
         }
 

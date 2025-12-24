@@ -25,7 +25,7 @@ MonoBehaviour:
   _recipeIngridients: []
   _recipeResult: {fileID: 0}
   _price: 14
-  _gearScore: 0
+  _gearScore: 15
   _damageMin: 40
   _damageMax: 50
   _staminaCost: 5
