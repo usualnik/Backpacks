@@ -5,6 +5,7 @@ public class BananaEffect : MonoBehaviour, IItemEffect
 {
     [SerializeField]
     private float _healAmount = 4f;
+
     [SerializeField]
     private float _bananaEffectCooldown = 5f;
     [SerializeField]
@@ -13,6 +14,7 @@ public class BananaEffect : MonoBehaviour, IItemEffect
     private Character _targetCharacter;
 
     private float _currentCooldownMultiplier = 1f;
+
     private Coroutine _bananaRoutine;
 
     private void Start()

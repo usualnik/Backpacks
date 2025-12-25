@@ -249,7 +249,7 @@ public class CombatManager : MonoBehaviour
         bool isCrit = UnityEngine.Random.Range(0f, 100f) <= weapon.CritHitChance;
         bool isIgnoreArmor = UnityEngine.Random.Range(0f, 100f) <= sourceCharacter.IgnoreArmorChance; // От атакующего!
 
-        float armorStacks = isIgnoreArmor ? 0f : targetCharacter.GetArmorStacks();
+        float armorStacks = isIgnoreArmor ? 0f : targetCharacter.GetArmorValue();
 
         float baseDamage = UnityEngine.Random.Range(weapon.WeaponDamageMin, weapon.WeaponDamageMax);
 
@@ -266,12 +266,12 @@ public class CombatManager : MonoBehaviour
     private float CalculateFinalAccuracy(Character attacker, float weaponAccuracy)
     {
         float finalAccuracy;
-        return finalAccuracy = attacker.GetAccuracy() + weaponAccuracy;
+        return finalAccuracy = attacker.GetAccuracyValue() + weaponAccuracy;
     }
 
     private void DealThornsDamageToAttacker(Character victim, Character attacker, float damageToVictim)
     {
-        float thornsStacks = victim.GetThornsStacks();
+        float thornsStacks = victim.GetBuffStacks(Buff.BuffType.Thorns);
 
         if (thornsStacks <= damageToVictim)
         {

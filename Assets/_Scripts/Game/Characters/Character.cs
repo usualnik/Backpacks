@@ -183,9 +183,27 @@ public abstract class Character : MonoBehaviour, IDamageable, IStaminable
     }
     #endregion   
     #region Getters
-    public float GetAccuracy()
+
+    public int GetBuffStacks(Buff.BuffType buffType)
+    {
+        int stacks = 0;
+
+        foreach (var buff in _buffs)
+        {
+            if (buff.Type == buffType)
+            {
+                stacks++;
+            }
+        }
+
+        return stacks;
+    }
+
+
+    public float GetAccuracyValue()
     {
         float accuracy = 0;
+
         foreach (var buff in _buffs)
         {
             if (buff.Type == Buff.BuffType.Luck)
@@ -205,39 +223,11 @@ public abstract class Character : MonoBehaviour, IDamageable, IStaminable
         return accuracy;
     }
 
-    public float GetLuckStacks()
-    {
-        float luckStacks = 0;
-
-        foreach (var buff in _buffs)
-        {
-            if (buff.Type == Buff.BuffType.Luck)
-            {
-                luckStacks++;
-            }
-        }
-
-        return luckStacks;
-    }
-
-    public float GetArmorStacks()
+    public float GetArmorValue()
     {
         return _stats.Armor;
     }
-
-    public float GetThornsStacks()
-    {
-        float thornsStacks = 0;
-        foreach (var buff in _buffs)
-        {
-            if (buff.Type == Buff.BuffType.Thorns)
-            {
-                thornsStacks++;
-            }
-        }
-
-        return thornsStacks;
-    }
+ 
     public string NickName => _nickname;
     public CharacterStats Stats => _stats;
     public bool IsDead => _isDead;
@@ -253,6 +243,7 @@ public abstract class Character : MonoBehaviour, IDamageable, IStaminable
     {      
         _stats.HealthMax += MathF.Max(0, value);
     }
+
     public void ChangeHealthValue(float value)
     {
         _stats.Health = Mathf.Min(_stats.Health + value, _stats.HealthMax);     

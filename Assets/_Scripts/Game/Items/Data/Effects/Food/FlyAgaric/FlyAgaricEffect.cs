@@ -63,6 +63,7 @@ public class FlyAgaricEffect : MonoBehaviour, IItemEffect
     {
 
     }
+
     public void IncreaseSpeed(float percentageIncrease)
     {
         _currentCooldownMultiplier += percentageIncrease;

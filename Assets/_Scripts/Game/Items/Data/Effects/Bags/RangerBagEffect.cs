@@ -56,7 +56,8 @@ public class RangerBagEffect : MonoBehaviour, IItemEffect
     {
         float finalCritChance = 0f;       
        
-        finalCritChance = _critHitChanceBuff + (_targetCharacter.GetLuckStacks() * _critPerStackAcount);
+        finalCritChance = _critHitChanceBuff + 
+            (_targetCharacter.GetBuffStacks(Buff.BuffType.Luck) * _critPerStackAcount);
 
         return finalCritChance;
     }
