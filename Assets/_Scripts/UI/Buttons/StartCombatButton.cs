@@ -34,13 +34,14 @@ public class StartCombatButton : MonoBehaviour
     }
     private void Click()
     {
+        OnStartCombatButtonPressed?.Invoke();
+
         _startCombatButtonText.text = LOOKING_FOR_OPPONENT_TEXT;
         Invoke(nameof(SimulateOpponentFound),LOOKING_FOR_OPPONENT_DELAY);
     }
 
     private void SimulateOpponentFound()
     {
-        OnStartCombatButtonPressed?.Invoke();
         _startCombatButtonText.text = START_BATTLE_TEXT;
         WindowManager.Instance.OpenWindow(GAMEPLAY_WINDOW_INDEX);
     }

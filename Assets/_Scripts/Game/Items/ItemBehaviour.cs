@@ -99,6 +99,12 @@ public class ItemBehaviour : MonoBehaviour
         _previousState = ItemState.Store;
         _currentState = ItemState.Store;
     }
+    public void InitItemStateInInventory()
+    {
+        _previousState = ItemState.Inventory;
+        _currentState = ItemState.Inventory;
+    }
+
     public void DestroySelf()
     {
         Destroy(gameObject);

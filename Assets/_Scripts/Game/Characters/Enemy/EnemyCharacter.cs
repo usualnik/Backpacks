@@ -20,21 +20,21 @@ public class EnemyCharacter : Character
     {
         base.InitializeCharacter();
 
-        Shop.Instance.OnShopEnteredAfterCombat += Shop_OnShopEnteredAfterCombat;
-
-        GenerateEnemy();
+        StartCombatButton.OnStartCombatButtonPressed += StartCombatButton_OnStartCombatButtonPressed;
     }
+
+  
 
     //This is OnDestroy()
     protected override void DestroyCharacter()
     {
         base.DestroyCharacter();
 
-        Shop.Instance.OnShopEnteredAfterCombat -= Shop_OnShopEnteredAfterCombat;
+        StartCombatButton.OnStartCombatButtonPressed -= StartCombatButton_OnStartCombatButtonPressed;
 
     }
 
-    private void Shop_OnShopEnteredAfterCombat()
+    private void StartCombatButton_OnStartCombatButtonPressed()
     {
         GenerateEnemy();
     }

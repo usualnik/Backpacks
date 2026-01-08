@@ -12,6 +12,8 @@ public class PlayerInventory : BaseInventory
 
     [SerializeField] private List<ItemBehaviour> _itemsInIventory;
 
+    private ItemBehaviour _currentSelectedItem;
+
     private void Awake()
     {
         if (Instance == null)
@@ -29,14 +31,49 @@ public class PlayerInventory : BaseInventory
     }
     private void Start()
     {
-        InitStartItems();
+        //InitStartItems();
         PlayerCharacter.Instance.OnPlayerClassChanged += PlayerCharacter_OnPlayerClassChanged;
+        SelectedItemManager.Instance.OnItemSelected += SelectedItemManager_OnItemSelected;
     }
+
     private void OnDestroy()
     {
         PlayerCharacter.Instance.OnPlayerClassChanged -= PlayerCharacter_OnPlayerClassChanged;
-
+        SelectedItemManager.Instance.OnItemSelected -= SelectedItemManager_OnItemSelected;
     }
+
+    private void SelectedItemManager_OnItemSelected(ItemBehaviour newItem)
+    {               
+        if (_currentSelectedItem != null)
+        {
+            _currentSelectedItem.OnItemStateChanged -= SelectedItem_OnItemStateChanged;
+        }
+
+        _currentSelectedItem = newItem;
+
+        if (_currentSelectedItem != null)
+        {
+            _currentSelectedItem.OnItemStateChanged += SelectedItem_OnItemStateChanged;
+
+            SelectedItem_OnItemStateChanged(_currentSelectedItem.PreviousState, _currentSelectedItem.CurrentState);
+
+        }
+    }
+    private void SelectedItem_OnItemStateChanged(ItemBehaviour.ItemState previousState, ItemBehaviour.ItemState newState)
+    {
+        if (previousState.HasFlag(ItemBehaviour.ItemState.Inventory)
+            && !newState.HasFlag(ItemBehaviour.ItemState.Inventory))
+        {
+            RemoveItemFromInventory(_currentSelectedItem);
+        }
+
+        if (newState.HasFlag(ItemBehaviour.ItemState.Inventory) 
+            && !previousState.HasFlag(ItemBehaviour.ItemState.Inventory))
+        {
+            AddItemToInventory(_currentSelectedItem);
+        }
+    }
+
     private void PlayerCharacter_OnPlayerClassChanged(ClassDataSO newPlayerClass)
     {
         UpdateItemsConfig(newPlayerClass.Class);
@@ -91,5 +128,33 @@ public class PlayerInventory : BaseInventory
             default:
                 break;
         }
+    }
+
+    private void AddItemToInventory(ItemBehaviour item)
+    {
+        if (!_itemsInIventory.Contains(item))
+        {
+            _itemsInIventory.Add(item);
+        }
+    }
+
+    private void RemoveItemFromInventory(ItemBehaviour item)
+    {
+        if (_itemsInIventory.Contains(item))
+        {
+            _itemsInIventory.Remove(item);
+        }
+    }
+
+    public float GetPlayerGearScore()
+    {
+        float gearscore = 0f;
+
+        foreach (var item in _itemsInIventory)
+        {
+            gearscore += item.ItemData.GearScore;
+        }
+
+        return gearscore;
     }
 }

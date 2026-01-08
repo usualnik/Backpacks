@@ -42,9 +42,9 @@ public class Shop : MonoBehaviour
     /// 
     /// </summary>
     /// 
-    private int[,] _spawnChancesPerRound = 
+    private int[,] _spawnChancesPerRound =
     {
-        { 90,10,0,0,0,0 }, 
+        { 90,10,0,0,0,0 },
         { 84,15,1,0,0,0 },
         { 75,20,5,0,0,0 },
         { 64,25,10,1,0,0 },
@@ -78,7 +78,7 @@ public class Shop : MonoBehaviour
         ResetRerollPrice();
 
         CombatManager.Instance.OnCombatFinished += CombatManager_OnCombatFinished;
-        
+
     }
 
     private void OnDestroy()
@@ -452,8 +452,98 @@ public class Shop : MonoBehaviour
             if (_allSpawnebleItems.Contains(gem))
             {
                 _allSpawnebleItems.Remove(gem);
-            }               
+            }
         }
     }
     public int GetCurrentRerollPrice() => _rerollPrice;
+    public ItemDataSO GetRandomAvailableItemDataSO()
+    {
+        int attempts = 0;
+
+        // Определяем индекс для таблицы шансов
+        int tableIndex;
+        int currentRound = GameManager.Instance.Round;
+
+        if (currentRound <= 12)
+        {
+            tableIndex = Mathf.Clamp(currentRound - 1, 0, 11);
+        }
+        else
+        {
+            tableIndex = 11;
+        }
+
+        while (attempts < MAX_SPAWN_ATTEMPTS)
+        {
+            attempts++;
+
+            // 1. Выбираем случайное число для определения редкости
+            int randomChance = Random.Range(1, 101);
+            int selectedRarity = -1;
+            int cumulativeChance = 0;
+
+            // 2. Определяем редкость предмета на основе шансов для текущего раунда
+            for (int rarity = 0; rarity < 6; rarity++)
+            {
+                cumulativeChance += _spawnChancesPerRound[tableIndex, rarity];
+                if (randomChance <= cumulativeChance)
+                {
+                    selectedRarity = rarity;
+                    break;
+                }
+            }
+
+            // 3. Если не удалось определить редкость, используем последнюю
+            if (selectedRarity == -1)
+            {
+                selectedRarity = 4; // Godly как fallback
+            }
+
+            // 4. Получаем все предметы выбранной редкости
+            var itemsOfSelectedRarity = _allSpawnebleItems
+                .Where(item => (int)item.Rarity == selectedRarity &&
+                              item.IsSpawnableInShop)
+                .ToList();
+
+            // 5. ЕСЛИ НЕТ ПРЕДМЕТОВ ВЫБРАННОЙ РЕДКОСТИ - ИЩЕМ ЛЮБУЮ ДОСТУПНУЮ РЕДКОСТЬ
+            if (itemsOfSelectedRarity.Count == 0)
+            {
+                Debug.LogWarning($"No items found for rarity {selectedRarity} in round {currentRound}. Searching for any available rarity...");
+
+                // Ищем любую доступную редкость по порядку (от низшей к высшей)
+                for (int fallbackRarity = 0; fallbackRarity < 6; fallbackRarity++)
+                {
+                    var fallbackItems = _allSpawnebleItems
+                        .Where(item => (int)item.Rarity == fallbackRarity &&
+                                      item.IsSpawnableInShop)
+                        .ToList();
+
+                    if (fallbackItems.Count > 0)
+                    {
+                        itemsOfSelectedRarity = fallbackItems;
+                        selectedRarity = fallbackRarity;
+                        Debug.Log($"Using fallback rarity: {(ItemDataSO.RarityType)fallbackRarity}");
+                        break;
+                    }
+                }
+            }
+
+            // 6. Если все еще нет предметов - пробуем еще раз
+            if (itemsOfSelectedRarity.Count == 0)
+            {
+                Debug.LogWarning($"No spawnable items available for any rarity. Attempt {attempts}/{MAX_SPAWN_ATTEMPTS}");
+                continue;
+            }
+
+            // 7. Случайно выбираем предмет из нужной редкости
+            int randomIndex = Random.Range(0, itemsOfSelectedRarity.Count);
+            ItemDataSO selectedItemData = itemsOfSelectedRarity[randomIndex];
+
+            return selectedItemData;
+        }
+
+        Debug.LogError($"Failed to find item after {MAX_SPAWN_ATTEMPTS} attempts");
+        return null;
+
+    }
 }

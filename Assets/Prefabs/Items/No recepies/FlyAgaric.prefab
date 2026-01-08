@@ -227,8 +227,8 @@ MonoBehaviour:
   _itemData: {fileID: 11400000, guid: 1b97513c4d52bba4682fb843868fedea, type: 2}
   _targetCharacter: {fileID: 0}
   _ownerCharacter: {fileID: 0}
-  _currentState: 0
-  _previousState: 0
+  _currentState: 4
+  _previousState: 4
 --- !u!114 &6931891166979331653
 MonoBehaviour:
   m_ObjectHideFlags: 0
