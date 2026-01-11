@@ -5,6 +5,8 @@ public class PlayerInventory : BaseInventory
 {
     public static PlayerInventory Instance {  get; private set; }
 
+    public List<ItemBehaviour> PlayerItems => _itemsInIventory;
+
     [SerializeField] private GameObject _rangerStartItemsConfig;
     [SerializeField] private GameObject _reaperStartItemsConfig;
 

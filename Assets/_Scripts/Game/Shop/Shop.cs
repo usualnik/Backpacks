@@ -546,4 +546,11 @@ public class Shop : MonoBehaviour
         return null;
 
     }
+
+    public float GetCheapestBagGearScoreAmount()
+    {
+        ItemDataSO leatherBag = _allSpawnebleItems.Where(i => i.ItemName == "LeatherBag").FirstOrDefault();
+        return leatherBag.GearScore;
+       
+    }
 }

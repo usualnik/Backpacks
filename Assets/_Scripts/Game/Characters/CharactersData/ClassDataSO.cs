@@ -7,7 +7,9 @@ public class ClassDataSO : ScriptableObject
 {
     public string ClassName => _className;
     public Sprite ClassSprite => _classSprite;
-    public ClassType Class => _class;   
+    public ClassType Class => _class;
+    public GameObject StartingUniquebag => _startingUniqueBag;
+    public GameObject LeatherBag => _startingItems[0];
 
     [SerializeField] private string _className;
     [SerializeField] private Sprite _classSprite;

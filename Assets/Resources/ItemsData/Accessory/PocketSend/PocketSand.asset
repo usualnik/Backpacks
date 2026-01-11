@@ -16,7 +16,7 @@ MonoBehaviour:
   _icon: {fileID: 21300000, guid: 2e06b7c4b9be5ef4a862574bf13ab95a, type: 3}
   _prefab: {fileID: 98611140532912634, guid: b0a9565d820932a498e25026294da8e6, type: 3}
   _isSpawnableInShop: 1
-  _itemType: 0
+  _itemType: 1
   _itemExtraType: 0
   _rarity: 0
   _shapeWidth: 1

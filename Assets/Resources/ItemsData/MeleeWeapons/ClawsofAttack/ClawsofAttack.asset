@@ -17,7 +17,7 @@ MonoBehaviour:
   _prefab: {fileID: 98611140532912634, guid: 0248750173ebc5246abf056afeed8cc4, type: 3}
   _isSpawnableInShop: 0
   _itemType: 64
-  _itemExtraType: 0
+  _itemExtraType: 1
   _rarity: 2
   _shapeWidth: 2
   _shapeHeight: 1

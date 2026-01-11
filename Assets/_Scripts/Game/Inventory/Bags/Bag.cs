@@ -1,4 +1,3 @@
-using NUnit.Framework;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -7,6 +6,13 @@ public class Bag : MonoBehaviour
     public List<ItemBehaviour> ItemsInbag => _itemsInBag;
 
     [SerializeField] private List<ItemBehaviour> _itemsInBag;
+
+    private BagCell[] _bagCells;
+
+    private void Awake()
+    {
+        _bagCells = GetComponentsInChildren<BagCell>();
+    }
 
     public void AddItemToBag(ItemBehaviour item)
     {
@@ -23,5 +29,7 @@ public class Bag : MonoBehaviour
         }
     }
 
-    
+
+
+
 }
