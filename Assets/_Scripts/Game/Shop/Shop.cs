@@ -456,7 +456,7 @@ public class Shop : MonoBehaviour
         }
     }
     public int GetCurrentRerollPrice() => _rerollPrice;
-    public ItemDataSO GetRandomAvailableItemDataSO()
+    public ItemDataSO GetRandomAvailableItemDataSO(Vector2Int itemShape)
     {
         int attempts = 0;
 
@@ -502,7 +502,7 @@ public class Shop : MonoBehaviour
             // 4. Ïîëó÷àåì âñå ïðåäìåòû âûáðàííîé ðåäêîñòè
             var itemsOfSelectedRarity = _allSpawnebleItems
                 .Where(item => (int)item.Rarity == selectedRarity &&
-                              item.IsSpawnableInShop)
+                              item.GetShapeSize() == itemShape && item.Type != ItemDataSO.ItemType.Bag)
                 .ToList();
 
             // 5. ÅÑËÈ ÍÅÒ ÏÐÅÄÌÅÒÎÂ ÂÛÁÐÀÍÍÎÉ ÐÅÄÊÎÑÒÈ - ÈÙÅÌ ËÞÁÓÞ ÄÎÑÒÓÏÍÓÞ ÐÅÄÊÎÑÒÜ
@@ -515,7 +515,7 @@ public class Shop : MonoBehaviour
                 {
                     var fallbackItems = _allSpawnebleItems
                         .Where(item => (int)item.Rarity == fallbackRarity &&
-                                      item.IsSpawnableInShop)
+                                      item.GetShapeSize() == itemShape && item.Type != ItemDataSO.ItemType.Bag)
                         .ToList();
 
                     if (fallbackItems.Count > 0)

@@ -16440,6 +16440,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: WhetStone
       objectReference: {fileID: 0}
+    - target: {fileID: 5446186486475964240, guid: ea11fbaf95e30da45838a06aa4c6e7bd, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6648914310299956083, guid: ea11fbaf95e30da45838a06aa4c6e7bd, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -16518,6 +16522,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6648914310299956083, guid: ea11fbaf95e30da45838a06aa4c6e7bd, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7476148887530772477, guid: ea11fbaf95e30da45838a06aa4c6e7bd, type: 3}
+      propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []

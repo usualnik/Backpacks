@@ -58,28 +58,12 @@ public class EnemyInventory : BaseInventory
     {
         _targetGearScore = PlayerInventory.Instance.GetPlayerGearScore();
 
-        ClassDataSO enemyClass = EnemyCharacter.Instance.ClassData;
-
-        // Первой спавним стартовую сумку класса
-        GameObject startingBag = Instantiate(enemyClass.StartingUniquebag, transform);
-        ItemBehaviour startingBagBehaviour = startingBag.GetComponent<ItemBehaviour>();
-
-        if (startingBagBehaviour != null)
-        {
-            startingBagBehaviour.InitItemStateInInventory();
-            _itemsInIventory.Add(startingBagBehaviour);
-        }
-
-        float startingBagGearScore = startingBagBehaviour.ItemData.GearScore;
-
-        _targetGearScore -= startingBagGearScore;
+        SpawnStartingBag();
 
         // Вычисляем сколько МОЖНО потратить на сумки
         float gearScoreAvailableForBags = _targetGearScore * BAGS_GEARSCORE_PERCENTAGE / 100;
 
-
         float leatherBagGearScore = _leatherBagPreset[0].GetComponent<ItemBehaviour>().ItemData.GearScore;
-
 
         int bagsAvailable = _leatherBagPreset.Capacity - 1;
 
@@ -94,14 +78,40 @@ public class EnemyInventory : BaseInventory
 
             _itemsInIventory.Add(_leatherBagPreset[bagsAvailable].GetComponent<ItemBehaviour>());
 
-            //ConfigureItemsInBag(_leatherBagPreset[bagsAvailable]);
+            ConfigureItemsInBag(_leatherBagPreset[bagsAvailable]);
 
             bagsAvailable--;
 
         }
 
     }
+    private void SpawnStartingBag()
+    {
+        ClassDataSO enemyClass = EnemyCharacter.Instance.ClassData;
 
+        GameObject startingBag = Instantiate(enemyClass.StartingUniquebag, transform);
+        ItemBehaviour startingBagBehaviour = startingBag.GetComponent<ItemBehaviour>();
+
+        if (startingBagBehaviour == null)
+        {
+            return;
+        }
+
+        startingBagBehaviour.InitItemStateInInventory();
+
+        _itemsInIventory.Add(startingBagBehaviour);
+
+        BagPreset startingBagPreset = startingBag.AddComponent<BagPreset>();
+
+        startingBagPreset.InitPresetedItemsInBag();
+
+        ConfigureItemsInBag(startingBagPreset);
+
+        float startingBagGearScore = startingBagBehaviour.ItemData.GearScore;
+
+        _targetGearScore -= startingBagGearScore;
+
+    }
 
     /*  
      * Запросил у магазина предмет с  формой и кол-вом ячеек как у этого предмета
@@ -111,16 +121,23 @@ public class EnemyInventory : BaseInventory
      * 
      */
 
-    //private void ConfigureItemsInBag(BagPreset bag)
-    //{
-    //    GameObject spawnedItem;
-    //    RectTransform pos;
+    private void ConfigureItemsInBag(BagPreset bag)
+    {
+        foreach (var item in bag.PresetedItems)
+        {
+            ItemDataSO newItem = Shop.Instance.GetRandomAvailableItemDataSO(item.GetComponent<ItemBehaviour>().ItemData.GetShapeSize());
 
-    //    foreach (var item in bag.PresetedItems)
-    //    {
+            GameObject spawnedItem = Instantiate(newItem.Prefab, item.transform.position, item.transform.rotation , bag.transform);
 
-    //    } 
-    //}
+            spawnedItem.GetComponent<ItemBehaviour>().InitItemStateInInventory();
+
+            _targetGearScore -= newItem.GearScore;
+
+            Destroy(item.gameObject);
+        }
+
+        bag.ClearPresetList();
+    }
 
     private void ClearEnemyInventoryAfterCombat()
     {

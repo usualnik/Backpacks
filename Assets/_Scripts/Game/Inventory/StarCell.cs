@@ -29,14 +29,14 @@ public class StarCell : MonoBehaviour
         _starEffect = GetComponentInParent<IStarEffect>();
         _item = GetComponentInParent<ItemBehaviour>();
 
-        _onHoverItem.OnHover += OnHoverItem_OnHover;
-        _onHoverItem.OnHoverExit += OnHoverItem_OnHoverExit;
+        //_onHoverItem.OnHover += OnHoverItem_OnHover;
+       // _onHoverItem.OnHoverExit += OnHoverItem_OnHoverExit;
     }
 
     private void OnDestroy()
     {
-        _onHoverItem.OnHover -= OnHoverItem_OnHover;
-        _onHoverItem.OnHoverExit -= OnHoverItem_OnHoverExit;
+        //_onHoverItem.OnHover -= OnHoverItem_OnHover;
+        //_onHoverItem.OnHoverExit -= OnHoverItem_OnHoverExit;
     }
 
     private void OnHoverItem_OnHover()
