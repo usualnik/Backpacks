@@ -11,7 +11,9 @@ public class EnemyCharacter : Character
         if (Instance == null)
             Instance = this;
         else
-            Debug.LogError("More than one instance of player character");     
+            Debug.LogError("More than one instance of player character");
+
+        character = Instance as EnemyCharacter;
     }
 
 

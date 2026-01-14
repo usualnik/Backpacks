@@ -26,6 +26,8 @@ public class PlayerCharacter : Character
             Destroy(gameObject);
             return;
         }
+
+        character = Instance as PlayerCharacter;
     }
 
 

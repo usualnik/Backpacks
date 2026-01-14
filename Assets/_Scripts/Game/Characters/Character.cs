@@ -32,7 +32,9 @@ public abstract class Character : MonoBehaviour, IDamageable, IStaminable
     [SerializeField] private List<Buff> _buffs;
     [SerializeField] private List<Buff> _debuffs;
 
-  
+    protected Character character;
+
+
     /*first element is default gold*/
     private int[] _levelGoldData = { 0, 12, 9, 9, 9, 10, 10, 11, 11, 12, 12, 13, 13, 14, 14, 15, 15, 15 };
     private const int SEVENTH_LEVEL_GOLD_BONUS = 10;
@@ -44,36 +46,42 @@ public abstract class Character : MonoBehaviour, IDamageable, IStaminable
     //This is just 100%
     private const float MAX_CHANCE = 100;
 
+
+    //----------------HEALTH---------------------
+
+    private const float HEALTH_REGEN_STEP = 1f;
+    private float _healthRegenMultiplier = 1f;
+    private Coroutine _healthRegenCoroutine;
+
     //----------------STAMINA---------------------
+
     private const float STAMINA_REGEN_STEP = 0.1f;
-    private float _staminaRegenStepMultipler = 1f;
+    private float _staminaRegenMultiplier = 1f;
     private Coroutine _staminaRegenCoroutine;
 
 
     //----------------ACCURACY---------------------
+
     private const int ACCURACY_PER_STACK = 5;
 
     //----------------DAMAGE---------------------
-    private CharacterDamageHandler _damageHandler;    
+
+    private CharacterDamageHandler _damageHandler;
     private float _ignoreArmorChance;
 
-    //----------------HEALTH---------------------
-    //TODO: Не реализовано
-    private float _healthRegenMultiplier = 1f;
-
-    //----------------RESISTS---------------------
-    //TODO: Не реализовано - переделать на шанс, тоесть макс 100% 
-    private float _poisonResistChance = 0f;
-
-    //TODO: Не реализовано
     private float _stunResistChance = 0f;
     private float _criticalHitResistChance = 0f;
 
+
+    //----------------RESISTS---------------------
+
+    //TODO: Не реализовано - переделать на шанс, тоесть макс 100% + Обработку самого эффекта яда
+    private float _poisonResistChance = 0f;
+
     //----------------Vampirism/Lifesteal---------
-    //TODO: Не реализовано
+
+    //TODO: Не реализовано + обработку Вампиризма
     private float _lifestealMultiplier = 1f;
-
-
 
     #region Init + Events
 
@@ -101,239 +109,42 @@ public abstract class Character : MonoBehaviour, IDamageable, IStaminable
         _stats.Stamina = _stats.StaminaMax;
 
         LevelManager.Instance.OnLevelChanged += LevelManager_OnLevelChanged;
+
+        character.OnNewBuffApplied += Character_OnNewBuffApplied;
+
     }
 
     protected virtual void DestroyCharacter()
     {
         LevelManager.Instance.OnLevelChanged -= LevelManager_OnLevelChanged;
-    }
+        character.OnNewBuffApplied += Character_OnNewBuffApplied;
 
+
+    }
+    private void Character_OnNewBuffApplied(Buff.BuffType arg1, bool arg2)
+    {
+        if (arg1 == Buff.BuffType.Regeneration)
+        {
+            HealthRegen();
+        }
+    }
 
     protected void LevelManager_OnLevelChanged(int levelIndex)
     {
         AddHealthAndGoldAfterCombat(levelIndex);
-    }
-    #endregion
-    #region WeaponDamage
-    public void TakeDamage(float damage, ItemDataSO.ExtraType weaponType)
-    { 
-        float finalDamage = damage;
-
-        switch (weaponType)
-        {          
-            default:
-                //Любой источник урона, например Fatigue или Thorns стаки, effect damage и пр.
-                break;
-            case ItemDataSO.ExtraType.Melee:
-                if (_damageHandler != null)
-                {
-                    finalDamage = _damageHandler.FilterMeleeDamage(damage);
-                }
-                break;
-
-            case ItemDataSO.ExtraType.Ranged:
-                if (_damageHandler != null)
-                {
-                    finalDamage = _damageHandler.FilterRangedDamage(damage);
-                }
-                break;
-        }      
-
-        if (_stats.Health - finalDamage > 0)
-        {
-            _stats.Health -= finalDamage;
-            OnDamageRecived?.Invoke(finalDamage);
-
-            InvokeStatsChanged(_stats);
-        }
-        else
-        {
-            OnCharacterDeath?.Invoke();
-        }
-
+        ResetBuffsAndDebuffsAfterCombat();
     }
 
-    public void UseStamina(float amount)
+    protected void InvokeStatsChanged(CharacterStats stats)
     {
-        if (_stats.Stamina - amount > 0)
-        {
-            _stats.Stamina -= amount;
-            _staminaRegenCoroutine = StartCoroutine(RegenStaminaRoutine());
-        }
-        else
-        {
-            OnStaminaEmpty?.Invoke();
-        }
-    }
-
-    public bool HasStaminaToAttack(float amount)
-    {
-        return _stats.Stamina - amount > 0;
-    }
-
-    private IEnumerator RegenStaminaRoutine()
-    {
-        while (!_isDead && _stats.Stamina < _stats.StaminaMax)
-        {
-            _stats.Stamina += STAMINA_REGEN_STEP * _staminaRegenStepMultipler;
-            InvokeStatsChanged(_stats);
-            yield return new WaitForSeconds(0.1f);
-        }
-        _staminaRegenCoroutine = null;
-    }
-    #endregion   
-    #region Getters
-
-    public int GetBuffStacks(Buff.BuffType buffType)
-    {
-        int stacks = 0;
-
-        foreach (var buff in _buffs)
-        {
-            if (buff.Type == buffType)
-            {
-                stacks++;
-            }
-        }
-
-        return stacks;
-    }
-
-
-    public float GetAccuracyValue()
-    {
-        float accuracy = 0;
-
-        foreach (var buff in _buffs)
-        {
-            if (buff.Type == Buff.BuffType.Luck)
-            {
-                accuracy += ACCURACY_PER_STACK;
-            }
-        }
-
-        foreach (var debuff in _debuffs)
-        {
-            if (debuff.Type == Buff.BuffType.Blindness)
-            {
-                accuracy -= ACCURACY_PER_STACK;
-            }
-        }
-
-        return accuracy;
-    }
-
-    public float GetArmorValue()
-    {
-        return _stats.Armor;
-    }
- 
-    public string NickName => _nickname;
-    public CharacterStats Stats => _stats;
-    public bool IsDead => _isDead;
-    public float LifeStealMultiplier => _lifestealMultiplier;
-    public float IgnoreArmorChance => _ignoreArmorChance;
-    public ClassDataSO ClassData => _classData;
-
-    #endregion
-    #region Setters
-
-    //----------------HEALTH---------------------
-    public void ChangeMaxHealthValue(float value)
-    {      
-        _stats.HealthMax += MathF.Max(0, value);
-    }
-
-    public void ChangeHealthValue(float value)
-    {
-        _stats.Health = Mathf.Min(_stats.Health + value, _stats.HealthMax);     
-
-        InvokeStatsChanged(_stats);
-    }
-
-    //TODO: Реген здоровья пока не готов, сделать
-    public void AddHealthRegenMultiplier(float value)
-    {
-        _healthRegenMultiplier += value;
-    }
-
-    public void HealthRegen()
-    {
-        //Использовать _healthRegenMutiplier 
-    }
-
-    //----------------STAMINA---------------------
-    public void AddStamina(float value)
-    {
-        if (value > 0)
-        {
-            _stats.Stamina = Mathf.Min(_stats.Stamina + value, _stats.StaminaMax);
-            InvokeStatsChanged(_stats);
-        }
-    }
-    public void AddStaminaRegenStepMultiplier(float value)
-    {
-        _staminaRegenStepMultipler += value;
-    }
-
-    //----------------ARMOR---------------------
-
-    public void ChangeArmorValue(float value)
-    {
-        _stats.Armor += value;
-        InvokeStatsChanged(_stats);
-    }
-
-    public void AddIgnoreArmorChance(float chance)
-    {
-        _ignoreArmorChance += chance;
-    }
-
-    //----------------RESISTS---------------------
-    //TODO: Описать резисты и фильтровать процесс добавления бафа через соответсвующие резисты
-    public void AddPoisonResistChance(float chance)
-    {
-        if (_stunResistChance + chance > MAX_CHANCE)
-        {
-            _poisonResistChance += chance;
-        }
-        else
-        {
-            _poisonResistChance += chance;
-        }
-    }
-
-    public void AddStunResistChance(float chance)
-    {
-        if (_stunResistChance + chance > MAX_CHANCE)
-        {
-            _stunResistChance = MAX_CHANCE;            
-        }
-        else
-        {
-            _stunResistChance += chance;
-        }        
-    }
-    public void AddCriticalHitResistChance(float chance)
-    {
-        if (_criticalHitResistChance + chance > MAX_CHANCE)
-        {
-            _criticalHitResistChance = MAX_CHANCE;
-        }
-        else
-        {
-            _criticalHitResistChance += chance;
-        }
-    }
-
-    //----------------Vampirism/Lifesteal----------
-    public void AddLifestealMultiplier(float value)
-    {
-        _lifestealMultiplier += value;
+        OnCharacterStatsChanged?.Invoke(stats);
     }
 
     #endregion
+
     #region GameLogic
+
+    // ---------------HELPERS----------------------------
     private void AddHealthAndGoldAfterCombat(int levelIndex)
     {
         _stats.HealthMax = _levelHealthData[levelIndex];
@@ -353,12 +164,13 @@ public abstract class Character : MonoBehaviour, IDamageable, IStaminable
 
         InvokeStatsChanged(_stats);
     }
-
-    protected void InvokeStatsChanged(CharacterStats stats)
+    private void ResetBuffsAndDebuffsAfterCombat()
     {
-        OnCharacterStatsChanged?.Invoke(stats);
+        _buffs.Clear();
+        _debuffs.Clear();
     }
 
+    //----------------BUFFS------------------------------------
     public void ApplyBuff(Buff buff)
     {
         if (buff.IsPositive)
@@ -414,7 +226,246 @@ public abstract class Character : MonoBehaviour, IDamageable, IStaminable
         }
     }
 
+    //-----------------DAMAGE-----------------------------------------
+    public void TakeDamage(float damage, ItemDataSO.ExtraType weaponType)
+    {
+        float finalDamage = damage;
 
+        switch (weaponType)
+        {
+            default:
+                //Любой источник урона, например Fatigue или Thorns стаки, effect damage и пр.
+                break;
+            case ItemDataSO.ExtraType.Melee:
+                if (_damageHandler != null)
+                {
+                    finalDamage = _damageHandler.FilterMeleeDamage(damage);
+                }
+                break;
+
+            case ItemDataSO.ExtraType.Ranged:
+                if (_damageHandler != null)
+                {
+                    finalDamage = _damageHandler.FilterRangedDamage(damage);
+                }
+                break;
+        }
+
+        if (_stats.Health - finalDamage > 0)
+        {
+            _stats.Health -= finalDamage;
+            OnDamageRecived?.Invoke(finalDamage);
+
+            InvokeStatsChanged(_stats);
+        }
+        else
+        {
+            OnCharacterDeath?.Invoke();
+        }
+    }
+
+    //-----------------STAMINA------------------------------------------------
+    public void UseStamina(float amount)
+    {
+        if (_stats.Stamina - amount > 0)
+        {
+            _stats.Stamina -= amount;
+            _staminaRegenCoroutine = StartCoroutine(RegenStaminaRoutine());
+        }
+        else
+        {
+            OnStaminaEmpty?.Invoke();
+        }
+    }
+
+    public bool HasStaminaToAttack(float amount)
+    {
+        return _stats.Stamina - amount > 0;
+    }
+
+    private IEnumerator RegenStaminaRoutine()
+    {
+        while (!_isDead && _stats.Stamina < _stats.StaminaMax)
+        {
+            _stats.Stamina += STAMINA_REGEN_STEP * _staminaRegenMultiplier;
+            InvokeStatsChanged(_stats);
+            yield return new WaitForSeconds(0.1f);
+        }
+        _staminaRegenCoroutine = null;
+    }
+
+    public void AddStamina(float value)
+    {
+        if (value > 0)
+        {
+            _stats.Stamina = Mathf.Min(_stats.Stamina + value, _stats.StaminaMax);
+            InvokeStatsChanged(_stats);
+        }
+    }
+    public void AddStaminaRegenStepMultiplier(float value)
+    {
+        _staminaRegenMultiplier += value;
+    }
+
+    //---------------------HEALTH----------------------------------
+
+    public void ChangeMaxHealthValue(float value)
+    {
+        _stats.HealthMax += MathF.Max(0, value);
+    }
+
+    public void ChangeHealthValue(float value)
+    {
+        _stats.Health = Mathf.Min(_stats.Health + value, _stats.HealthMax);
+
+        InvokeStatsChanged(_stats);
+    }
+
+    //TODO: Реген здоровья пока не готов, сделать
+    public void AddHealthRegenMultiplier(float value)
+    {
+        _healthRegenMultiplier += value;
+    }
+
+    public void HealthRegen()
+    {
+        if (_healthRegenCoroutine == null)
+        {
+            _healthRegenCoroutine = StartCoroutine(RegenHealthRoutine());
+        }
+    }
+
+    private IEnumerator RegenHealthRoutine()
+    {
+        while (!_isDead && character.GetBuffStacks(Buff.BuffType.Regeneration) > 0)
+        {
+            ChangeHealthValue(HEALTH_REGEN_STEP * 
+                character.GetBuffStacks(Buff.BuffType.Regeneration)
+                * _healthRegenMultiplier);           
+
+            yield return new WaitForSeconds(2f);
+        }
+
+        _staminaRegenCoroutine = null;
+    }
+
+    //----------------ARMOR---------------------
+
+    public void ChangeArmorValue(float value)
+    {
+        _stats.Armor += value;
+        InvokeStatsChanged(_stats);
+    }
+
+    public void AddIgnoreArmorChance(float chance)
+    {
+        _ignoreArmorChance += chance;
+    }
+
+
+    //----------------RESISTS---------------------
+    //TODO: Описать резисты и фильтровать процесс добавления бафа через соответсвующие резисты
+    public void AddPoisonResistChance(float chance)
+    {
+        if (_poisonResistChance + chance > MAX_CHANCE)
+        {
+            _poisonResistChance += chance;
+        }
+        else
+        {
+            _poisonResistChance += chance;
+        }
+    }
+
+    public void AddStunResistChance(float chance)
+    {
+        if (_stunResistChance + chance > MAX_CHANCE)
+        {
+            _stunResistChance = MAX_CHANCE;
+        }
+        else
+        {
+            _stunResistChance += chance;
+        }
+    }
+    public void AddCriticalHitResistChance(float chance)
+    {
+        if (_criticalHitResistChance + chance > MAX_CHANCE)
+        {
+            _criticalHitResistChance = MAX_CHANCE;
+        }
+        else
+        {
+            _criticalHitResistChance += chance;
+        }
+    }
+
+    //----------------Vampirism/Lifesteal----------
+    public void AddLifestealMultiplier(float value)
+    {
+        _lifestealMultiplier += value;
+    }
+
+
+    #endregion
+
+    #region Getters
+
+    public int GetBuffStacks(Buff.BuffType buffType)
+    {
+        int stacks = 0;
+
+        foreach (var buff in _buffs)
+        {
+            if (buff.Type == buffType)
+            {
+                stacks++;
+            }
+        }
+
+        return stacks;
+    }
+
+
+    public float GetAccuracyValue()
+    {
+        float accuracy = 0;
+
+        foreach (var buff in _buffs)
+        {
+            if (buff.Type == Buff.BuffType.Luck)
+            {
+                accuracy += ACCURACY_PER_STACK;
+            }
+        }
+
+        foreach (var debuff in _debuffs)
+        {
+            if (debuff.Type == Buff.BuffType.Blindness)
+            {
+                accuracy -= ACCURACY_PER_STACK;
+            }
+        }
+
+        return accuracy;
+    }
+
+    public float GetArmorValue()
+    {
+        return _stats.Armor;
+    }
+
+    public string NickName => _nickname;
+    public CharacterStats Stats => _stats;
+    public bool IsDead => _isDead;
+    public float LifeStealMultiplier => _lifestealMultiplier;
+    public float IgnoreArmorChance => _ignoreArmorChance;
+    public float StunResistChance => _stunResistChance;
+
+    public float CritHitResistChance => _criticalHitResistChance;
+    public ClassDataSO ClassData => _classData;
+
+    #endregion
 
     //TODO: Добавить логгинг эффектов
     //------------------------ LOGGER LOGIC -------------
@@ -435,6 +486,5 @@ public abstract class Character : MonoBehaviour, IDamageable, IStaminable
     //}
 
 
-    #endregion
 
 }

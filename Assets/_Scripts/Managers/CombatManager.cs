@@ -2,7 +2,6 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using Unity.VisualScripting;
 using UnityEngine;
 
 [System.Serializable]
@@ -246,14 +245,17 @@ public class CombatManager : MonoBehaviour
 
     private float CalculateFinalDamage(Character sourceCharacter, Character targetCharacter, WeaponBehaviour weapon)
     {
-        bool isCrit = UnityEngine.Random.Range(0f, 100f) <= weapon.CritHitChance;
-        bool isIgnoreArmor = UnityEngine.Random.Range(0f, 100f) <= sourceCharacter.IgnoreArmorChance; // От атакующего!
+        bool isCrit = UnityEngine.Random.Range(1f, 100f) <= weapon.CritHitChance;
+
+        bool isCritResist = UnityEngine.Random.Range(1f, 100f) <= targetCharacter.CritHitResistChance;
+
+        bool isIgnoreArmor = UnityEngine.Random.Range(1f, 100f) <= sourceCharacter.IgnoreArmorChance; 
 
         float armorStacks = isIgnoreArmor ? 0f : targetCharacter.GetArmorValue();
 
         float baseDamage = UnityEngine.Random.Range(weapon.WeaponDamageMin, weapon.WeaponDamageMax);
 
-        if (isCrit)
+        if (isCrit && !isCritResist)
         {
             baseDamage *= 2f; 
         }
@@ -285,7 +287,16 @@ public class CombatManager : MonoBehaviour
 
     public void StunCharacter(Character characterToStun, float stunDuration)
     {
-        if (characterToStun == null || characterToStun.IsDead)
+
+        bool isCharacterHasResist = characterToStun.StunResistChance > 0;
+        bool isResistProc = false;
+
+        if (isCharacterHasResist)
+        {
+            isResistProc = UnityEngine.Random.Range(1f, 100f) <= characterToStun.StunResistChance ? true : false ;
+        }
+
+        if (characterToStun == null || characterToStun.IsDead || isResistProc)
         {
             return;
         }
