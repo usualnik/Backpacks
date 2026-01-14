@@ -73,10 +73,14 @@ public abstract class Character : MonoBehaviour, IDamageable, IStaminable
     private float _criticalHitResistChance = 0f;
 
 
-    //----------------RESISTS---------------------
+    //----------------Poison---------------------
 
     //TODO: Не реализовано - переделать на шанс, тоесть макс 100% + Обработку самого эффекта яда
     private float _poisonResistChance = 0f;
+
+    private const float POISON_DAMAGE_STEP = 1f;
+    private float _poisonMultiplier = 1f;
+    private Coroutine _poisonCoroutine;
 
     //----------------Vampirism/Lifesteal---------
 
@@ -126,6 +130,14 @@ public abstract class Character : MonoBehaviour, IDamageable, IStaminable
         if (arg1 == Buff.BuffType.Regeneration)
         {
             HealthRegen();
+        }
+
+        if (arg1 == Buff.BuffType.Poison)
+        {
+            bool isProcPoison = UnityEngine.Random.Range(1f, 100f) <= _poisonResistChance ? true : false;
+
+            if (isProcPoison)
+                PoisonCharacter();
         }
     }
 
@@ -339,15 +351,38 @@ public abstract class Character : MonoBehaviour, IDamageable, IStaminable
     {
         while (!_isDead && character.GetBuffStacks(Buff.BuffType.Regeneration) > 0)
         {
-            ChangeHealthValue(HEALTH_REGEN_STEP * 
+            ChangeHealthValue(HEALTH_REGEN_STEP *
                 character.GetBuffStacks(Buff.BuffType.Regeneration)
-                * _healthRegenMultiplier);           
+                * _healthRegenMultiplier);
 
             yield return new WaitForSeconds(2f);
         }
 
         _staminaRegenCoroutine = null;
     }
+
+    //----------------POISON------------------------
+
+    public void PoisonCharacter()
+    {
+        if (_poisonCoroutine == null)
+        {
+            _poisonCoroutine = StartCoroutine(PoisonRoutine());
+        }
+    }
+
+    private IEnumerator PoisonRoutine()
+    {
+        while (!_isDead && character.GetBuffStacks(Buff.BuffType.Poison) > 0)
+        {
+            TakeDamage(POISON_DAMAGE_STEP * _poisonMultiplier * character.GetBuffStacks(Buff.BuffType.Poison), ItemDataSO.ExtraType.Effect);
+
+            yield return new WaitForSeconds(2f);
+        }
+
+        _poisonCoroutine = null;
+    }
+
 
     //----------------ARMOR---------------------
 
@@ -461,8 +496,8 @@ public abstract class Character : MonoBehaviour, IDamageable, IStaminable
     public float LifeStealMultiplier => _lifestealMultiplier;
     public float IgnoreArmorChance => _ignoreArmorChance;
     public float StunResistChance => _stunResistChance;
-
     public float CritHitResistChance => _criticalHitResistChance;
+    public float PoisonResistChance => _poisonResistChance;
     public ClassDataSO ClassData => _classData;
 
     #endregion

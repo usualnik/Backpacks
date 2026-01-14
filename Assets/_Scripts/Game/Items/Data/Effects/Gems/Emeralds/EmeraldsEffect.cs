@@ -15,7 +15,7 @@ public class EmeraldsEffect : MonoBehaviour, IItemEffect
     private ItemBehaviour _bagItem;
 
     [Header("ArmorAndOther Effects")]
-    [SerializeField] private float _increaseResistPoisonChance = 0.1f;
+    [SerializeField] private float _increaseResistPoisonChance = 10f;
     private ItemBehaviour _armorOrOtherItem;
    
     private DraggableGem _draggableGem;
