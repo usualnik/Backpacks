@@ -11,7 +11,7 @@ public class BloodAmuletEffect : MonoBehaviour, IItemEffect
     public void ApplyEffect(ItemBehaviour target, Character sourceCharacter, Character targetCharacter)
     {
         targetCharacter.ChangeMaxHealthValue(_additionalHealth);
-        targetCharacter.ChangeHealthValue(_additionalHealth);
+        targetCharacter.AddHealth(_additionalHealth);
 
         targetCharacter.ApplyBuff(_bloodAmuletBuff);
     }

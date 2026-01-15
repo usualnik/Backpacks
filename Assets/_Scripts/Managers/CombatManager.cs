@@ -225,6 +225,8 @@ public class CombatManager : MonoBehaviour
 
                     DealThornsDamageToAttacker(targetCharacter, sourceCharacter, damage);
 
+                    CalculateVampirismHealing(sourceCharacter, damage);
+
                     OnDamageDealt?.Invoke(weapon, targetCharacter.name);
                 }
                 else
@@ -241,6 +243,21 @@ public class CombatManager : MonoBehaviour
             RemoveFinishedRoutine(routineData);
         }
 
+    }
+
+    private void CalculateVampirismHealing(Character sourceCharacter, float damageToVictim)
+    {
+        float vampirismStacks = (float) sourceCharacter.GetBuffStacks(Buff.BuffType.Vampirism);
+
+        if (vampirismStacks > 0 && vampirismStacks <= damageToVictim)
+        {
+            sourceCharacter.AddHealth((float) vampirismStacks * sourceCharacter.LifeStealMultiplier);
+        }
+        else if (vampirismStacks > 0 && vampirismStacks > damageToVictim)
+        {
+            sourceCharacter.AddHealth(damageToVictim * sourceCharacter.LifeStealMultiplier);
+
+        }
     }
 
     private float CalculateFinalDamage(Character sourceCharacter, Character targetCharacter, WeaponBehaviour weapon)
@@ -262,7 +279,9 @@ public class CombatManager : MonoBehaviour
 
         float finalDamage = Mathf.Max(baseDamage - armorStacks, weapon.WeaponDamageMin * 0.1f); // Минимум 10% от минимального урона
 
-        return finalDamage;
+        float finalDamageWithEmpowerBuff = finalDamage + sourceCharacter.GetBuffStacks(Buff.BuffType.Empower);
+
+        return finalDamageWithEmpowerBuff;
     }
 
     private float CalculateFinalAccuracy(Character attacker, float weaponAccuracy)
@@ -279,7 +298,7 @@ public class CombatManager : MonoBehaviour
         {
             attacker.TakeDamage(thornsStacks, ItemDataSO.ExtraType.Nature);
         }
-        else
+        else if(thornsStacks > damageToVictim)
         {
             attacker.TakeDamage(damageToVictim, ItemDataSO.ExtraType.Nature);
         }

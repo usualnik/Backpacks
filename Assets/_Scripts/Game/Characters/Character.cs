@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static UnityEngine.Rendering.GPUSort;
 
 public abstract class Character : MonoBehaviour, IDamageable, IStaminable
 {
@@ -18,6 +19,7 @@ public abstract class Character : MonoBehaviour, IDamageable, IStaminable
 
     public event Action<CharacterStats> OnCharacterStatsChanged;
     public event Action<Buff.BuffType, bool> OnNewBuffApplied;
+    public event Action<Buff.BuffType> OnBuffRemoved;
     public event Action OnCharacterDeath;
     public event Action OnStaminaEmpty;
     public event Action<float> OnDamageRecived;
@@ -75,7 +77,6 @@ public abstract class Character : MonoBehaviour, IDamageable, IStaminable
 
     //----------------Poison---------------------
 
-    //TODO: Не реализовано - переделать на шанс, тоесть макс 100% + Обработку самого эффекта яда
     private float _poisonResistChance = 0f;
 
     private const float POISON_DAMAGE_STEP = 1f;
@@ -84,7 +85,6 @@ public abstract class Character : MonoBehaviour, IDamageable, IStaminable
 
     //----------------Vampirism/Lifesteal---------
 
-    //TODO: Не реализовано + обработку Вампиризма
     private float _lifestealMultiplier = 1f;
 
     #region Init + Events
@@ -115,31 +115,27 @@ public abstract class Character : MonoBehaviour, IDamageable, IStaminable
         LevelManager.Instance.OnLevelChanged += LevelManager_OnLevelChanged;
 
         character.OnNewBuffApplied += Character_OnNewBuffApplied;
-
+        character.OnBuffRemoved += Character_OnBuffRemoved;
     }
 
     protected virtual void DestroyCharacter()
     {
         LevelManager.Instance.OnLevelChanged -= LevelManager_OnLevelChanged;
-        character.OnNewBuffApplied += Character_OnNewBuffApplied;
-
+        character.OnNewBuffApplied -= Character_OnNewBuffApplied;
+        character.OnBuffRemoved -= Character_OnBuffRemoved;
 
     }
-    private void Character_OnNewBuffApplied(Buff.BuffType arg1, bool arg2)
+
+    private void Character_OnNewBuffApplied(Buff.BuffType buffType, bool isPositive)
     {
-        if (arg1 == Buff.BuffType.Regeneration)
-        {
-            HealthRegen();
-        }
-
-        if (arg1 == Buff.BuffType.Poison)
-        {
-            bool isProcPoison = UnityEngine.Random.Range(1f, 100f) <= _poisonResistChance ? true : false;
-
-            if (isProcPoison)
-                PoisonCharacter();
-        }
+        HandleNewBuffApplied(buffType);   
     }
+
+    private void Character_OnBuffRemoved(Buff.BuffType buffType)
+    {
+      HandleBuffRemoved(buffType);
+    }
+
 
     protected void LevelManager_OnLevelChanged(int levelIndex)
     {
@@ -236,12 +232,89 @@ public abstract class Character : MonoBehaviour, IDamageable, IStaminable
                 }
             }
         }
+
+
+        OnBuffRemoved?.Invoke(buffTypeToRemove);
+
     }
+
+    private void HandleNewBuffApplied(Buff.BuffType buffType)
+    {
+
+        switch (buffType)
+        {
+            case Buff.BuffType.None:
+                break;
+            case Buff.BuffType.Empower:
+                break;
+            case Buff.BuffType.Heat:
+                //Recalculate cooldowns
+                break;
+            case Buff.BuffType.Luck:
+                break;
+            case Buff.BuffType.Mana:
+                break;
+            case Buff.BuffType.Regeneration:
+                HealthRegen();
+                break;
+            case Buff.BuffType.Thorns:
+                break;
+            case Buff.BuffType.Vampirism:
+                break;
+            case Buff.BuffType.Poison:
+                bool isProcPoisonResist = UnityEngine.Random.Range(1f, 100f) <= _poisonResistChance ? true : false;
+                if (!isProcPoisonResist)
+                    PoisonCharacter();
+                break;
+            case Buff.BuffType.Blindness:
+                break;
+            case Buff.BuffType.Cold:
+                //Recalculate cooldowns
+                break;
+            default:
+                break;
+        }
+    
+    }
+    private void HandleBuffRemoved(Buff.BuffType buffType)
+    {
+        switch (buffType)
+        {
+            case Buff.BuffType.None:
+                break;
+            case Buff.BuffType.Empower:
+                break;
+            case Buff.BuffType.Heat:
+                //Recalculate cooldowns
+                break;
+            case Buff.BuffType.Luck:
+                break;
+            case Buff.BuffType.Mana:
+                break;
+            case Buff.BuffType.Regeneration:
+                break;
+            case Buff.BuffType.Thorns:
+                break;
+            case Buff.BuffType.Vampirism:
+                break;
+            case Buff.BuffType.Poison:              
+                break;
+            case Buff.BuffType.Blindness:
+                break;
+            case Buff.BuffType.Cold:
+                //Recalculate cooldowns
+                break;
+            default:
+                break;
+        }
+    }
+
 
     //-----------------DAMAGE-----------------------------------------
     public void TakeDamage(float damage, ItemDataSO.ExtraType weaponType)
     {
         float finalDamage = damage;
+
 
         switch (weaponType)
         {
@@ -326,20 +399,19 @@ public abstract class Character : MonoBehaviour, IDamageable, IStaminable
         _stats.HealthMax += MathF.Max(0, value);
     }
 
-    public void ChangeHealthValue(float value)
+    public void AddHealth(float value)
     {
         _stats.Health = Mathf.Min(_stats.Health + value, _stats.HealthMax);
 
         InvokeStatsChanged(_stats);
     }
 
-    //TODO: Реген здоровья пока не готов, сделать
     public void AddHealthRegenMultiplier(float value)
     {
         _healthRegenMultiplier += value;
     }
 
-    public void HealthRegen()
+    private void HealthRegen()
     {
         if (_healthRegenCoroutine == null)
         {
@@ -351,7 +423,7 @@ public abstract class Character : MonoBehaviour, IDamageable, IStaminable
     {
         while (!_isDead && character.GetBuffStacks(Buff.BuffType.Regeneration) > 0)
         {
-            ChangeHealthValue(HEALTH_REGEN_STEP *
+            AddHealth(HEALTH_REGEN_STEP *
                 character.GetBuffStacks(Buff.BuffType.Regeneration)
                 * _healthRegenMultiplier);
 
@@ -363,7 +435,7 @@ public abstract class Character : MonoBehaviour, IDamageable, IStaminable
 
     //----------------POISON------------------------
 
-    public void PoisonCharacter()
+    private void PoisonCharacter()
     {
         if (_poisonCoroutine == null)
         {
@@ -373,9 +445,10 @@ public abstract class Character : MonoBehaviour, IDamageable, IStaminable
 
     private IEnumerator PoisonRoutine()
     {
-        while (!_isDead && character.GetBuffStacks(Buff.BuffType.Poison) > 0)
+
+        while (!_isDead && character.GetDebuffStacks(Buff.BuffType.Poison) > 0)
         {
-            TakeDamage(POISON_DAMAGE_STEP * _poisonMultiplier * character.GetBuffStacks(Buff.BuffType.Poison), ItemDataSO.ExtraType.Effect);
+            TakeDamage(POISON_DAMAGE_STEP * _poisonMultiplier * character.GetDebuffStacks(Buff.BuffType.Poison), ItemDataSO.ExtraType.Effect);
 
             yield return new WaitForSeconds(2f);
         }
@@ -399,7 +472,6 @@ public abstract class Character : MonoBehaviour, IDamageable, IStaminable
 
 
     //----------------RESISTS---------------------
-    //TODO: Описать резисты и фильтровать процесс добавления бафа через соответсвующие резисты
     public void AddPoisonResistChance(float chance)
     {
         if (_poisonResistChance + chance > MAX_CHANCE)
@@ -461,6 +533,20 @@ public abstract class Character : MonoBehaviour, IDamageable, IStaminable
         return stacks;
     }
 
+    public int GetDebuffStacks(Buff.BuffType buffType)
+    {
+        int stacks = 0;
+
+        foreach (var buff in _debuffs)
+        {
+            if (buff.Type == buffType)
+            {
+                stacks++;
+            }
+        }
+
+        return stacks;
+    }
 
     public float GetAccuracyValue()
     {
@@ -499,6 +585,8 @@ public abstract class Character : MonoBehaviour, IDamageable, IStaminable
     public float CritHitResistChance => _criticalHitResistChance;
     public float PoisonResistChance => _poisonResistChance;
     public ClassDataSO ClassData => _classData;
+
+
 
     #endregion
 

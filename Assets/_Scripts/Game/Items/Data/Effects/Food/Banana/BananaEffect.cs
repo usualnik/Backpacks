@@ -60,7 +60,7 @@ public class BananaEffect : MonoBehaviour, IItemEffect
     {
         while (true)
         {
-            _targetCharacter.ChangeHealthValue(_healAmount);
+            _targetCharacter.AddHealth(_healAmount);
             _targetCharacter.AddStamina(_regenStaminaAmount);
 
             float currentCooldown = _bananaEffectCooldown / _currentCooldownMultiplier;
