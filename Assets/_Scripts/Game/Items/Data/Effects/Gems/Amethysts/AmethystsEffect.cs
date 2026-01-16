@@ -99,7 +99,7 @@ public class AmethystsEffect : MonoBehaviour, IItemEffect
         CombatManager.Instance.OnDamageDealt -= CombatManager_OnDamageDealt;
     }
 
-    private void CombatManager_OnDamageDealt(WeaponBehaviour arg1, string arg2)
+    private void CombatManager_OnDamageDealt(WeaponBehaviour arg1, Character character, float damage)
     {
         if (_gemedWeapon == arg1)
         {

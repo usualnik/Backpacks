@@ -78,9 +78,9 @@ public class GamePlayInfoPanel : MonoBehaviour
         ClearBuffsText();
     }
 
-    private void Character_OnNewEffectApplied(Buff.BuffType type, bool isBuff)
+    private void Character_OnNewEffectApplied(Buff buff)
     {
-        UpdateBuffText(type.ToString(), isBuff);
+        UpdateBuffText(buff.Type.ToString(), buff.IsPositive);
 
     }
 

@@ -157,6 +157,8 @@ public class DraggableItem : MonoBehaviour,
             // Предмет можно разместить - привязываем к ячейкам сумки
             PlaceItemInBagCells();
             _itemBehaviour.SetItemState(ItemBehaviour.ItemState.Inventory);
+
+            PlayerCharacter.Instance.SpendMoney(_itemBehaviour.GetItemPrice());
         }
         else
         {

@@ -32,13 +32,14 @@ public class CombatManager : MonoBehaviour
 
     public event Action OnCombatStarted;
     public event Action<CombatResult> OnCombatFinished;
-    public event Action<WeaponBehaviour, string> OnDamageDealt;
+    public event Action<WeaponBehaviour, Character, float> OnDamageDealt;
     public event Action<Character,float> OnCharacterStuned;
 
     public bool IsInCombat => _isInCombat;
 
     public event Action<int> OnFatigueDamageApplied;
     public event Action OnFatigueDamageStarted;
+    public event Action OnFatigueDamageFinished;
 
     [SerializeField] private PlayerCharacter _playerCharacter;
     [SerializeField] private EnemyCharacter _enemyCharacter;
@@ -227,7 +228,7 @@ public class CombatManager : MonoBehaviour
 
                     CalculateVampirismHealing(sourceCharacter, damage);
 
-                    OnDamageDealt?.Invoke(weapon, targetCharacter.name);
+                    OnDamageDealt?.Invoke(weapon, targetCharacter, damage);
                 }
                 else
                 {
@@ -437,7 +438,7 @@ public class CombatManager : MonoBehaviour
             targetCharacter.TakeDamage(damage, weapon.WeaponDataSO.ItemExtraType);
 
             DealThornsDamageToAttacker(targetCharacter, sourceCharacter, damage);
-            OnDamageDealt?.Invoke(weapon, targetCharacter.name);
+            OnDamageDealt?.Invoke(weapon, targetCharacter, damage);
         }
         else
         {
@@ -452,11 +453,17 @@ public class CombatManager : MonoBehaviour
     #region Fatigue Damage Management
 
     private void StartFatigueDamage()
-    {
-        ResetFatigueDamage();
-        OnFatigueDamageStarted?.Invoke();
+    {       
 
-        _fatigueDamageCoroutine = StartCoroutine(FatigueDamageRoutine());
+        if (_fatigueDamageCoroutine == null)
+        {
+            ResetFatigueDamage();
+
+            _fatigueDamageCoroutine = StartCoroutine(FatigueDamageRoutine());
+
+            OnFatigueDamageStarted?.Invoke();
+
+        }
     }
 
     private void StopFatigueDamage()
@@ -466,7 +473,14 @@ public class CombatManager : MonoBehaviour
             StopCoroutine(_fatigueDamageCoroutine);
             _fatigueDamageCoroutine = null;
         }
+
+        _fatigueDamageTimer = 0f;
+        _isFatugueDamageStarted = false;
+
         ResetFatigueDamage();
+
+        OnFatigueDamageFinished?.Invoke();
+
     }
 
     private void ResetFatigueDamage()
@@ -474,14 +488,15 @@ public class CombatManager : MonoBehaviour
         _fatigueDamageAmount = 0;
     }
 
-
     private IEnumerator FatigueDamageRoutine()
     {
         while (_isInCombat)
         {
             _fatigueDamageAmount++;
+
             _playerCharacter.TakeDamage(_fatigueDamageAmount,ItemDataSO.ExtraType.None);
             _enemyCharacter.TakeDamage(_fatigueDamageAmount, ItemDataSO.ExtraType.None);
+
             OnFatigueDamageApplied?.Invoke(_fatigueDamageAmount);
 
             yield return new WaitForSeconds(FATIGUE_DAMAGE_STEP);

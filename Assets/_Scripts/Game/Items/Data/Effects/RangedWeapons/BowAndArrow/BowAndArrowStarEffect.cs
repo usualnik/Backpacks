@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class BowAndArrowStarEffect : MonoBehaviour, IStarEffect
 {
-    [SerializeField] private float _damageIncreaseAmount = 1f;
+    //[SerializeField] private float _damageIncreaseAmount = 1f;
 
     [SerializeField] private int _currentDamageIncrease = 0;
     [SerializeField] private int _damageIncreaseAmountMax = 7;
@@ -24,7 +24,7 @@ public class BowAndArrowStarEffect : MonoBehaviour, IStarEffect
         CombatManager.Instance.OnDamageDealt -= CombatManager_OnDamageDealt;
 
     }
-    private void CombatManager_OnDamageDealt(WeaponBehaviour damageWeapon, string arg2)
+    private void CombatManager_OnDamageDealt(WeaponBehaviour damageWeapon,Character character, float damage)
     {
         if (damageWeapon == null)
             return;

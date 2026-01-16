@@ -107,7 +107,7 @@ public class SapphiresEffect : MonoBehaviour, IItemEffect
         CombatManager.Instance.OnDamageDealt -= CombatManager_OnDamageDealt;
     }
 
-    private void CombatManager_OnDamageDealt(WeaponBehaviour arg1, string arg2)
+    private void CombatManager_OnDamageDealt(WeaponBehaviour arg1, Character character, float damage)
     {
         if (_gemedWeapon == arg1)
         {
@@ -192,9 +192,9 @@ public class SapphiresEffect : MonoBehaviour, IItemEffect
         _armorOrOtherItem = null;
     }
 
-    private void SourceCharacter_OnNewBuffApplied(Buff.BuffType appliedBuff, bool arg2)
+    private void SourceCharacter_OnNewBuffApplied(Buff buff)
     {
-        if (appliedBuff == Buff.BuffType.Mana)
+        if (buff.Type == Buff.BuffType.Mana)
         {
             _manaBuffGained++;
 

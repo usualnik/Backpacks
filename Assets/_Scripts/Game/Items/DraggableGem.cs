@@ -84,6 +84,8 @@ public class DraggableGem : DraggableItem
                 {
                     gemSocket.SetOccupied(true, this);
                     OnGemPlacedInItem?.Invoke(gemSocket.Item);
+                    PlayerCharacter.Instance.SpendMoney(_itemBehaviour.GetItemPrice());
+
                 }
             }
 
@@ -94,11 +96,9 @@ public class DraggableGem : DraggableItem
         {
             OnGemPlacedInItem?.Invoke(_targetBagCells[0].BagItem);
             base.PlaceItemInBagCells();
+            PlayerCharacter.Instance.SpendMoney(_itemBehaviour.GetItemPrice());
         }
-        else
-        {
-        }
-
+    
         ResetColor();
     }
     protected override void ReleaseBagCells()

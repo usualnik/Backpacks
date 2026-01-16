@@ -39,19 +39,18 @@ public class PumpkinEffect : MonoBehaviour, IItemEffect
     {
     }
 
-    private void CombatManager_OnDamageDealt(WeaponBehaviour attackedWeapon, string attackedTargetName)
+    private void CombatManager_OnDamageDealt(WeaponBehaviour attackedWeapon, Character character, float damage)
     {
         if (_pumpkinWeapon != null && attackedWeapon == _pumpkinWeapon)
         {
-            TryApplyStun(attackedWeapon, attackedTargetName);
+            TryApplyStun(attackedWeapon, character);
         }
     }
 
-    private void TryApplyStun(WeaponBehaviour weapon, string targetName)
+    private void TryApplyStun(WeaponBehaviour weapon, Character targetCharacter)
     {
         if (Random.Range(0f, 100f) <= _chanceToStun)
         {
-            Character targetCharacter = GetTargetCharacter(targetName);
             if (targetCharacter != null)
             {
                 CombatManager.Instance.StunCharacter(targetCharacter, _stunDuration);
@@ -59,16 +58,7 @@ public class PumpkinEffect : MonoBehaviour, IItemEffect
         }
     }
 
-    private Character GetTargetCharacter(string targetName)
-    {
-        if (targetName == CombatManager.Instance.GetPlayerCharacter().name)
-            return CombatManager.Instance.GetPlayerCharacter();
-        else if (targetName == CombatManager.Instance.GetEnemyCharacter().name)
-            return CombatManager.Instance.GetEnemyCharacter();
-        
-        return null;
-    }
-
+  
     public void RemoveEffect()
     {
         // Логика удаления эффекта

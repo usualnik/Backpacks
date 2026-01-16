@@ -151,6 +151,8 @@ public class DraggableBag : MonoBehaviour,
             // —умку можно разместить - прив€зываем к €чейкам инвентар€
             PlaceBagInInventoryCells();
             _itemBehaviour.SetItemState(ItemBehaviour.ItemState.Inventory);
+            PlayerCharacter.Instance.SpendMoney(_itemBehaviour.GetItemPrice());
+
         }
         else
         {

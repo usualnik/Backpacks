@@ -1011,7 +1011,7 @@ GameObject:
   - component: {fileID: 125248345}
   - component: {fileID: 125248344}
   m_Layer: 5
-  m_Name: FatigueDamageImage
+  m_Name: FatigueDamagePanel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3865,7 +3865,7 @@ GameObject:
   - component: {fileID: 485944374}
   - component: {fileID: 485944375}
   m_Layer: 5
-  m_Name: FatigueDamagePanel
+  m_Name: FatigueDamage
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3911,7 +3911,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 20b33bd08f2352f4dbd997c18a0cae20, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _fatigueDamageImageObject: {fileID: 125248342}
+  _fatigueDamagePanelObject: {fileID: 125248342}
   _fatigueDamageText: {fileID: 1387354456}
 --- !u!1 &519420028
 GameObject:
@@ -13931,7 +13931,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 10, y: 0}
-  m_SizeDelta: {x: 500, y: 400}
+  m_SizeDelta: {x: 700, y: 500}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &1449592883
 CanvasRenderer:
@@ -21214,6 +21214,18 @@ PrefabInstance:
       propertyPath: m_Name
       value: Enemy
       objectReference: {fileID: 0}
+    - target: {fileID: 4867948185435377715, guid: 19ff9dd93006e0c44a8d5f1746767bfa, type: 3}
+      propertyPath: _stats.Health
+      value: 25
+      objectReference: {fileID: 0}
+    - target: {fileID: 4867948185435377715, guid: 19ff9dd93006e0c44a8d5f1746767bfa, type: 3}
+      propertyPath: _stats.HealthMax
+      value: 25
+      objectReference: {fileID: 0}
+    - target: {fileID: 4867948185435377715, guid: 19ff9dd93006e0c44a8d5f1746767bfa, type: 3}
+      propertyPath: _stats.GoldAmount
+      value: 12
+      objectReference: {fileID: 0}
     - target: {fileID: 8017962295943111096, guid: 19ff9dd93006e0c44a8d5f1746767bfa, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -22032,6 +22044,18 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 3747798926841609250, guid: bff15b2ed5ab1684e9290d49703a96ef, type: 3}
+      propertyPath: _stats.Health
+      value: 25
+      objectReference: {fileID: 0}
+    - target: {fileID: 3747798926841609250, guid: bff15b2ed5ab1684e9290d49703a96ef, type: 3}
+      propertyPath: _stats.HealthMax
+      value: 25
+      objectReference: {fileID: 0}
+    - target: {fileID: 3747798926841609250, guid: bff15b2ed5ab1684e9290d49703a96ef, type: 3}
+      propertyPath: _stats.GoldAmount
+      value: 12
+      objectReference: {fileID: 0}
     - target: {fileID: 4643275793669918561, guid: bff15b2ed5ab1684e9290d49703a96ef, type: 3}
       propertyPath: m_Name
       value: Player

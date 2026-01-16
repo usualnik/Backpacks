@@ -74,6 +74,8 @@ public class TimeControlPanel : MonoBehaviour
         ApplyGameSpeed();
         UpdateSpeedDisplay();
 
+        _gameTimePassed = 0f;
+
         _isCombatStarted = false;
 
     }

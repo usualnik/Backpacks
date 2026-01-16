@@ -18,8 +18,8 @@ public abstract class Character : MonoBehaviour, IDamageable, IStaminable
     }
 
     public event Action<CharacterStats> OnCharacterStatsChanged;
-    public event Action<Buff.BuffType, bool> OnNewBuffApplied;
-    public event Action<Buff.BuffType> OnBuffRemoved;
+    public event Action<Buff> OnNewBuffApplied;
+    public event Action<Buff> OnBuffRemoved;
     public event Action OnCharacterDeath;
     public event Action OnStaminaEmpty;
     public event Action<float> OnDamageRecived;
@@ -126,21 +126,21 @@ public abstract class Character : MonoBehaviour, IDamageable, IStaminable
 
     }
 
-    private void Character_OnNewBuffApplied(Buff.BuffType buffType, bool isPositive)
+    private void Character_OnNewBuffApplied(Buff buff)
     {
-        HandleNewBuffApplied(buffType);   
+        HandleNewBuffApplied(buff.Type);   
     }
 
-    private void Character_OnBuffRemoved(Buff.BuffType buffType)
+    private void Character_OnBuffRemoved(Buff buff)
     {
-      HandleBuffRemoved(buffType);
+      HandleBuffRemoved(buff.Type);
     }
 
 
     protected void LevelManager_OnLevelChanged(int levelIndex)
     {
         AddHealthAndGoldAfterCombat(levelIndex);
-        ResetBuffsAndDebuffsAfterCombat();
+        ResetCharacterConfigAfterCombat();
     }
 
     protected void InvokeStatsChanged(CharacterStats stats)
@@ -172,10 +172,12 @@ public abstract class Character : MonoBehaviour, IDamageable, IStaminable
 
         InvokeStatsChanged(_stats);
     }
-    private void ResetBuffsAndDebuffsAfterCombat()
+    private void ResetCharacterConfigAfterCombat()
     {
         _buffs.Clear();
         _debuffs.Clear();
+
+        _stats.Armor = 0f;
     }
 
     //----------------BUFFS------------------------------------
@@ -190,7 +192,7 @@ public abstract class Character : MonoBehaviour, IDamageable, IStaminable
             _debuffs.Add(buff);
         }
 
-        OnNewBuffApplied?.Invoke(buff.Type, buff.IsPositive);
+        OnNewBuffApplied?.Invoke(buff);
     }
 
     public void RemoveBuff(Buff.BuffType buffTypeToRemove, int removeAmount)
@@ -207,10 +209,12 @@ public abstract class Character : MonoBehaviour, IDamageable, IStaminable
                 if (updatedBuff.Value <= 0)
                 {
                     _buffs.RemoveAt(i);
+                    OnBuffRemoved?.Invoke(updatedBuff);
                 }
                 else
                 {
                     _buffs[i] = updatedBuff;
+                    OnBuffRemoved?.Invoke(updatedBuff);
                 }
             }
         }
@@ -225,16 +229,16 @@ public abstract class Character : MonoBehaviour, IDamageable, IStaminable
                 if (updatedBuff.Value <= 0)
                 {
                     _debuffs.RemoveAt(i);
+                    OnBuffRemoved?.Invoke(updatedBuff);
+
                 }
                 else
                 {
                     _debuffs[i] = updatedBuff;
+                    OnBuffRemoved?.Invoke(updatedBuff);
                 }
             }
         }
-
-
-        OnBuffRemoved?.Invoke(buffTypeToRemove);
 
     }
 

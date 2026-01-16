@@ -132,6 +132,7 @@ public class PlayerCharacter : Character
 
     public void SpendMoney(int moneyAmount)
     {
+
         if (Stats.GoldAmount - moneyAmount >= 0)
         {
             Stats.GoldAmount -= moneyAmount; 
@@ -155,9 +156,6 @@ public class PlayerCharacter : Character
 
         _currentSelectedItem.DestroySelf();
     }
-
-
-
 
     public string Rank => RankName;
     public int Lives => _lives;
