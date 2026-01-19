@@ -5,7 +5,6 @@ public class ItemBehaviour : MonoBehaviour
 {
     public event Action<ItemState, ItemState> OnItemStateChanged;
 
-    public event Action<ItemBehaviour, Character> OnItemActionPerformed;
     public ItemState CurrentState => _currentState;
     public ItemState PreviousState => _previousState;
     public ItemDataSO ItemData => _itemData;
@@ -69,7 +68,6 @@ public class ItemBehaviour : MonoBehaviour
 
             PerformAction();
 
-            OnItemActionPerformed?.Invoke(this, _targetCharacter);
 
             _effect?.ApplyEffect(this, _ownerCharacter, _targetCharacter);
         }

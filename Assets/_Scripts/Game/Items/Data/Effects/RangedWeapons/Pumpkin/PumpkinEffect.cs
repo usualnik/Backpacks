@@ -2,6 +2,9 @@ using UnityEngine;
 
 public class PumpkinEffect : MonoBehaviour, IItemEffect
 {
+    public int ItemActivations { get; set; }
+    public event System.Action OnEffectAcivate;
+
     [SerializeField]
     private float _chanceToStun = 50f;
     [SerializeField]
@@ -11,6 +14,8 @@ public class PumpkinEffect : MonoBehaviour, IItemEffect
     private Buff _pumpkinBuff;
 
     private WeaponBehaviour _pumpkinWeapon;
+
+
 
     private void Awake()
     {
@@ -34,9 +39,11 @@ public class PumpkinEffect : MonoBehaviour, IItemEffect
     private void CombatManager_OnFatigueDamageStarted()
     {
         _pumpkinWeapon.OwnerCharacter?.ApplyBuff(_pumpkinBuff);
+        OnActivate();
     }
     public void ApplyEffect(ItemBehaviour item, Character sourceCharacter, Character targetCharacter)
     {
+
     }
 
     private void CombatManager_OnDamageDealt(WeaponBehaviour attackedWeapon, Character character, float damage)
@@ -54,6 +61,8 @@ public class PumpkinEffect : MonoBehaviour, IItemEffect
             if (targetCharacter != null)
             {
                 CombatManager.Instance.StunCharacter(targetCharacter, _stunDuration);
+                OnActivate();
+
             }
         }
     }
@@ -62,5 +71,11 @@ public class PumpkinEffect : MonoBehaviour, IItemEffect
     public void RemoveEffect()
     {
         // Логика удаления эффекта
+    }
+
+    public void OnActivate()
+    {
+        ItemActivations++;
+        OnEffectAcivate?.Invoke();
     }
 }

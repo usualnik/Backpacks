@@ -1,8 +1,12 @@
+using System;
 using System.Collections;
 using UnityEngine;
 
 public class EmeraldsEffect : MonoBehaviour, IItemEffect
 {
+    public event Action OnEffectAcivate;
+    public int ItemActivations { get; set; }
+
     [Header("Weapon Effects")]
     [SerializeField] private float _chanceToInfictPoison = 35;
     [SerializeField] private Buff _emeraldWeaponPoisonBuff;
@@ -19,6 +23,8 @@ public class EmeraldsEffect : MonoBehaviour, IItemEffect
     private ItemBehaviour _armorOrOtherItem;
    
     private DraggableGem _draggableGem;
+
+  
 
     private void Awake()
     {
@@ -102,6 +108,7 @@ public class EmeraldsEffect : MonoBehaviour, IItemEffect
         if (_gemedWeapon == arg1)
         {
             TryToInflictPoison();
+            OnActivate();
         }
     }
 
@@ -154,6 +161,7 @@ public class EmeraldsEffect : MonoBehaviour, IItemEffect
         if (_gainRegenerationBuffTimer <= 0)
         {
             _bagItem.OwnerCharacter.ApplyBuff(_regenerationBuff);
+            OnActivate();
             _isShouldBuffRegen = false;
         }
 
@@ -184,6 +192,12 @@ public class EmeraldsEffect : MonoBehaviour, IItemEffect
 
     public void RemoveEffect()
     {
+    }
+
+    public void OnActivate()
+    {
+        ItemActivations++;
+        OnEffectAcivate?.Invoke();
     }
     #endregion
 

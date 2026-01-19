@@ -1,7 +1,11 @@
+using System;
 using UnityEngine;
 
 public class TopazesEffect : MonoBehaviour, IItemEffect
 {
+    public int ItemActivations { get; set; }
+    public event Action OnEffectAcivate;
+
     [Header("Weapon Effects")]
     [SerializeField] private float _increaseSpeedMultiplier = 10f;
     private WeaponBehaviour _gemedWeapon;
@@ -19,6 +23,8 @@ public class TopazesEffect : MonoBehaviour, IItemEffect
    
 
     private DraggableGem _draggableGem;
+
+
 
     private void Awake()
     {
@@ -139,6 +145,12 @@ public class TopazesEffect : MonoBehaviour, IItemEffect
 
     public void RemoveEffect()
     {
+    }
+
+    public void OnActivate()
+    {
+        ItemActivations++;
+        OnEffectAcivate?.Invoke();
     }
     #endregion
 

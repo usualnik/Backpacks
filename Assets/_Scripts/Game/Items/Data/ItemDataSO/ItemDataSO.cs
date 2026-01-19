@@ -38,6 +38,7 @@ public abstract class ItemDataSO : ScriptableObject
         SpellScroll     = 1 << 14, // 16384
         Book            = 1 << 15, // 32768
         Chess           = 1 << 16, // 65536
+        Stone           = 1 << 17,
     }
 
     [Flags]

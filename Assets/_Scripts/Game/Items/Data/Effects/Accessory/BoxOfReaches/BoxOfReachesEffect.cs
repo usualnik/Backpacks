@@ -1,9 +1,12 @@
 using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 
 public class BoxOfReachesEffect : MonoBehaviour, IItemEffect
 {
+    public event System.Action OnEffectAcivate;
+    public int ItemActivations { get ; set; }
+
+
     [SerializeField] private GameObject[] _amethysts;
     [SerializeField] private GameObject[] _emeralds;
     [SerializeField] private GameObject[] _rubys;
@@ -20,6 +23,8 @@ public class BoxOfReachesEffect : MonoBehaviour, IItemEffect
     private Storage storage;
 
     private bool _canSpawngems = false;
+
+
 
     private void Awake()
     {
@@ -130,5 +135,11 @@ public class BoxOfReachesEffect : MonoBehaviour, IItemEffect
     public void RemoveEffect()
     {
 
+    }
+
+    public void OnActivate()
+    {
+        ItemActivations++;
+        OnEffectAcivate?.Invoke();
     }
 }

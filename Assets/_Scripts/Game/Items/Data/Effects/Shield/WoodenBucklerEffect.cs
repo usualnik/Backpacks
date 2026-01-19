@@ -2,6 +2,11 @@ using UnityEngine;
 
 public class WoodenBucklerEffect : MonoBehaviour, IItemEffect, IDamagePreventionEffect
 {
+
+    public int ItemActivations { get; set; }
+    public event System.Action OnEffectAcivate;
+
+
     [SerializeField]
     private float _chanceToPreventDamage = 30f;
     [SerializeField]
@@ -10,6 +15,7 @@ public class WoodenBucklerEffect : MonoBehaviour, IItemEffect, IDamagePrevention
     private float _removedStaminaAmount = 0.3f;
 
     private Character _targetCharacter;
+
 
 
     private void Start()
@@ -53,6 +59,7 @@ public class WoodenBucklerEffect : MonoBehaviour, IItemEffect, IDamagePrevention
         if (damageHandler != null)
         {
             damageHandler.RegisterMeleeDamagePreventionEffect(this);
+            OnActivate();
         }
     }
 
@@ -63,5 +70,11 @@ public class WoodenBucklerEffect : MonoBehaviour, IItemEffect, IDamagePrevention
         {
             damageHandler.UnRegisterMeleeDamagePreventionEffect(this);
         }
+    }
+
+    public void OnActivate()
+    {
+        ItemActivations++;
+        OnEffectAcivate?.Invoke();
     }
 }

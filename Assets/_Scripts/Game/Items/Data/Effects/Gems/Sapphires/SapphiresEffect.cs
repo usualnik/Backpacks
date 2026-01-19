@@ -1,8 +1,14 @@
+using System;
 using Unity.VisualScripting;
 using UnityEngine;
 
 public class SapphiresEffect : MonoBehaviour, IItemEffect
 {
+    public int ItemActivations { get; set; }
+
+    public event Action OnEffectAcivate;
+
+
     [Header("Weapon Effects")]
     [SerializeField] private float _ignoreArmorChance = 15f;
     [SerializeField] private Buff _gainedManaBuff;
@@ -26,6 +32,7 @@ public class SapphiresEffect : MonoBehaviour, IItemEffect
 
 
     private DraggableGem _draggableGem;
+
 
     private void Awake()
     {
@@ -113,6 +120,7 @@ public class SapphiresEffect : MonoBehaviour, IItemEffect
         {
             TryInflictCold();
             TrygainMana();
+            OnActivate();
         }
     }
     private void TryInflictCold()
@@ -172,6 +180,8 @@ public class SapphiresEffect : MonoBehaviour, IItemEffect
         {
             _bagItem.TargetCharacter.ApplyBuff(_bagColdDebuff);
            _shouldInflictCold = false;
+            OnActivate();
+
         }
 
     }
@@ -200,7 +210,7 @@ public class SapphiresEffect : MonoBehaviour, IItemEffect
 
             if (_manaBuffGained == _manaBuffneeded)
             {
-                _armorOrOtherItem?.OwnerCharacter?.ChangeArmorValue(_gainArmorAmount);
+                _armorOrOtherItem?.OwnerCharacter?.AddArmor(_gainArmorAmount);
                 _manaBuffGained = 0;
             }
         }
@@ -218,6 +228,12 @@ public class SapphiresEffect : MonoBehaviour, IItemEffect
     public void RemoveEffect()
     {
 
+    }
+
+    public void OnActivate()
+    {
+        ItemActivations++;
+        OnEffectAcivate?.Invoke();
     }
     #endregion
 

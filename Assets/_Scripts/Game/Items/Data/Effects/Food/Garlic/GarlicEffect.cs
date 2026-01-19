@@ -1,8 +1,12 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using UnityEngine;
 
 public class GarlicEffect : MonoBehaviour, IItemEffect
 {
+    public event Action OnEffectAcivate;
+    public int ItemActivations { get; set; }
+
     [SerializeField]
     private float _baseEffectCooldown = 4f; 
     [SerializeField]
@@ -16,6 +20,8 @@ public class GarlicEffect : MonoBehaviour, IItemEffect
 
     private float _currentCooldownMultiplier = 1f;
     private Coroutine _garlicRoutine;
+
+
 
     private void Start()
     {
@@ -46,7 +52,7 @@ public class GarlicEffect : MonoBehaviour, IItemEffect
 
         _targetCharacterToBuffArmor = targetCharacter;
 
-        _targetCharacterToBuffArmor.ChangeArmorValue(_armorBuffValue);
+        _targetCharacterToBuffArmor.AddArmor(_armorBuffValue);
         TryRemoveVampirism();
 
         if (_garlicRoutine != null)
@@ -71,8 +77,10 @@ public class GarlicEffect : MonoBehaviour, IItemEffect
             float currentCooldown = _baseEffectCooldown / _currentCooldownMultiplier;
             yield return new WaitForSeconds(currentCooldown);
 
-            _targetCharacterToBuffArmor.ChangeArmorValue(_armorBuffValue);
+            _targetCharacterToBuffArmor.AddArmor(_armorBuffValue);
             TryRemoveVampirism();
+            OnActivate();
+
         }
     }
 
@@ -109,5 +117,11 @@ public class GarlicEffect : MonoBehaviour, IItemEffect
             StopCoroutine(_garlicRoutine);
             _garlicRoutine = StartCoroutine(GarlicArmorRoutine());
         }
+    }
+
+    public void OnActivate()
+    {
+        ItemActivations++;
+        OnEffectAcivate?.Invoke();
     }
 }

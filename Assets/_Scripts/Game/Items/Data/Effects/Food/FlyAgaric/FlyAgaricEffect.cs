@@ -1,8 +1,13 @@
+using System;
 using System.Collections;
 using UnityEngine;
 
 public class FlyAgaricEffect : MonoBehaviour, IItemEffect
 {
+    public event Action OnEffectAcivate;
+    public int ItemActivations { get; set; }
+
+
 
     [SerializeField] private Buff _flyAgaricPoisonBuff;
     [SerializeField] private float _flyAgaricEffectCooldown;
@@ -44,6 +49,7 @@ public class FlyAgaricEffect : MonoBehaviour, IItemEffect
         {
             _targetCharacter.ApplyBuff(_flyAgaricPoisonBuff);
             float currentCooldown = _flyAgaricEffectCooldown / _currentCooldownMultiplier;
+            OnActivate();
             yield return new WaitForSeconds(currentCooldown);
         }
     }
@@ -75,4 +81,9 @@ public class FlyAgaricEffect : MonoBehaviour, IItemEffect
         }
     }
 
+    public void OnActivate()
+    {
+        ItemActivations++;
+        OnEffectAcivate?.Invoke();
+    }
 }

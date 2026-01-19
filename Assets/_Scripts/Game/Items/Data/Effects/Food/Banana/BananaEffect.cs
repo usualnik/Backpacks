@@ -1,8 +1,14 @@
+using System;
 using System.Collections;
 using UnityEngine;
 
 public class BananaEffect : MonoBehaviour, IItemEffect
 {
+    public event Action OnEffectAcivate;
+
+    public int ItemActivations { get; set; }
+
+
     [SerializeField]
     private float _healAmount = 4f;
 
@@ -16,6 +22,8 @@ public class BananaEffect : MonoBehaviour, IItemEffect
     private float _currentCooldownMultiplier = 1f;
 
     private Coroutine _bananaRoutine;
+
+
 
     private void Start()
     {
@@ -64,6 +72,9 @@ public class BananaEffect : MonoBehaviour, IItemEffect
             _targetCharacter.AddStamina(_regenStaminaAmount);
 
             float currentCooldown = _bananaEffectCooldown / _currentCooldownMultiplier;
+
+            OnActivate();
+
             yield return new WaitForSeconds(currentCooldown);            
         }
     }
@@ -77,5 +88,11 @@ public class BananaEffect : MonoBehaviour, IItemEffect
             StopCoroutine(_bananaRoutine);
             _bananaRoutine = StartCoroutine(BananaRoutine());
         }
+    }
+
+    public void OnActivate()
+    {
+        ItemActivations++;
+        OnEffectAcivate?.Invoke();
     }
 }

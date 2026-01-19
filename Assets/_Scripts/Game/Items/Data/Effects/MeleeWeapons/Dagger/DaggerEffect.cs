@@ -1,8 +1,14 @@
+using System;
 using UnityEngine;
 
 public class DaggerEffect : MonoBehaviour, IItemEffect
 {
+    public int ItemActivations { get; set; } = 0;
+    public event Action OnEffectAcivate;
+
+
     private WeaponBehaviour _daggerBehaviour;
+
 
     private void Awake()
     {
@@ -26,6 +32,7 @@ public class DaggerEffect : MonoBehaviour, IItemEffect
         if (stunnedCharacter != null && stunnedCharacter == _daggerBehaviour.OwnerCharacter)
         {
             CombatManager.Instance.AttackCharacterOnce(_daggerBehaviour.OwnerCharacter, _daggerBehaviour.TargetCharacter, _daggerBehaviour);
+            OnActivate();
         }
     }
 
@@ -36,5 +43,12 @@ public class DaggerEffect : MonoBehaviour, IItemEffect
 
     public void RemoveEffect()
     {
+    }
+
+    public void OnActivate()
+    {
+        ItemActivations++;
+        OnEffectAcivate?.Invoke();
+        
     }
 }

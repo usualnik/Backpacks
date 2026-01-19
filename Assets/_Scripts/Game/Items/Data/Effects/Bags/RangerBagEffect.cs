@@ -1,8 +1,14 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class RangerBagEffect : MonoBehaviour, IItemEffect
 {
+
+    public event Action OnEffectAcivate;
+    public int ItemActivations { get; set; }
+
+
     private Bag _rangerBag;
 
     private List<WeaponBehaviour> _weaponsToBuff = new List<WeaponBehaviour>();
@@ -14,7 +20,6 @@ public class RangerBagEffect : MonoBehaviour, IItemEffect
     private float _critHitChanceBuff = 10f;
     [SerializeField]
     private float _critPerStackAcount = 3f;
-
 
 
     private void Awake()
@@ -60,5 +65,11 @@ public class RangerBagEffect : MonoBehaviour, IItemEffect
             (_targetCharacter.GetBuffStacks(Buff.BuffType.Luck) * _critPerStackAcount);
 
         return finalCritChance;
+    }
+
+    public void OnActivate()
+    {
+        ItemActivations++;
+        OnEffectAcivate?.Invoke();
     }
 }

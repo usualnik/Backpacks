@@ -1,8 +1,13 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class StorageCoffinEffect : MonoBehaviour, IItemEffect
 {
+    public event Action OnEffectAcivate;
+    public int ItemActivations { get; set; }
+
+
     private Bag _bag;
 
     private float _chanceToEnflictPoison = 25f;
@@ -10,6 +15,8 @@ public class StorageCoffinEffect : MonoBehaviour, IItemEffect
     private List<ItemBehaviour> _itemsInCoffin;
 
     private Buff _storageCoffinBuff;
+    private Character _targetCharacter;
+
 
     private void Awake()
     {
@@ -33,7 +40,7 @@ public class StorageCoffinEffect : MonoBehaviour, IItemEffect
     {
         foreach (var item in _itemsInCoffin)
         {
-            item.OnItemActionPerformed -= ItemInCoffin_OnItemActionPerformed;
+            item.GetComponent<IItemEffect>().OnEffectAcivate += ItemInCoffin_OnItemActionPerformed;
         }
     }
 
@@ -43,17 +50,19 @@ public class StorageCoffinEffect : MonoBehaviour, IItemEffect
 
         foreach (var i in _itemsInCoffin)
         {
-            i.OnItemActionPerformed += ItemInCoffin_OnItemActionPerformed;
+            item.GetComponent<IItemEffect>().OnEffectAcivate -= ItemInCoffin_OnItemActionPerformed;
         }
     }
 
-    private void ItemInCoffin_OnItemActionPerformed(ItemBehaviour performedItem, Character targetCharacter)
+    private void ItemInCoffin_OnItemActionPerformed()
     {
         bool isProc = UnityEngine.Random.Range(0f, 100f) <= _chanceToEnflictPoison ? true : false;
+
+        _targetCharacter = GetComponent<ItemBehaviour>().TargetCharacter;
         
         if (isProc)
         {
-            targetCharacter.ApplyBuff(_storageCoffinBuff);
+            _targetCharacter.ApplyBuff(_storageCoffinBuff);
         }
     }
 
@@ -62,5 +71,8 @@ public class StorageCoffinEffect : MonoBehaviour, IItemEffect
 
     }
 
+    public void OnActivate()
+    {
 
+    }
 }

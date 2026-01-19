@@ -1,5 +1,11 @@
 
+using System;
+
 public interface IItemEffect
-{
-    public void ApplyEffect(ItemBehaviour item, Character sourceCharacter ,Character targetCharacter);
+{    
+    public int ItemActivations { get; set; }
+    public event Action OnEffectAcivate;
+
+    void ApplyEffect(ItemBehaviour item, Character sourceCharacter, Character targetCharacter);
+    void OnActivate();
 }

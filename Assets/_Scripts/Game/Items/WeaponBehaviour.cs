@@ -75,4 +75,8 @@ public class WeaponBehaviour : ItemBehaviour
         _currentCooldownMultiplier += value;       
     }
 
+    public void IsCanAutoAttack(bool canAutoAttack)
+    {
+        _canAttack = canAutoAttack;
+    }
 }

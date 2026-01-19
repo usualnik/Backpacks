@@ -5,6 +5,9 @@ using static Buff;
 
 public class AmethystsEffect : MonoBehaviour, IItemEffect
 {
+    public int ItemActivations { get; set; }
+    public event Action OnEffectAcivate;
+
     [Header("Weapon Effects")]
     [SerializeField] private float _chanceToRemoveRandomBuffFromOpponent = 25;
     [SerializeField] private int _removeBuffsAmount = 1;
@@ -21,6 +24,7 @@ public class AmethystsEffect : MonoBehaviour, IItemEffect
 
 
     private DraggableGem _draggableGem;
+
 
 
     private void Awake()
@@ -104,6 +108,7 @@ public class AmethystsEffect : MonoBehaviour, IItemEffect
         if (_gemedWeapon == arg1)
         {
             TryToRemoveRandomBuffFromOpponent();
+            OnActivate();
         }
     }
 
@@ -150,6 +155,7 @@ public class AmethystsEffect : MonoBehaviour, IItemEffect
         {
             _bagItem?.OwnerCharacter?.RemoveBuff(randomBuff, 1);
             Debug.Log("Trying to remove debuff");
+            OnActivate();
             yield return new WaitForSeconds(_cleanseDebuffTimer);
         }
     }
@@ -178,6 +184,12 @@ public class AmethystsEffect : MonoBehaviour, IItemEffect
 
     public void RemoveEffect()
     {
+    }
+       
+    public void OnActivate()
+    {
+        ItemActivations++;
+        OnEffectAcivate?.Invoke();
     }
     #endregion
 

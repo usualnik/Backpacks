@@ -2,6 +2,10 @@ using UnityEngine;
 
 public class SpikedShieldEffect : MonoBehaviour, IItemEffect, IDamagePreventionEffect
 {
+
+    public event System.Action OnEffectAcivate;
+    public int ItemActivations { get; set; }
+
     [SerializeField]
     private float _chanceToPreventDamage = 30f;
     [SerializeField]
@@ -19,6 +23,7 @@ public class SpikedShieldEffect : MonoBehaviour, IItemEffect, IDamagePreventionE
     [SerializeField]
     private Buff _spikedShieldBuff;
 
+   
 
     private void Start()
     {
@@ -48,6 +53,7 @@ public class SpikedShieldEffect : MonoBehaviour, IItemEffect, IDamagePreventionE
             if (_gainedThornsAmount <= _maxgainedThornsPerProc)
             {
                 _sourceCharacter.ApplyBuff(_spikedShieldBuff);
+                OnActivate();
             }
         }
 
@@ -81,5 +87,11 @@ public class SpikedShieldEffect : MonoBehaviour, IItemEffect, IDamagePreventionE
         {
             damageHandler.UnRegisterMeleeDamagePreventionEffect(this);
         }
+    }
+
+    public void OnActivate()
+    {
+        ItemActivations++;
+        OnEffectAcivate?.Invoke();
     }
 }

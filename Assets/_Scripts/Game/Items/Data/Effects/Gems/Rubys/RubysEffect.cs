@@ -1,8 +1,12 @@
 
+using System;
 using UnityEngine;
 
 public class RubysEffect : MonoBehaviour, IItemEffect
 {
+    public event Action OnEffectAcivate;
+    public int ItemActivations { get; set; }
+
     [Header("Weapon Effects")]
     [SerializeField] private float _gainedLifeStealAmount = 0.7f;
     private float _gainedAmount = 0;
@@ -23,6 +27,8 @@ public class RubysEffect : MonoBehaviour, IItemEffect
 
 
     private DraggableGem _draggableGem;
+
+  
 
     private void Awake()
     {
@@ -114,6 +120,7 @@ public class RubysEffect : MonoBehaviour, IItemEffect
         if (_gemedWeapon == arg1)
         {
             GainLifesteal();
+            OnActivate();
         }
     }
     private void GainLifesteal()
@@ -167,7 +174,8 @@ public class RubysEffect : MonoBehaviour, IItemEffect
         {
             _bagItem?.TargetCharacter?.TakeDamage(_effectDamageAmount, ItemDataSO.ExtraType.Effect);
             _bagItem?.OwnerCharacter?.AddLifestealMultiplier(_additionalLifesteal);
-           _shouldDealDamage = false;
+            OnActivate();
+            _shouldDealDamage = false;
         }
 
     }
@@ -198,6 +206,12 @@ public class RubysEffect : MonoBehaviour, IItemEffect
     public void RemoveEffect()
     {
 
+    }
+
+    public void OnActivate()
+    {
+        ItemActivations++;
+        OnEffectAcivate?.Invoke();
     }
     #endregion
 
