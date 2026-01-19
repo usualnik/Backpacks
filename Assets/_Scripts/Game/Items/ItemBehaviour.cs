@@ -14,7 +14,7 @@ public class ItemBehaviour : MonoBehaviour
 
     [SerializeField] private ItemDataSO _itemData;
 
-    private IItemEffect _effect;
+    protected IItemEffect _effect;
 
     [SerializeField]
     protected Character _targetCharacter;
@@ -65,8 +65,6 @@ public class ItemBehaviour : MonoBehaviour
     {
         if (CurrentState.HasFlag(ItemState.Inventory))
         {
-
-
             //_itemData.PerformAction(_target,this);
 
             PerformAction();

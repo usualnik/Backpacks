@@ -8,6 +8,7 @@ public class WeaponBehaviour : ItemBehaviour
     public float CritHitChance => _critHitChance;
 
     [SerializeField] private WeaponDataSO _weaponDataSO;
+    [SerializeField] private bool _canAttack = true;
 
     private float _weaponDamageMin;
     private float _weaponDamageMax;
@@ -26,6 +27,9 @@ public class WeaponBehaviour : ItemBehaviour
         _weaponDamageMax = _weaponDataSO.DamageMax;
         _critHitChance = _weaponDataSO.BaseCritChance;
         _coolDownSpeed = _weaponDataSO.Cooldown;
+
+        _effect = GetComponent<IItemEffect>();
+
     }
 
     private void Start()
@@ -38,16 +42,20 @@ public class WeaponBehaviour : ItemBehaviour
     private void OnDestroy()
     {
         CombatManager.Instance.OnCombatStarted -= CombatManager_OnCombatStarted;
-
     }
 
     private void CombatManager_OnCombatStarted()
     {
-        if (CurrentState.HasFlag(ItemState.Inventory))
+        if (CurrentState.HasFlag(ItemState.Inventory) && _canAttack)
         {
             CombatManager.Instance.StartAutoAttack(GetTarget(), this,
             WeaponDamageMin, WeaponDamageMax,
             _weaponDataSO.StaminaCost, _coolDownSpeed / _currentCooldownMultiplier, _weaponDataSO.Accuracy);
+        }
+
+        if (_effect != null)
+        {
+            _effect?.ApplyEffect(this, _ownerCharacter, _targetCharacter);
         }
     }
 

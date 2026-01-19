@@ -421,6 +421,8 @@ public class CombatManager : MonoBehaviour
     }
     public void AttackCharacterOnce(Character sourceCharacter,Character targetCharacter, WeaponBehaviour weapon)
     {
+
+
         float damage = CalculateFinalDamage(sourceCharacter, targetCharacter, weapon);
 
         bool isHit = UnityEngine.Random.Range(0f, 100f) <=
