@@ -44,7 +44,7 @@ public class StorageCoffinEffect : MonoBehaviour, IItemEffect
         }
     }
 
-    public void ApplyEffect(ItemBehaviour item, Character sourceCharacter, Character targetCharacter)
+    public void StartOfCombatInit(ItemBehaviour item, Character sourceCharacter, Character targetCharacter)
     {
         _itemsInCoffin = _bag.ItemsInbag;
 

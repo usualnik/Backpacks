@@ -66,7 +66,7 @@ public class SpikedShieldEffect : MonoBehaviour, IItemEffect, IDamagePreventionE
         return _preventedDamageAmount;
     }
 
-    public void ApplyEffect(ItemBehaviour item, Character sourceCharacter, Character targetCharacter)
+    public void StartOfCombatInit(ItemBehaviour item, Character sourceCharacter, Character targetCharacter)
     {
         //HACK: Ќужно лучше расписать систему таргетов, иначе такие записи станут просто не читабельны
         _targetCharacter = sourceCharacter;

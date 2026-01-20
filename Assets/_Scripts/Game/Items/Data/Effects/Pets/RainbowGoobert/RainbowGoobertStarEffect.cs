@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class RainbowGoobertStarEffect : MonoBehaviour
 {
-    [SerializeField] private List<ItemBehaviour> _trackedItems;
+    [SerializeField] private List<ItemBehaviour> _trackedItems = new List<ItemBehaviour>();
     [SerializeField] private float _healAmount = 20f;
     [SerializeField] private float _armorAmount = 20f;
     [SerializeField] private float _additionalWeaponDamage = 4f;

@@ -178,7 +178,7 @@ public class AmethystsEffect : MonoBehaviour, IItemEffect
     #endregion
 
     #region Interface
-    public void ApplyEffect(ItemBehaviour item, Character sourceCharacter, Character targetCharacter)
+    public void StartOfCombatInit(ItemBehaviour item, Character sourceCharacter, Character targetCharacter)
     {
     }
 

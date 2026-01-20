@@ -220,7 +220,7 @@ public class SapphiresEffect : MonoBehaviour, IItemEffect
 
 
     #region Interface
-    public void ApplyEffect(ItemBehaviour item, Character sourceCharacter, Character targetCharacter)
+    public void StartOfCombatInit(ItemBehaviour item, Character sourceCharacter, Character targetCharacter)
     {
 
     }

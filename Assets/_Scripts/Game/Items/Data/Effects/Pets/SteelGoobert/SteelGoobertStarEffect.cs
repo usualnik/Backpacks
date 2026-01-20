@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class SteelGoobertStarEffect : MonoBehaviour
 {
-    [SerializeField] private List<ItemBehaviour> _trackedItems;
+    [SerializeField] private List<ItemBehaviour> _trackedItems = new List<ItemBehaviour>();
 
     [SerializeField] private float _additionalWeaponDamage = 2f;
     [SerializeField] private float _armorBuffAmount = 16f;
@@ -13,13 +13,8 @@ public class SteelGoobertStarEffect : MonoBehaviour
 
     private Character _ownerCharacter;
 
-    private List<WeaponBehaviour> _buffedWeapons;
-
-    private void Awake()
-    {
-        _trackedItems = new List<ItemBehaviour>();
-        _buffedWeapons = new List<WeaponBehaviour>();
-    }
+    private List<WeaponBehaviour> _buffedWeapons = new List<WeaponBehaviour>();
+ 
 
     private void Start()
     {

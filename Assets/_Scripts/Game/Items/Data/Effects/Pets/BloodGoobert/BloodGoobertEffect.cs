@@ -10,7 +10,7 @@ public class BloodGoobertEffect : MonoBehaviour, IItemEffect
     [SerializeField] private Buff _bloodGoobertBuff;
 
 
-    public void ApplyEffect(ItemBehaviour item, Character sourceCharacter, Character targetCharacter)
+    public void StartOfCombatInit(ItemBehaviour item, Character sourceCharacter, Character targetCharacter)
     {
         sourceCharacter.ApplyBuff(_bloodGoobertBuff);
         OnActivate();

@@ -127,7 +127,7 @@ public class BoxOfReachesEffect : MonoBehaviour, IItemEffect
             spawnedGem.transform.SetParent(transform, true);
         }
     }
-    public void ApplyEffect(ItemBehaviour item, Character sourceCharacter, Character targetCharacter)
+    public void StartOfCombatInit(ItemBehaviour item, Character sourceCharacter, Character targetCharacter)
     {
 
     }

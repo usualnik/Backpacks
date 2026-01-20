@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class PoisonGoobertStarEffect : MonoBehaviour
 {
-    [SerializeField] private List<ItemBehaviour> _trackedItems;
+    [SerializeField] private List<ItemBehaviour> _trackedItems = new List<ItemBehaviour>();
 
     [SerializeField] private Buff _poisonGoobertBuff;
     [SerializeField] private float _healAmount = 9f;

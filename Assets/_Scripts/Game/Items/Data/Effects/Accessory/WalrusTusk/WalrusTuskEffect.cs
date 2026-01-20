@@ -11,7 +11,7 @@ public class WalrusTuskEffect : MonoBehaviour, IItemEffect
 
 
 
-    public void ApplyEffect(ItemBehaviour item, Character sourceCharacter, Character targetCharacter)
+    public void StartOfCombatInit(ItemBehaviour item, Character sourceCharacter, Character targetCharacter)
     {      
        targetCharacter.ApplyBuff(_walrusTuskBuff);
         OnActivate();

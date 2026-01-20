@@ -7,7 +7,7 @@ public class TopazesEffect : MonoBehaviour, IItemEffect
     public event Action OnEffectAcivate;
 
     [Header("Weapon Effects")]
-    [SerializeField] private float _increaseSpeedMultiplier = 10f;
+    [SerializeField] private float _increaseSpeedMultiplier = 0.1f;
     private WeaponBehaviour _gemedWeapon;
 
     [Header("Bag Effects")]
@@ -139,7 +139,7 @@ public class TopazesEffect : MonoBehaviour, IItemEffect
     #endregion
 
     #region Interface
-    public void ApplyEffect(ItemBehaviour item, Character sourceCharacter, Character targetCharacter)
+    public void StartOfCombatInit(ItemBehaviour item, Character sourceCharacter, Character targetCharacter)
     {
     }
 

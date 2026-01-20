@@ -203,9 +203,9 @@ public class CombatManager : MonoBehaviour
 
                 float damageMin = weapon.WeaponDamageMin;
                 float damageMax = weapon.WeaponDamageMax;
-                float staminaCost = weapon.WeaponDataSO.StaminaCost;
-                float cooldown = weapon.WeaponDataSO.Cooldown;
-                float accuracy = weapon.WeaponDataSO.Accuracy;
+                float staminaCost = weapon.StaminaCost;
+                float cooldown = weapon.Cooldown;
+                float accuracy = weapon.Accuracy;
 
                 float damage = CalculateFinalDamage(sourceCharacter, targetCharacter, weapon);
                 damage = Mathf.RoundToInt(damage);
@@ -422,11 +422,10 @@ public class CombatManager : MonoBehaviour
     public void AttackCharacterOnce(Character sourceCharacter,Character targetCharacter, WeaponBehaviour weapon)
     {
 
-
         float damage = CalculateFinalDamage(sourceCharacter, targetCharacter, weapon);
 
         bool isHit = UnityEngine.Random.Range(0f, 100f) <=
-                CalculateFinalAccuracy(sourceCharacter, weapon.WeaponDataSO.Accuracy);
+                CalculateFinalAccuracy(sourceCharacter, weapon.Accuracy);
 
         if (!isHit)
         {
@@ -434,9 +433,9 @@ public class CombatManager : MonoBehaviour
         }
 
 
-        if (sourceCharacter.HasStaminaToAttack(weapon.WeaponDataSO.StaminaCost))
+        if (sourceCharacter.HasStaminaToAttack(weapon.StaminaCost))
         {
-            sourceCharacter.UseStamina(weapon.WeaponDataSO.StaminaCost);
+            sourceCharacter.UseStamina(weapon.StaminaCost);
             targetCharacter.TakeDamage(damage, weapon.WeaponDataSO.ItemExtraType);
 
             DealThornsDamageToAttacker(targetCharacter, sourceCharacter, damage);

@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class GoobertStarEffect : MonoBehaviour, IStarEffect
 {
-    [SerializeField] private List<ItemBehaviour> _trackedItems;
+    [SerializeField] private List<ItemBehaviour> _trackedItems = new List<ItemBehaviour>();
     [SerializeField] private int _healthRegenAmount = 9;
 
     private const int ITEM_ACTIVATIONS_NEEDED_TO_PROC = 5;

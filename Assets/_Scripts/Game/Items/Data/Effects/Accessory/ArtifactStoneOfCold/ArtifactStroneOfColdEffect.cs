@@ -20,7 +20,7 @@ public class ArtifactStroneOfColdEffect : MonoBehaviour, IItemEffect
         _weaponBehaviour = GetComponent<WeaponBehaviour>();
     }
 
-    public void ApplyEffect(ItemBehaviour item, Character sourceCharacter, Character targetCharacter)
+    public void StartOfCombatInit(ItemBehaviour item, Character sourceCharacter, Character targetCharacter)
     {
         CombatManager.Instance.AttackCharacterOnce(sourceCharacter, targetCharacter, _weaponBehaviour);
         targetCharacter.ApplyBuff(_stoneOfColdBuff);

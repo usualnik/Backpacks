@@ -9,7 +9,7 @@ public class ProtectivePurseEffect : MonoBehaviour, IItemEffect
     [SerializeField]
     private float _buffArmorAmount = 15f;
 
-    public void ApplyEffect(ItemBehaviour item, Character sourceCharacter, Character targetCharacter)
+    public void StartOfCombatInit(ItemBehaviour item, Character sourceCharacter, Character targetCharacter)
     {
         targetCharacter.AddArmor(_buffArmorAmount);
         OnActivate();

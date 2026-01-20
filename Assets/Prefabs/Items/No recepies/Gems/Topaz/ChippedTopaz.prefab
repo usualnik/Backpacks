@@ -204,7 +204,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 298e7bb5d4faf8340a3e580c31901239, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _increaseSpeedMultiplier: 10
+  _increaseSpeedMultiplier: 0.1
   _gainStaminaRegenValue: 0.08
   _gainChanceToResistStun: 10
   _gainChanceToCriticalHit: 5

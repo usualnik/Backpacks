@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class BloodGoobertStarEffect : MonoBehaviour
 {
-    [SerializeField] private List<ItemBehaviour> _trackedItems;
+    [SerializeField] private List<ItemBehaviour> _trackedItems = new List<ItemBehaviour>();
 
     [SerializeField] private float _damageAfterItemsProcAmount = 10f;
     [SerializeField] private float _additionalDamagePerVampirismStack = 1f;

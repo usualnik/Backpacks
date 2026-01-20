@@ -41,7 +41,7 @@ public class PumpkinEffect : MonoBehaviour, IItemEffect
         _pumpkinWeapon.OwnerCharacter?.ApplyBuff(_pumpkinBuff);
         OnActivate();
     }
-    public void ApplyEffect(ItemBehaviour item, Character sourceCharacter, Character targetCharacter)
+    public void StartOfCombatInit(ItemBehaviour item, Character sourceCharacter, Character targetCharacter)
     {
 
     }

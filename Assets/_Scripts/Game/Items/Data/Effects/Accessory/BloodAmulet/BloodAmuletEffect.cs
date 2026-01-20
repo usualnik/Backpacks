@@ -13,7 +13,7 @@ public class BloodAmuletEffect : MonoBehaviour, IItemEffect
     [SerializeField]
     private Buff _bloodAmuletBuff; 
 
-    public void ApplyEffect(ItemBehaviour target, Character sourceCharacter, Character targetCharacter)
+    public void StartOfCombatInit(ItemBehaviour target, Character sourceCharacter, Character targetCharacter)
     {
         targetCharacter.ChangeMaxHealthValue(_additionalHealth);
         targetCharacter.AddHealth(_additionalHealth);

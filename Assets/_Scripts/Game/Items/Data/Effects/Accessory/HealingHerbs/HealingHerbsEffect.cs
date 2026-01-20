@@ -12,7 +12,7 @@ public class HealingHerbsEffect : MonoBehaviour,IItemEffect
     private Buff _healingHerbsBuff;
 
 
-    public void ApplyEffect(ItemBehaviour item, Character sourceCharacter, Character targetCharacter)
+    public void StartOfCombatInit(ItemBehaviour item, Character sourceCharacter, Character targetCharacter)
     {
         targetCharacter.ApplyBuff(_healingHerbsBuff);
         OnActivate();

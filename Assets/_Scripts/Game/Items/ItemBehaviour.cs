@@ -68,8 +68,7 @@ public class ItemBehaviour : MonoBehaviour
 
             PerformAction();
 
-
-            _effect?.ApplyEffect(this, _ownerCharacter, _targetCharacter);
+            _effect?.StartOfCombatInit(this, _ownerCharacter, _targetCharacter);
         }
     }
     public ItemState GetItemState() { return _currentState; }

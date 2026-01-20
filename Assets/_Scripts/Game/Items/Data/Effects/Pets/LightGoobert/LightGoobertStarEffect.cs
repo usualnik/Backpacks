@@ -4,7 +4,7 @@ using UnityEngine;
 public class LightGoobertStarEffect : MonoBehaviour
 {
 
-    [SerializeField] private List<ItemBehaviour> _trackedItems;
+    [SerializeField] private List<ItemBehaviour> _trackedItems = new List<ItemBehaviour>();
 
     [SerializeField] private Buff _lightGoobertTempBuff;
     [SerializeField] private float _healAmount = 20f;
