@@ -26,7 +26,7 @@ public class CombatLogPanel : MonoBehaviour, IDragHandler
 
     private void Start()
     {
-        CombatManager.Instance.OnDamageDealt += CombatManager_OnDamageDealt;
+        CombatManager.Instance.OnHit += CombatManager_OnDamageDealt;
         CombatManager.Instance.OnCombatFinished += CombatManager_OnCombatFinished;
 
         PlayerCharacter.Instance.OnNewBuffApplied += PlayerCharacter_OnNewBuffApplied;
@@ -37,7 +37,7 @@ public class CombatLogPanel : MonoBehaviour, IDragHandler
 
     private void OnDestroy()
     {
-        CombatManager.Instance.OnDamageDealt -= CombatManager_OnDamageDealt;
+        CombatManager.Instance.OnHit -= CombatManager_OnDamageDealt;
         CombatManager.Instance.OnCombatFinished -= CombatManager_OnCombatFinished;
         PlayerCharacter.Instance.OnNewBuffApplied -= PlayerCharacter_OnNewBuffApplied;
         EnemyCharacter.Instance.OnNewBuffApplied -= EnemyCharacter_OnNewBuffApplied;

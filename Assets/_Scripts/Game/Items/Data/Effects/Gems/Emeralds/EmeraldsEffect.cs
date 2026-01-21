@@ -93,14 +93,14 @@ public class EmeraldsEffect : MonoBehaviour, IItemEffect
         if (weaponBehaviour == null) return;
 
         _gemedWeapon = weaponBehaviour;
-        CombatManager.Instance.OnDamageDealt += CombatManager_OnDamageDealt;
+        CombatManager.Instance.OnHit += CombatManager_OnDamageDealt;
     }
 
 
     private void RemoveWeaponEffect()
     {
         _gemedWeapon = null;
-        CombatManager.Instance.OnDamageDealt -= CombatManager_OnDamageDealt;
+        CombatManager.Instance.OnHit -= CombatManager_OnDamageDealt;
     }
 
     private void CombatManager_OnDamageDealt(WeaponBehaviour arg1, Character character, float damage)

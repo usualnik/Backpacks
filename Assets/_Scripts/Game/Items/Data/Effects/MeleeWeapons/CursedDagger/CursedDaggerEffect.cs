@@ -16,13 +16,13 @@ public class CursedDaggerEffect : MonoBehaviour, IItemEffect
     private void Start()
     {
         CombatManager.Instance.OnCharacterStuned += CombatManager_OnCharacterStuned;
-        CombatManager.Instance.OnDamageDealt += CombatManager_OnDamageDealt;
+        CombatManager.Instance.OnHit += CombatManager_OnDamageDealt;
     }
 
     private void OnDestroy()
     {
         CombatManager.Instance.OnCharacterStuned -= CombatManager_OnCharacterStuned;
-        CombatManager.Instance.OnDamageDealt -= CombatManager_OnDamageDealt;
+        CombatManager.Instance.OnHit -= CombatManager_OnDamageDealt;
     }
 
     private void CombatManager_OnDamageDealt(WeaponBehaviour weapon, Character arg2, float arg3)

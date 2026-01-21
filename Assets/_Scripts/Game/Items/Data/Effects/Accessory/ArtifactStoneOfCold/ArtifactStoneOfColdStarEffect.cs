@@ -9,11 +9,11 @@ public class ArtifactStoneOfColdStarEffect : MonoBehaviour, IStarEffect
 
     private void Start()
     {
-        CombatManager.Instance.OnDamageDealt += CombatManager_OnDamageDealt;
+        CombatManager.Instance.OnHit += CombatManager_OnDamageDealt;
     }
     private void OnDestroy()
     {
-        CombatManager.Instance.OnDamageDealt -= CombatManager_OnDamageDealt;
+        CombatManager.Instance.OnHit -= CombatManager_OnDamageDealt;
 
     }
     private void CombatManager_OnDamageDealt(WeaponBehaviour weapon, Character targetCharacter, float arg3)

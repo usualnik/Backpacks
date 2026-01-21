@@ -26,13 +26,13 @@ public class PumpkinEffect : MonoBehaviour, IItemEffect
 
     private void Start()
     {
-        CombatManager.Instance.OnDamageDealt += CombatManager_OnDamageDealt;
+        CombatManager.Instance.OnHit += CombatManager_OnDamageDealt;
         CombatManager.Instance.OnFatigueDamageStarted += CombatManager_OnFatigueDamageStarted;
     }    
 
     private void OnDestroy()
     {
-        CombatManager.Instance.OnDamageDealt -= CombatManager_OnDamageDealt;
+        CombatManager.Instance.OnHit -= CombatManager_OnDamageDealt;
         CombatManager.Instance.OnFatigueDamageStarted -= CombatManager_OnFatigueDamageStarted;
 
     }

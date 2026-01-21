@@ -32,7 +32,8 @@ public class CombatManager : MonoBehaviour
 
     public event Action OnCombatStarted;
     public event Action<CombatResult> OnCombatFinished;
-    public event Action<WeaponBehaviour, Character, float> OnDamageDealt;
+    public event Action<WeaponBehaviour, Character, float> OnHit;
+    public event Action<WeaponBehaviour, Character> OnMiss;
     public event Action<Character,float> OnCharacterStuned;
 
     public bool IsInCombat => _isInCombat;
@@ -215,6 +216,7 @@ public class CombatManager : MonoBehaviour
 
                 if (!isHit)
                 {
+                    OnMiss?.Invoke(weapon, sourceCharacter);
                     yield return new WaitForSeconds(cooldown);
                     continue;
                 }
@@ -228,7 +230,7 @@ public class CombatManager : MonoBehaviour
 
                     CalculateVampirismHealing(sourceCharacter, damage);
 
-                    OnDamageDealt?.Invoke(weapon, targetCharacter, damage);
+                    OnHit?.Invoke(weapon, targetCharacter, damage);
                 }
                 else
                 {
@@ -429,6 +431,7 @@ public class CombatManager : MonoBehaviour
 
         if (!isHit)
         {
+            OnMiss?.Invoke(weapon, sourceCharacter);
             return;
         }
 
@@ -439,7 +442,7 @@ public class CombatManager : MonoBehaviour
             targetCharacter.TakeDamage(damage, weapon.WeaponDataSO.ItemExtraType);
 
             DealThornsDamageToAttacker(targetCharacter, sourceCharacter, damage);
-            OnDamageDealt?.Invoke(weapon, targetCharacter, damage);
+            OnHit?.Invoke(weapon, targetCharacter, damage);
         }
         else
         {

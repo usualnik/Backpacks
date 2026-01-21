@@ -103,7 +103,7 @@ public class SapphiresEffect : MonoBehaviour, IItemEffect
         _gemedWeapon = weaponBehaviour;
         _gemedWeapon.OwnerCharacter.AddIgnoreArmorChance(_ignoreArmorChance);
 
-        CombatManager.Instance.OnDamageDealt += CombatManager_OnDamageDealt;
+        CombatManager.Instance.OnHit += CombatManager_OnDamageDealt;
     }
 
     private void RemoveWeaponEffect()
@@ -111,7 +111,7 @@ public class SapphiresEffect : MonoBehaviour, IItemEffect
         _gemedWeapon.OwnerCharacter.AddIgnoreArmorChance(-_ignoreArmorChance);
 
         _gemedWeapon = null;
-        CombatManager.Instance.OnDamageDealt -= CombatManager_OnDamageDealt;
+        CombatManager.Instance.OnHit -= CombatManager_OnDamageDealt;
     }
 
     private void CombatManager_OnDamageDealt(WeaponBehaviour arg1, Character character, float damage)

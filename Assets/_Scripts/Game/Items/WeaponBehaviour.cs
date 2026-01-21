@@ -43,10 +43,10 @@ public class WeaponBehaviour : ItemBehaviour
     {
         CombatManager.Instance.OnCombatStarted += CombatManager_OnCombatStarted;
         _weaponBehaviour.OnWeaponStatsChanged += Weapon_OnWeaponStatsChangedDuringCombat;
-        
+
         base.ConfigureItemOwnerTarget();
     }
-     
+
 
     private void OnDestroy()
     {
@@ -100,6 +100,12 @@ public class WeaponBehaviour : ItemBehaviour
     public void IncreaseSpeedMultiplier(float value)
     {
         _currentCooldownMultiplier += value;
+        OnWeaponStatsChanged?.Invoke();
+    }
+
+    public void RemoveStaminaUsage(float value)
+    {
+        _staminaCost -= value;
         OnWeaponStatsChanged?.Invoke();
     }
 

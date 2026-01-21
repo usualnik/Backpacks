@@ -21,14 +21,14 @@ public class BloodyDaggerEffect : MonoBehaviour, IItemEffect
     private void Start()
     {
         CombatManager.Instance.OnCharacterStuned += CombatManager_OnCharacterStuned;
-        CombatManager.Instance.OnDamageDealt += CombatMnager_OnDamageDealt;
+        CombatManager.Instance.OnHit += CombatMnager_OnDamageDealt;
         CombatManager.Instance.OnCombatFinished += CombatManager_OnCombatFinished;
     }
 
     private void OnDestroy()
     {
         CombatManager.Instance.OnCharacterStuned -= CombatManager_OnCharacterStuned;
-        CombatManager.Instance.OnDamageDealt -= CombatMnager_OnDamageDealt;
+        CombatManager.Instance.OnHit -= CombatMnager_OnDamageDealt;
         CombatManager.Instance.OnCombatFinished -= CombatManager_OnCombatFinished;
     }
 

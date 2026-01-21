@@ -2,7 +2,7 @@ using System;
 using System.Collections;
 using UnityEngine;
 
-public class FlyAgaricEffect : MonoBehaviour, IItemEffect
+public class FlyAgaricEffect : MonoBehaviour, IItemEffect, IFoodEffect
 {
     public event Action OnEffectAcivate;
     public int ItemActivations { get; set; }
@@ -85,5 +85,11 @@ public class FlyAgaricEffect : MonoBehaviour, IItemEffect
     {
         ItemActivations++;
         OnEffectAcivate?.Invoke();
+    }
+
+    public void TriggerEffect()
+    {
+        _targetCharacter.ApplyBuff(_flyAgaricPoisonBuff);
+        OnActivate();
     }
 }

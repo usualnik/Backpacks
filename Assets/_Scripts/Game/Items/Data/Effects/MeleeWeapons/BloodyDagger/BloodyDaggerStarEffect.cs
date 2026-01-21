@@ -16,11 +16,11 @@ public class BloodyDaggerStarEffect : MonoBehaviour, IStarEffect
 
     private void Start()
     {
-        CombatManager.Instance.OnDamageDealt += CombatManager_OnDamageDealt;
+        CombatManager.Instance.OnHit += CombatManager_OnDamageDealt;
     }
     private void OnDestroy()
     {
-        CombatManager.Instance.OnDamageDealt -= CombatManager_OnDamageDealt;
+        CombatManager.Instance.OnHit -= CombatManager_OnDamageDealt;
 
     }
     private void CombatManager_OnDamageDealt(WeaponBehaviour weapon, Character arg2, float arg3)

@@ -17,11 +17,11 @@ public class BowAndArrowStarEffect : MonoBehaviour, IStarEffect
 
     private void Start()
     {
-        CombatManager.Instance.OnDamageDealt += CombatManager_OnDamageDealt;
+        CombatManager.Instance.OnHit += CombatManager_OnDamageDealt;
     }
     private void OnDestroy()
     {
-        CombatManager.Instance.OnDamageDealt -= CombatManager_OnDamageDealt;
+        CombatManager.Instance.OnHit -= CombatManager_OnDamageDealt;
 
     }
     private void CombatManager_OnDamageDealt(WeaponBehaviour damageWeapon,Character character, float damage)

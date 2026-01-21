@@ -9,3 +9,4 @@ public interface IItemEffect
     void StartOfCombatInit(ItemBehaviour item, Character sourceCharacter, Character targetCharacter);
     void OnActivate();
 }
+

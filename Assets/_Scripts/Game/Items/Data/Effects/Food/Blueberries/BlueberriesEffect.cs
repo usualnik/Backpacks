@@ -1,8 +1,9 @@
+using System;
 using System.Collections;
 using TMPro;
 using UnityEngine;
 
-public class BlueberriesEffect : MonoBehaviour
+public class BlueberriesEffect : MonoBehaviour, IItemEffect, IFoodEffect
 {
     [SerializeField] private float _baseEffectCooldown = 3.5f;
     [SerializeField] private Buff _manaBuff;
@@ -13,6 +14,10 @@ public class BlueberriesEffect : MonoBehaviour
 
     private float _currentCooldownMultiplier = 1f;
     private Coroutine _blueberriesRoutine;
+
+    public event Action OnEffectAcivate;
+
+    public int ItemActivations { get; set; }
 
     private void Start()
     {
@@ -68,12 +73,13 @@ public class BlueberriesEffect : MonoBehaviour
             float currentCooldown = _baseEffectCooldown / _currentCooldownMultiplier;
             yield return new WaitForSeconds(currentCooldown);
 
-          ApplyBlueberriesBuff();
+            ApplyBlueberriesBuff();
+            OnActivate();
         }
     }
 
 
-    private void ApplyBlueberriesBuff() 
+    private void ApplyBlueberriesBuff()
     {
         if (_owner.GetBuffStacks(Buff.BuffType.Mana) > _switchBuffsAmount)
         {
@@ -95,5 +101,23 @@ public class BlueberriesEffect : MonoBehaviour
             StopCoroutine(_blueberriesRoutine);
             _blueberriesRoutine = StartCoroutine(BlueberriesRoutine());
         }
+    }
+
+    public void TriggerEffect()
+    {
+        ApplyBlueberriesBuff();
+        OnActivate();
+    }
+
+
+    public void StartOfCombatInit(ItemBehaviour item, Character sourceCharacter, Character targetCharacter)
+    {
+
+    }
+
+    public void OnActivate()
+    {
+        ItemActivations++;
+        OnEffectAcivate?.Invoke();
     }
 }

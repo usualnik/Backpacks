@@ -21,14 +21,14 @@ public class BloodThorneEffect : MonoBehaviour, IItemEffect
 
     private void Start()
     {
-        CombatManager.Instance.OnDamageDealt += CombatManager_OnDamageDealt;
+        CombatManager.Instance.OnHit += CombatManager_OnDamageDealt;
         CombatManager.Instance.OnCombatFinished += CombatManager_CombatFinished;
     }
   
     private void OnDestroy()
     {
         CombatManager.Instance.OnCombatFinished -= CombatManager_CombatFinished;
-        CombatManager.Instance.OnDamageDealt -= CombatManager_OnDamageDealt;
+        CombatManager.Instance.OnHit -= CombatManager_OnDamageDealt;
     }
 
     private void CombatManager_CombatFinished(CombatManager.CombatResult obj)

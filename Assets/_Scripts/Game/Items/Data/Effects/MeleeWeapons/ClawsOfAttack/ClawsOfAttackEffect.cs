@@ -22,7 +22,7 @@ public class ClawsOfAttackEffect : MonoBehaviour, IItemEffect
 
     private void Start()
     {
-        CombatManager.Instance.OnDamageDealt += CombatManager_OnDamageDealt;
+        CombatManager.Instance.OnHit += CombatManager_OnDamageDealt;
         CombatManager.Instance.OnCombatFinished += CombatManager_OnCombatFinished;
 
         if (_weaponBehaviour.OwnerCharacter)
@@ -32,7 +32,7 @@ public class ClawsOfAttackEffect : MonoBehaviour, IItemEffect
 
     private void OnDestroy()
     {
-        CombatManager.Instance.OnDamageDealt -= CombatManager_OnDamageDealt;     
+        CombatManager.Instance.OnHit -= CombatManager_OnDamageDealt;     
         CombatManager.Instance.OnCombatFinished -= CombatManager_OnCombatFinished;
 
         if (_weaponBehaviour.OwnerCharacter)

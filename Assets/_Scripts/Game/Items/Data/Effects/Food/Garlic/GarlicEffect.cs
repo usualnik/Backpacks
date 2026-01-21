@@ -2,7 +2,7 @@
 using System.Collections;
 using UnityEngine;
 
-public class GarlicEffect : MonoBehaviour, IItemEffect
+public class GarlicEffect : MonoBehaviour, IItemEffect, IFoodEffect
 {
     public event Action OnEffectAcivate;
     public int ItemActivations { get; set; }
@@ -123,5 +123,11 @@ public class GarlicEffect : MonoBehaviour, IItemEffect
     {
         ItemActivations++;
         OnEffectAcivate?.Invoke();
+    }
+
+    public void TriggerEffect()
+    {
+        TryRemoveVampirism();
+        OnActivate();
     }
 }

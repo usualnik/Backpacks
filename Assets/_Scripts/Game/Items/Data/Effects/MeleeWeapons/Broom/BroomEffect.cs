@@ -9,9 +9,12 @@ public class BroomEffect : MonoBehaviour, IItemEffect
 
     [SerializeField] private Buff _blindBuff;
     [SerializeField] private float _chanceToInflictBlind = 33f;
+    [SerializeField] private float _nextAttackDamageBuff = 2f;
 
 
     private WeaponBehaviour _weaponBehaviour;
+
+    private bool _isDamageBuffed = false;
 
 
 
@@ -22,11 +25,23 @@ public class BroomEffect : MonoBehaviour, IItemEffect
 
     private void Start()
     {
-        CombatManager.Instance.OnDamageDealt += CombatManager_OnDamageDealt;
+        CombatManager.Instance.OnHit += CombatManager_OnDamageDealt;
+        CombatManager.Instance.OnMiss += CombatManager_OnMiss;
     }
+
+    private void CombatManager_OnMiss(WeaponBehaviour weapon, Character missedCharacter)
+    {
+        if (_weaponBehaviour.TargetCharacter == missedCharacter && !_isDamageBuffed)
+        {
+            DamageBuff();
+            OnActivate();
+        }
+    }
+
     private void OnDestroy()
     {
-        CombatManager.Instance.OnDamageDealt -= CombatManager_OnDamageDealt;
+        CombatManager.Instance.OnMiss -= CombatManager_OnMiss;
+        CombatManager.Instance.OnHit -= CombatManager_OnDamageDealt;
 
     }
     private void CombatManager_OnDamageDealt(WeaponBehaviour weapon, Character target, float arg3)
@@ -34,6 +49,11 @@ public class BroomEffect : MonoBehaviour, IItemEffect
         if (_weaponBehaviour == weapon)
         {
             TryApplyBuff(target);
+
+            if (_isDamageBuffed)
+            {
+                RemoveDamageBuff();
+            }
         }
     }
 
@@ -57,5 +77,16 @@ public class BroomEffect : MonoBehaviour, IItemEffect
     {
         ItemActivations++;
         OnEffectAcivate?.Invoke();
+    }
+
+    private void RemoveDamageBuff()
+    {
+        _weaponBehaviour.AddDamageToWeapon(-_nextAttackDamageBuff);
+        _isDamageBuffed = false;
+    }
+    private void DamageBuff()
+    {
+        _weaponBehaviour.AddDamageToWeapon(_nextAttackDamageBuff);
+        _isDamageBuffed = true;
     }
 }

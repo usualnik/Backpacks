@@ -2,7 +2,7 @@ using System;
 using System.Collections;
 using UnityEngine;
 
-public class BananaEffect : MonoBehaviour, IItemEffect
+public class BananaEffect : MonoBehaviour, IItemEffect, IFoodEffect
 {
     public event Action OnEffectAcivate;
 
@@ -94,5 +94,12 @@ public class BananaEffect : MonoBehaviour, IItemEffect
     {
         ItemActivations++;
         OnEffectAcivate?.Invoke();
+    }
+
+    public void TriggerEffect()
+    {
+        _targetCharacter.AddHealth(_healAmount);
+        _targetCharacter.AddStamina(_regenStaminaAmount);
+        OnActivate();
     }
 }
