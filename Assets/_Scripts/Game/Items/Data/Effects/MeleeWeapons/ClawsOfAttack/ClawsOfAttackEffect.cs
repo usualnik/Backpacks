@@ -52,7 +52,6 @@ public class ClawsOfAttackEffect : MonoBehaviour, IItemEffect
     private void CombatManager_OnCombatFinished(CombatManager.CombatResult obj)
     {
         ResetHitsCounterAfterCombat();
-        _weaponBehaviour.ResetWeaponStatsToDefault();
     }
 
     private void CombatManager_OnDamageDealt(WeaponBehaviour weapon, Character target, float arg3)

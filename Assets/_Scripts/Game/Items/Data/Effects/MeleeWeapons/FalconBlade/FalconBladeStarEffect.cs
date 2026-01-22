@@ -10,27 +10,12 @@ public class FalconBladeStarEffect : MonoBehaviour, IStarEffect
     private void Start()
     {
         CombatManager.Instance.OnCombatStarted += CombatManager_OnCombatStarted;
-        CombatManager.Instance.OnCombatFinished += CombatManager_OnCombatFinished;
     }
-
- 
 
     private void OnDestroy()
     {
         CombatManager.Instance.OnCombatStarted -= CombatManager_OnCombatStarted;
-        CombatManager.Instance.OnCombatFinished -= CombatManager_OnCombatFinished;
-
-
     }
-
-    private void CombatManager_OnCombatFinished(CombatManager.CombatResult obj)
-    {
-        if (_starredWeapons.Count > 0)
-        {
-            RemoveCooldownBuff();
-        }
-    }
-
     private void CombatManager_OnCombatStarted()
     {
         if (_starredWeapons.Count > 0)
@@ -68,16 +53,5 @@ public class FalconBladeStarEffect : MonoBehaviour, IStarEffect
         }
     }
 
-    private void RemoveCooldownBuff()
-    {
-        foreach (var item in _starredWeapons)
-        {
-            item.TryGetComponent(out WeaponBehaviour weapon);
 
-            if (weapon != null)
-            {
-                weapon.ResetWeaponStatsToDefault();
-            }
-        }
-    }
 }

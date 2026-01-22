@@ -28,7 +28,6 @@ public class DeathScytheEffect : MonoBehaviour, IItemEffect
     {
         _deathScythe.TargetCharacter.OnNewBuffApplied -= TargetCharacter_OnNewBuffApplied;
         _poisonCounter = 0;
-        _deathScythe.ResetWeaponStatsToDefault();
     }
 
     public void OnActivate()

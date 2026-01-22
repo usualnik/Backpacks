@@ -35,7 +35,6 @@ public class ImpracticallyLargeGreatswordEffect : MonoBehaviour, IItemEffect
         _greatSword.OwnerCharacter.OnNewBuffApplied -= OwnerCharacter_OnNewBuffApplied;
         _greatSword.OwnerCharacter.OnBuffRemoved -= OwnerCharacter_OnBuffRemoved;
 
-        _greatSword.ResetWeaponStatsToDefault();
     }
 
     public void StartOfCombatInit(ItemBehaviour item, Character sourceCharacter, Character targetCharacter)

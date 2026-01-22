@@ -20,20 +20,14 @@ public class CrossBladesEffect : MonoBehaviour, IItemEffect
     private void Start()
     {
         CombatManager.Instance.OnHit += CombatManager_OnDamageDealt;
-        CombatManager.Instance.OnCombatFinished += CombatManager_OnCombatFinished;
     }
 
     private void OnDestroy()
     {
         CombatManager.Instance.OnHit -= CombatManager_OnDamageDealt;
-        CombatManager.Instance.OnCombatFinished -= CombatManager_OnCombatFinished;
     }
 
-    private void CombatManager_OnCombatFinished(CombatManager.CombatResult obj)
-    {
-        _weaponBehaviour.ResetWeaponStatsToDefault();
-    }
-
+ 
     private void CombatManager_OnDamageDealt(WeaponBehaviour weapon, Character arg2, float arg3)
     {
         if (_weaponBehaviour == weapon)

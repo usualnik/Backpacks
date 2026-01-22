@@ -35,7 +35,6 @@ public class DarkSaberEffect : MonoBehaviour, IItemEffect
             _darkSaber.TargetCharacter.OnNewBuffApplied -= TargetCharacter_OnNewBuffApplied;
         }
 
-        _darkSaber.ResetWeaponStatsToDefault();
     }
 
     private void CombatManager_OnDamageDealt(WeaponBehaviour weapon, Character arg2, float arg3)

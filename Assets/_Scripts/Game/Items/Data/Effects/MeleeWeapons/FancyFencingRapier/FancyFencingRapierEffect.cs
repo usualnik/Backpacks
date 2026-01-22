@@ -21,20 +21,15 @@ public class FancyFencingRapierEffect : MonoBehaviour, IItemEffect
     {
         CombatManager.Instance.OnMiss += CombatManager_OnMiss;
         CombatManager.Instance.OnHit += CombatManager_OnHit;
-        CombatManager.Instance.OnCombatFinished += CombatManager_OnCombatFinished;
     }    
 
     private void OnDestroy()
     {
         CombatManager.Instance.OnMiss -= CombatManager_OnMiss;
         CombatManager.Instance.OnHit -= CombatManager_OnHit;
-        CombatManager.Instance.OnCombatFinished -= CombatManager_OnCombatFinished;
     }
 
-    private void CombatManager_OnCombatFinished(CombatManager.CombatResult obj)
-    {
-        _fancyRapier.ResetWeaponStatsToDefault();
-    }
+
 
     private void CombatManager_OnHit(WeaponBehaviour weapon, Character arg2, float arg3)
     {

@@ -464,7 +464,11 @@ public abstract class Character : MonoBehaviour, IDamageable, IStaminable
 
     public void AddArmor(float value)
     {
-        _stats.Armor += value;
+        if (_stats.Armor + value >= 0)
+        {
+            _stats.Armor += value;
+        }
+
         InvokeStatsChanged(_stats);
     }
 

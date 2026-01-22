@@ -21,7 +21,6 @@ public class EggscaliburStarEffect : MonoBehaviour, IStarEffect
     {
         CombatManager.Instance.OnHit += CombatManager_OnDamageDealt;
         CombatManager.Instance.OnCombatStarted += CombatManager_OnCombatStarted;
-        CombatManager.Instance.OnCombatFinished += CombatManager_OnCombatFinished;
     }
 
 
@@ -29,14 +28,9 @@ public class EggscaliburStarEffect : MonoBehaviour, IStarEffect
     {
         CombatManager.Instance.OnHit -= CombatManager_OnDamageDealt;
         CombatManager.Instance.OnCombatStarted -= CombatManager_OnCombatStarted;
-        CombatManager.Instance.OnCombatFinished -= CombatManager_OnCombatFinished;
     }
 
-    private void CombatManager_OnCombatFinished(CombatManager.CombatResult obj)
-    {
-        _eggscalibur.ResetWeaponStatsToDefault();
-    }
-
+ 
 
     private void CombatManager_OnCombatStarted()
     {

@@ -43,15 +43,21 @@ public class WeaponBehaviour : ItemBehaviour
     {
         CombatManager.Instance.OnCombatStarted += CombatManager_OnCombatStarted;
         _weaponBehaviour.OnWeaponStatsChanged += Weapon_OnWeaponStatsChangedDuringCombat;
+        CombatManager.Instance.OnCombatFinished += CombatManager_OnCombatFinished;
 
         base.ConfigureItemOwnerTarget();
     }
-
 
     private void OnDestroy()
     {
         CombatManager.Instance.OnCombatStarted -= CombatManager_OnCombatStarted;
         _weaponBehaviour.OnWeaponStatsChanged -= Weapon_OnWeaponStatsChangedDuringCombat;
+        CombatManager.Instance.OnCombatFinished -= CombatManager_OnCombatFinished;
+    }
+
+    private void CombatManager_OnCombatFinished(CombatManager.CombatResult obj)
+    {
+        ResetWeaponStatsToDefault();
     }
 
     private void Weapon_OnWeaponStatsChangedDuringCombat()
@@ -114,7 +120,7 @@ public class WeaponBehaviour : ItemBehaviour
         _canAttack = canAutoAttack;
     }
 
-    public void ResetWeaponStatsToDefault()
+    private void ResetWeaponStatsToDefault()
     {
         _weaponDamageMin = _weaponDataSO.DamageMin;
         _weaponDamageMax = _weaponDataSO.DamageMax;

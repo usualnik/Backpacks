@@ -10,19 +10,14 @@ public class HeroSwordStarEffect : MonoBehaviour, IStarEffect
     private void Start()
     {
         CombatManager.Instance.OnCombatStarted += CombatManager_OnCombatStarted;
-        CombatManager.Instance.OnCombatFinished += CombatManager_OnCombatFinished;
     }
 
     private void OnDestroy()
     {
         CombatManager.Instance.OnCombatStarted -= CombatManager_OnCombatStarted;
-        CombatManager.Instance.OnCombatFinished -= CombatManager_OnCombatFinished;
     }
 
-    private void CombatManager_OnCombatFinished(CombatManager.CombatResult obj)
-    {
-        DebuffStarredWeaponsAfterFight();
-    }
+   
     private void CombatManager_OnCombatStarted()
     {
         if (_trackedWeapons.Count > 0)
@@ -54,11 +49,5 @@ public class HeroSwordStarEffect : MonoBehaviour, IStarEffect
         }
     }
 
-    private void DebuffStarredWeaponsAfterFight()
-    {
-        foreach (var weapon in _trackedWeapons)
-        {
-            weapon.ResetWeaponStatsToDefault();
-        }
-    }
+   
 }

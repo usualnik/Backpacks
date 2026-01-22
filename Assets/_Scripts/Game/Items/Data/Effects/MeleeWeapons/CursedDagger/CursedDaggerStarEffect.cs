@@ -18,21 +18,26 @@ public class CursedDaggerStarEffect : MonoBehaviour, IStarEffect
 
     private void Start()
     {
-        _cursedDagger.TargetCharacter.OnNewBuffApplied += TargetCharacter_OnNewBuffApplied;
-        _cursedDagger.TargetCharacter.OnBuffRemoved += TargetCharacter_OnBuffRemoved;
-    }   
+        if (_cursedDagger.TargetCharacter)
+        {
+            _cursedDagger.TargetCharacter.OnNewBuffApplied += TargetCharacter_OnNewBuffApplied;
+            _cursedDagger.TargetCharacter.OnBuffRemoved += TargetCharacter_OnBuffRemoved;
+        }
+    }
 
     private void OnDestroy()
     {
-        _cursedDagger.TargetCharacter.OnNewBuffApplied -= TargetCharacter_OnNewBuffApplied;
-        _cursedDagger.TargetCharacter.OnBuffRemoved -= TargetCharacter_OnBuffRemoved;
+        if (_cursedDagger.TargetCharacter)
+        {
+            _cursedDagger.TargetCharacter.OnNewBuffApplied -= TargetCharacter_OnNewBuffApplied;
+            _cursedDagger.TargetCharacter.OnBuffRemoved -= TargetCharacter_OnBuffRemoved;
 
-
+        }
     }
     private void TargetCharacter_OnNewBuffApplied(Buff newBuff)
     {
-        if (newBuff.Type == Buff.BuffType.Cold 
-            || newBuff.Type == Buff.BuffType.Poison 
+        if (newBuff.Type == Buff.BuffType.Cold
+            || newBuff.Type == Buff.BuffType.Poison
             || newBuff.Type == Buff.BuffType.Blindness)
         {
             _opponentDebuffs++;

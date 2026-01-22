@@ -24,7 +24,6 @@ public class BloodHarvesterEffect : MonoBehaviour, IItemEffect
         if (_owner)
         {
             _owner.OnNewBuffApplied -= Owner_OnNewBuffApplied;
-            _bloodHarvester.ResetWeaponStatsToDefault();
         }
 
     }
