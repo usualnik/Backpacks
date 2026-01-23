@@ -1332,6 +1332,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 329016987711949224, guid: 137870c767bf8b84f9c550357331a0cf, type: 3}
       insertIndex: -1
       addedObject: {fileID: 3607893570098779664}
+    - targetCorrespondingSourceObject: {fileID: 329016987711949224, guid: 137870c767bf8b84f9c550357331a0cf, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1103411641719240092}
   m_SourcePrefab: {fileID: 100100000, guid: 137870c767bf8b84f9c550357331a0cf, type: 3}
 --- !u!1 &98611140532912634 stripped
 GameObject:
@@ -1356,6 +1359,8 @@ MonoBehaviour:
   _currentState: 0
   _previousState: 0
   _weaponDataSO: {fileID: 11400000, guid: 49eeea116ff759c41bfb957f08eb8aff, type: 2}
+  _canAttack: 1
+  _staminaCost: 0
 --- !u!114 &3607893570098779664
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1369,6 +1374,21 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _noStaminaText: {fileID: 0}
+--- !u!114 &1103411641719240092
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 98611140532912634}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 12788387a00bf7e438030db03a13a0c4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _damageBuff: 7
+  _buffUptime: 1.2
+  _manaToProcNeeded: 3
 --- !u!224 &6648914310299956083 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 6452252180174813985, guid: 137870c767bf8b84f9c550357331a0cf, type: 3}
