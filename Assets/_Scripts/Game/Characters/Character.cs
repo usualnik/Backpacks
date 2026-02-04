@@ -2,8 +2,9 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static UnityEngine.Rendering.DebugUI;
 
-public abstract class Character : MonoBehaviour, IDamageable, IStaminable
+public abstract class  Character : MonoBehaviour, IDamageable, IStaminable
 {
     [System.Serializable]
     public class CharacterStats
@@ -22,11 +23,11 @@ public abstract class Character : MonoBehaviour, IDamageable, IStaminable
     public event Action OnCharacterDeath;
     public event Action OnStaminaEmpty;
     public event Action<float> OnDamageRecived;
+    public event Action<float> OnHealingRecived;
 
     [SerializeField] protected string _nickname = string.Empty;
     [SerializeField] protected ClassDataSO _classData;
     [SerializeField] protected int _currentClassIndex = 0;
-
 
     [SerializeField] protected bool _isDead = false;
     [SerializeField] protected CharacterStats _stats = new CharacterStats();
@@ -35,7 +36,6 @@ public abstract class Character : MonoBehaviour, IDamageable, IStaminable
 
     protected Character character;
 
-
     /*first element is default gold*/
     private int[] _levelGoldData = { 0, 12, 9, 9, 9, 10, 10, 11, 11, 12, 12, 13, 13, 14, 14, 15, 15, 15 };
     private const int SEVENTH_LEVEL_GOLD_BONUS = 10;
@@ -43,9 +43,6 @@ public abstract class Character : MonoBehaviour, IDamageable, IStaminable
 
     /*first element is class default health*/
     private int[] _levelHealthData = { 0, 25, 35, 45, 55, 70, 85, 100, 115, 130, 150, 170, 190, 210, 230, 260, 290, 320 };
-
-    //This is just 100%
-    private const float MAX_CHANCE = 100;
 
 
     //----------------HEALTH---------------------
@@ -74,6 +71,10 @@ public abstract class Character : MonoBehaviour, IDamageable, IStaminable
     private float _criticalHitResistChance = 0f;
 
 
+    //-----------------BUFFS-----------------------
+
+    private CharacterBuffHandler _buffHandler;
+
     //----------------Poison---------------------
 
     private float _poisonResistChance = 0f;
@@ -85,6 +86,11 @@ public abstract class Character : MonoBehaviour, IDamageable, IStaminable
     //----------------Vampirism/Lifesteal---------
 
     private float _lifestealMultiplier = 1f;
+
+    //---------------Helpers----------------------
+
+    //This is just 100%
+    private const float MAX_CHANCE = 100;
 
     #region Init + Events
 
@@ -107,34 +113,18 @@ public abstract class Character : MonoBehaviour, IDamageable, IStaminable
     protected virtual void InitializeCharacter()
     {
         _damageHandler = GetComponent<CharacterDamageHandler>();
+        _buffHandler = GetComponent<CharacterBuffHandler>();
 
         _stats.Health = _stats.HealthMax;
         _stats.Stamina = _stats.StaminaMax;
 
         LevelManager.Instance.OnLevelChanged += LevelManager_OnLevelChanged;
-
-        character.OnNewBuffApplied += Character_OnNewBuffApplied;
-        character.OnBuffRemoved += Character_OnBuffRemoved;
     }
 
     protected virtual void DestroyCharacter()
     {
         LevelManager.Instance.OnLevelChanged -= LevelManager_OnLevelChanged;
-        character.OnNewBuffApplied -= Character_OnNewBuffApplied;
-        character.OnBuffRemoved -= Character_OnBuffRemoved;
-
     }
-
-    private void Character_OnNewBuffApplied(Buff buff)
-    {
-        HandleNewBuffApplied(buff.Type);   
-    }
-
-    private void Character_OnBuffRemoved(Buff buff)
-    {
-      HandleBuffRemoved(buff.Type);
-    }
-
 
     protected void LevelManager_OnLevelChanged(int levelIndex)
     {
@@ -241,77 +231,6 @@ public abstract class Character : MonoBehaviour, IDamageable, IStaminable
 
     }
 
-    private void HandleNewBuffApplied(Buff.BuffType buffType)
-    {
-
-        switch (buffType)
-        {
-            case Buff.BuffType.None:
-                break;
-            case Buff.BuffType.Empower:
-                break;
-            case Buff.BuffType.Heat:
-                //Recalculate cooldowns
-                break;
-            case Buff.BuffType.Luck:
-                break;
-            case Buff.BuffType.Mana:
-                break;
-            case Buff.BuffType.Regeneration:
-                HealthRegen();
-                break;
-            case Buff.BuffType.Thorns:
-                break;
-            case Buff.BuffType.Vampirism:
-                break;
-            case Buff.BuffType.Poison:
-                bool isProcPoisonResist = UnityEngine.Random.Range(1f, 100f) <= _poisonResistChance ? true : false;
-                if (!isProcPoisonResist)
-                    PoisonCharacter();
-                break;
-            case Buff.BuffType.Blindness:
-                break;
-            case Buff.BuffType.Cold:
-                //Recalculate cooldowns
-                break;
-            default:
-                break;
-        }
-    
-    }
-    private void HandleBuffRemoved(Buff.BuffType buffType)
-    {
-        switch (buffType)
-        {
-            case Buff.BuffType.None:
-                break;
-            case Buff.BuffType.Empower:
-                break;
-            case Buff.BuffType.Heat:
-                //Recalculate cooldowns
-                break;
-            case Buff.BuffType.Luck:
-                break;
-            case Buff.BuffType.Mana:
-                break;
-            case Buff.BuffType.Regeneration:
-                break;
-            case Buff.BuffType.Thorns:
-                break;
-            case Buff.BuffType.Vampirism:
-                break;
-            case Buff.BuffType.Poison:              
-                break;
-            case Buff.BuffType.Blindness:
-                break;
-            case Buff.BuffType.Cold:
-                //Recalculate cooldowns
-                break;
-            default:
-                break;
-        }
-    }
-
 
     //-----------------DAMAGE-----------------------------------------
     public void TakeDamage(float damage, ItemDataSO.ExtraType weaponType)
@@ -407,6 +326,8 @@ public abstract class Character : MonoBehaviour, IDamageable, IStaminable
         _stats.Health = Mathf.Min(_stats.Health + value, _stats.HealthMax);
 
         InvokeStatsChanged(_stats);
+
+        OnHealingRecived?.Invoke(value);
     }
 
     public void AddHealthRegenMultiplier(float value)
@@ -414,7 +335,7 @@ public abstract class Character : MonoBehaviour, IDamageable, IStaminable
         _healthRegenMultiplier += value;
     }
 
-    private void HealthRegen()
+    public void HealthRegen()
     {
         if (_healthRegenCoroutine == null)
         {
@@ -426,19 +347,23 @@ public abstract class Character : MonoBehaviour, IDamageable, IStaminable
     {
         while (!_isDead && character.GetBuffStacks(Buff.BuffType.Regeneration) > 0)
         {
-            AddHealth(HEALTH_REGEN_STEP *
+            float healingAmount = HEALTH_REGEN_STEP *
                 character.GetBuffStacks(Buff.BuffType.Regeneration)
-                * _healthRegenMultiplier);
+                * _healthRegenMultiplier;
+
+            AddHealth(healingAmount);
+
+            OnHealingRecived?.Invoke(healingAmount);
 
             yield return new WaitForSeconds(2f);
         }
 
-        _staminaRegenCoroutine = null;
+        _healthRegenCoroutine = null;
     }
 
     //----------------POISON------------------------
 
-    private void PoisonCharacter()
+    public void PoisonCharacter()
     {
         if (_poisonCoroutine == null)
         {
@@ -521,6 +446,12 @@ public abstract class Character : MonoBehaviour, IDamageable, IStaminable
     }
 
 
+    //----------------Reflect------------------------
+    public void AddReflectStacks(int value)
+    {
+        _buffHandler.AddReflectStacks(value);
+    }
+
     #endregion
 
     #region Getters
@@ -583,6 +514,11 @@ public abstract class Character : MonoBehaviour, IDamageable, IStaminable
         return _stats.Armor;
     }
 
+    public int GetReflectStacks()
+    {
+         return _buffHandler.GetReflectStacks();    
+    }
+
     public string NickName => _nickname;
     public CharacterStats Stats => _stats;
     public bool IsDead => _isDead;
@@ -592,8 +528,6 @@ public abstract class Character : MonoBehaviour, IDamageable, IStaminable
     public float CritHitResistChance => _criticalHitResistChance;
     public float PoisonResistChance => _poisonResistChance;
     public ClassDataSO ClassData => _classData;
-
-
 
     #endregion
 
@@ -614,7 +548,5 @@ public abstract class Character : MonoBehaviour, IDamageable, IStaminable
     //    _effectText.color = targetName == "Player" ? _playerColor : _enemyColor;
 
     //}
-
-
 
 }

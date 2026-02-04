@@ -70,12 +70,7 @@ public class WeaponBehaviour : ItemBehaviour
 
     private void CombatManager_OnCombatStarted()
     {
-        if (CurrentState.HasFlag(ItemState.Inventory) && _canAttack)
-        {
-            CombatManager.Instance.StartAutoAttack(GetTarget(), this,
-            WeaponDamageMin, WeaponDamageMax,
-            StaminaCost, Cooldown / _currentCooldownMultiplier, Accuracy);
-        }
+        StartAutoAttack();
 
         if (_effect != null)
         {
@@ -118,7 +113,13 @@ public class WeaponBehaviour : ItemBehaviour
     public void IsCanAutoAttack(bool canAutoAttack)
     {
         _canAttack = canAutoAttack;
+
+        if (_canAttack)
+        {
+            StartAutoAttack();
+        }
     }
+
 
     private void ResetWeaponStatsToDefault()
     {
@@ -128,6 +129,16 @@ public class WeaponBehaviour : ItemBehaviour
         _coolDownSpeed = _weaponDataSO.Cooldown;
         _accuracy = _weaponDataSO.Accuracy;
         _staminaCost = _weaponDataSO.StaminaCost;
+    }
+
+    private void StartAutoAttack()
+    {
+        if (CurrentState.HasFlag(ItemState.Inventory) && _canAttack)
+        {
+            CombatManager.Instance.StartAutoAttack(GetTarget(), this,
+            WeaponDamageMin, WeaponDamageMax,
+            StaminaCost, Cooldown / _currentCooldownMultiplier, Accuracy);
+        }
     }
 
     private void RestartAutoAttackWithNewStats()
