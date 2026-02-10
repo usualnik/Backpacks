@@ -91,18 +91,6 @@ public class BlueberriesEffect : MonoBehaviour, IItemEffect, IFoodEffect
         }
     }
 
-
-    public void IncreaseSpeed(float percentageIncrease)
-    {
-        _currentCooldownMultiplier += percentageIncrease;
-
-        if (_blueberriesRoutine != null)
-        {
-            StopCoroutine(_blueberriesRoutine);
-            _blueberriesRoutine = StartCoroutine(BlueberriesRoutine());
-        }
-    }
-
     public void TriggerEffect()
     {
         ApplyBlueberriesBuff();
@@ -119,5 +107,16 @@ public class BlueberriesEffect : MonoBehaviour, IItemEffect, IFoodEffect
     {
         ItemActivations++;
         OnEffectAcivate?.Invoke();
+    }
+
+    public void IncreaseFoodSpeed(float speedIncrease)
+    {
+        _currentCooldownMultiplier += speedIncrease;
+
+        if (_blueberriesRoutine != null)
+        {
+            StopCoroutine(_blueberriesRoutine);
+            _blueberriesRoutine = StartCoroutine(BlueberriesRoutine());
+        }
     }
 }

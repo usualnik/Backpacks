@@ -8,22 +8,15 @@ public class BananaEffect : MonoBehaviour, IItemEffect, IFoodEffect
 
     public int ItemActivations { get; set; }
 
-
-    [SerializeField]
-    private float _healAmount = 4f;
-
-    [SerializeField]
-    private float _bananaEffectCooldown = 5f;
-    [SerializeField]
-    private float _regenStaminaAmount = 1f;
+    [SerializeField] private float _healAmount = 4f;
+    [SerializeField] private float _bananaEffectCooldown = 5f;
+    [SerializeField] private float _regenStaminaAmount = 1f;
 
     private Character _targetCharacter;
 
     private float _currentCooldownMultiplier = 1f;
 
     private Coroutine _bananaRoutine;
-
-
 
     private void Start()
     {
@@ -59,11 +52,6 @@ public class BananaEffect : MonoBehaviour, IItemEffect, IFoodEffect
         }
     }
 
-    public void RemoveEffect()
-    {
-
-    }
-
     private IEnumerator BananaRoutine()
     {
         while (true)
@@ -75,18 +63,7 @@ public class BananaEffect : MonoBehaviour, IItemEffect, IFoodEffect
 
             OnActivate();
 
-            yield return new WaitForSeconds(currentCooldown);            
-        }
-    }
-
-    public void IncreaseSpeed(float percentageIncrease)
-    {
-        _currentCooldownMultiplier += percentageIncrease;
-
-        if (_bananaRoutine != null)
-        {
-            StopCoroutine(_bananaRoutine);
-            _bananaRoutine = StartCoroutine(BananaRoutine());
+            yield return new WaitForSeconds(currentCooldown);
         }
     }
 
@@ -101,5 +78,16 @@ public class BananaEffect : MonoBehaviour, IItemEffect, IFoodEffect
         _targetCharacter.AddHealth(_healAmount);
         _targetCharacter.AddStamina(_regenStaminaAmount);
         OnActivate();
+    }
+
+    public void IncreaseFoodSpeed(float _speedIncrease)
+    {
+        _currentCooldownMultiplier += _speedIncrease;
+
+        if (_bananaRoutine != null)
+        {
+            StopCoroutine(_bananaRoutine);
+            _bananaRoutine = StartCoroutine(BananaRoutine());
+        }
     }
 }

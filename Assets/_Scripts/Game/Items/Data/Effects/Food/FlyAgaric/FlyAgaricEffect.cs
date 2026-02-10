@@ -70,17 +70,6 @@ public class FlyAgaricEffect : MonoBehaviour, IItemEffect, IFoodEffect
 
     }
 
-    public void IncreaseSpeed(float percentageIncrease)
-    {
-        _currentCooldownMultiplier += percentageIncrease;
-
-        if (_flyAgaricRoutine != null)
-        {
-            StopCoroutine(_flyAgaricRoutine);
-            _flyAgaricRoutine = StartCoroutine(FlyAgaricRoutine());
-        }
-    }
-
     public void OnActivate()
     {
         ItemActivations++;
@@ -91,5 +80,16 @@ public class FlyAgaricEffect : MonoBehaviour, IItemEffect, IFoodEffect
     {
         _targetCharacter.ApplyBuff(_flyAgaricPoisonBuff);
         OnActivate();
+    }
+
+    public void IncreaseFoodSpeed(float speedIncrease)
+    {
+        _currentCooldownMultiplier += speedIncrease;
+
+        if (_flyAgaricRoutine != null)
+        {
+            StopCoroutine(_flyAgaricRoutine);
+            _flyAgaricRoutine = StartCoroutine(FlyAgaricRoutine());
+        }
     }
 }

@@ -108,17 +108,6 @@ public class GarlicEffect : MonoBehaviour, IItemEffect, IFoodEffect
         }
     }
 
-    public void IncreaseSpeed(float percentageIncrease)
-    {
-        _currentCooldownMultiplier += percentageIncrease;
-
-        if (_garlicRoutine != null)
-        {
-            StopCoroutine(_garlicRoutine);
-            _garlicRoutine = StartCoroutine(GarlicArmorRoutine());
-        }
-    }
-
     public void OnActivate()
     {
         ItemActivations++;
@@ -129,5 +118,16 @@ public class GarlicEffect : MonoBehaviour, IItemEffect, IFoodEffect
     {
         TryRemoveVampirism();
         OnActivate();
+    }
+
+    public void IncreaseFoodSpeed(float speedIncrease)
+    {
+        _currentCooldownMultiplier += speedIncrease;
+
+        if (_garlicRoutine != null)
+        {
+            StopCoroutine(_garlicRoutine);
+            _garlicRoutine = StartCoroutine(GarlicArmorRoutine());
+        }
     }
 }
