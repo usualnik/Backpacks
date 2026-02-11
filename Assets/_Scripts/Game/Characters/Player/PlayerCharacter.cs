@@ -145,6 +145,20 @@ public class PlayerCharacter : Character
 
     }
 
+    public void AddMoney(int moneyAmount)
+    {
+        if (Stats.GoldAmount + moneyAmount >= 0)
+        {
+            Stats.GoldAmount += moneyAmount;
+            InvokeStatsChanged(_stats);
+        }
+        else
+        {
+            Debug.Log("You are trying to add negative money amount");
+
+        }
+    }
+
     public bool HasMoneyToBuyItem(int price)
     {
         return Stats.GoldAmount - price >= 0;

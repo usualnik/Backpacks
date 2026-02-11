@@ -22,18 +22,11 @@ public class BloodThorneEffect : MonoBehaviour, IItemEffect
     private void Start()
     {
         CombatManager.Instance.OnHit += CombatManager_OnDamageDealt;
-        CombatManager.Instance.OnCombatFinished += CombatManager_CombatFinished;
     }
   
     private void OnDestroy()
     {
-        CombatManager.Instance.OnCombatFinished -= CombatManager_CombatFinished;
         CombatManager.Instance.OnHit -= CombatManager_OnDamageDealt;
-    }
-
-    private void CombatManager_CombatFinished(CombatManager.CombatResult obj)
-    {
-        ResetDamageAfterCombat();
     }
 
 
@@ -71,11 +64,6 @@ public class BloodThorneEffect : MonoBehaviour, IItemEffect
         _bloodThorne.AddDamageToWeapon(increaseAmount);
 
         _damageIncreaseAmount += increaseAmount;
-    }
-
-    private void ResetDamageAfterCombat()
-    {
-        _bloodThorne.AddDamageToWeapon(-_damageIncreaseAmount);
     }
 
     public void OnActivate()

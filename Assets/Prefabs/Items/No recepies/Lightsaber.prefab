@@ -348,6 +348,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 329016987711949224, guid: 137870c767bf8b84f9c550357331a0cf, type: 3}
       insertIndex: -1
       addedObject: {fileID: 8668338911553433116}
+    - targetCorrespondingSourceObject: {fileID: 329016987711949224, guid: 137870c767bf8b84f9c550357331a0cf, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 8814136375830787219}
   m_SourcePrefab: {fileID: 100100000, guid: 137870c767bf8b84f9c550357331a0cf, type: 3}
 --- !u!1 &98611140532912634 stripped
 GameObject:
@@ -385,6 +388,28 @@ MonoBehaviour:
   _currentState: 4
   _previousState: 4
   _weaponDataSO: {fileID: 11400000, guid: 3d5960dde15489547a8fc9da04eb9e2e, type: 2}
+  _canAttack: 1
+  _staminaCost: 0
+--- !u!114 &8814136375830787219
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 98611140532912634}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 784bc5b717118d848ad837052a3d1e77, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _blindBuff:
+    Name: LightSaberBlindBuff
+    Type: 9
+    IsPositive: 0
+    Value: 8
+  _blindBuffCooldown: 6
+  _damagePerOpponentBlindBuff: 1
+  _regenerationNeededToProcBlindAmount: 3
 --- !u!114 &5282576982308912559 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 5512910330479703549, guid: 137870c767bf8b84f9c550357331a0cf, type: 3}

@@ -446,10 +446,15 @@ public abstract class  Character : MonoBehaviour, IDamageable, IStaminable
     }
 
 
-    //----------------Reflect------------------------
+    //----------------Reflect/Resist Buffs------------------------
     public void AddReflectStacks(int value)
     {
         _buffHandler.AddReflectStacks(value);
+    }
+
+    public void AddDebuffResistStacks(int value)
+    {
+        _buffHandler.AddDebuffResistStacks(value);
     }
 
     #endregion
@@ -517,6 +522,11 @@ public abstract class  Character : MonoBehaviour, IDamageable, IStaminable
     public int GetReflectStacks()
     {
          return _buffHandler.GetReflectStacks();    
+    }
+
+    public int GetDebuffResistStacks()
+    {
+        return _buffHandler.GetDebuffResistStacks();
     }
 
     public string NickName => _nickname;

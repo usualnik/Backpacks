@@ -5,6 +5,8 @@ public class CharacterBuffHandler : MonoBehaviour
     private Character _character;
 
     private int _reflectionStacks = 0;
+    private int _debuffResistStacks = 0;
+
     private bool _canReflect = true;
 
     private void Awake()
@@ -78,10 +80,17 @@ public class CharacterBuffHandler : MonoBehaviour
                 {
                     ReflectDebuff(buffType);
                 }
+
                 bool isProcPoisonResist = UnityEngine.Random.Range(1f, 100f) <= _character.PoisonResistChance;
 
                 if (!isProcPoisonResist)
                     _character.PoisonCharacter();
+
+                if(_debuffResistStacks > 0)
+                {
+                    _character.RemoveBuff(Buff.BuffType.Poison, _debuffResistStacks);
+                }
+
                 break;
 
             case Buff.BuffType.Blindness:
@@ -91,6 +100,11 @@ public class CharacterBuffHandler : MonoBehaviour
                     ReflectDebuff(buffType);
                 }
 
+                if (_debuffResistStacks > 0)
+                {
+                    _character.RemoveBuff(Buff.BuffType.Blindness, _debuffResistStacks);
+                }
+
                 break;
 
             case Buff.BuffType.Cold:
@@ -98,6 +112,11 @@ public class CharacterBuffHandler : MonoBehaviour
                 if (_canReflect && _reflectionStacks > 0)
                 {
                     ReflectDebuff(buffType);
+                }
+
+                if (_debuffResistStacks > 0)
+                {
+                    _character.RemoveBuff(Buff.BuffType.Cold, _debuffResistStacks);
                 }
 
                 //Recalculate cooldowns
@@ -178,6 +197,12 @@ public class CharacterBuffHandler : MonoBehaviour
         _reflectionStacks += value;
     }
 
+    public void AddDebuffResistStacks(int value)
+    {
+        _debuffResistStacks += value;
+    }
+
     public int GetReflectStacks() { return _reflectionStacks; }
+    public int GetDebuffResistStacks() { return _debuffResistStacks; }
 
 }

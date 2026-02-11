@@ -23,7 +23,12 @@ public class SpikedShieldEffect : MonoBehaviour, IItemEffect, IDamagePreventionE
     [SerializeField]
     private Buff _spikedShieldBuff;
 
-   
+    private ItemBehaviour _spikedShield;
+
+    private void Awake()
+    {
+        _spikedShield = GetComponent<ItemBehaviour>();
+    }
 
     private void Start()
     {
@@ -68,12 +73,8 @@ public class SpikedShieldEffect : MonoBehaviour, IItemEffect, IDamagePreventionE
 
     public void StartOfCombatInit(ItemBehaviour item, Character sourceCharacter, Character targetCharacter)
     {
-        //HACK: Ќужно лучше расписать систему таргетов, иначе такие записи станут просто не читабельны
-        _targetCharacter = sourceCharacter;
-        _sourceCharacter = targetCharacter;
-
-
-        var damageHandler = targetCharacter.GetComponent<CharacterDamageHandler>();
+       
+        var damageHandler = _spikedShield.OwnerCharacter.GetComponent<CharacterDamageHandler>();
         if (damageHandler != null)
         {
             damageHandler.RegisterMeleeDamagePreventionEffect(this);
@@ -82,7 +83,7 @@ public class SpikedShieldEffect : MonoBehaviour, IItemEffect, IDamagePreventionE
 
     public void RemoveEffect()
     {
-        var damageHandler = GetComponent<CharacterDamageHandler>();
+        var damageHandler = _spikedShield.OwnerCharacter.GetComponent<CharacterDamageHandler>();
         if (damageHandler != null)
         {
             damageHandler.UnRegisterMeleeDamagePreventionEffect(this);
