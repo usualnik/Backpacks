@@ -2,7 +2,6 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using static UnityEngine.Rendering.DebugUI;
 
 public abstract class  Character : MonoBehaviour, IDamageable, IStaminable
 {
@@ -314,11 +313,16 @@ public abstract class  Character : MonoBehaviour, IDamageable, IStaminable
         _staminaRegenMultiplier += value;
     }
 
+    public void ChangeStaminaMaxValue(float value)
+    {
+        _stats.StaminaMax += value;
+    }
+
     //---------------------HEALTH----------------------------------
 
     public void ChangeMaxHealthValue(float value)
     {
-        _stats.HealthMax += MathF.Max(0, value);
+        _stats.HealthMax += value;
     }
 
     public void AddHealth(float value)
@@ -538,6 +542,10 @@ public abstract class  Character : MonoBehaviour, IDamageable, IStaminable
     public float CritHitResistChance => _criticalHitResistChance;
     public float PoisonResistChance => _poisonResistChance;
     public ClassDataSO ClassData => _classData;
+
+    public List<Buff> AllBuffs => _buffs;
+    public List<Buff> AllDebuffs => _debuffs;
+
 
     #endregion
 
