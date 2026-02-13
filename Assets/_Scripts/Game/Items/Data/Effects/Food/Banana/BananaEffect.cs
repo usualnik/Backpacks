@@ -2,20 +2,27 @@ using System;
 using System.Collections;
 using UnityEngine;
 
-public class BananaEffect : MonoBehaviour, IItemEffect, IFoodEffect
+public class BananaEffect : MonoBehaviour, IItemEffect, IFoodEffect, ICooldownable
 {
     public event Action OnEffectAcivate;
 
     public int ItemActivations { get; set; }
 
+    public float BaseCooldown { get; private set; } = 5f;
+    public float CooldownMultiplier { get; set; } = 1f;
+    public float CurrentCooldown
+    {
+        get
+        {
+            float safeMultiplier = Math.Max(0.01f, CooldownMultiplier);
+            return MathF.Round(BaseCooldown / safeMultiplier, 3);
+        }
+    }
+
     [SerializeField] private float _healAmount = 4f;
-    [SerializeField] private float _bananaEffectCooldown = 5f;
     [SerializeField] private float _regenStaminaAmount = 1f;
 
     private Character _targetCharacter;
-
-    private float _currentCooldownMultiplier = 1f;
-
     private Coroutine _bananaRoutine;
 
     private void Start()
@@ -40,6 +47,8 @@ public class BananaEffect : MonoBehaviour, IItemEffect, IFoodEffect
             StopCoroutine(BananaRoutine());
             _bananaRoutine = null;
         }
+
+        CooldownMultiplier = 1f;
     }
 
     public void StartOfCombatInit(ItemBehaviour item, Character sourceCharacter, Character targetCharacter)
@@ -59,11 +68,9 @@ public class BananaEffect : MonoBehaviour, IItemEffect, IFoodEffect
             _targetCharacter.AddHealth(_healAmount);
             _targetCharacter.AddStamina(_regenStaminaAmount);
 
-            float currentCooldown = _bananaEffectCooldown / _currentCooldownMultiplier;
-
             OnActivate();
 
-            yield return new WaitForSeconds(currentCooldown);
+            yield return new WaitForCooldown(this);
         }
     }
 
@@ -73,21 +80,11 @@ public class BananaEffect : MonoBehaviour, IItemEffect, IFoodEffect
         OnEffectAcivate?.Invoke();
     }
 
-    public void TriggerEffect()
+    public void TriggerFoodEffect()
     {
         _targetCharacter.AddHealth(_healAmount);
         _targetCharacter.AddStamina(_regenStaminaAmount);
         OnActivate();
     }
 
-    public void IncreaseFoodSpeed(float _speedIncrease)
-    {
-        _currentCooldownMultiplier += _speedIncrease;
-
-        if (_bananaRoutine != null)
-        {
-            StopCoroutine(_bananaRoutine);
-            _bananaRoutine = StartCoroutine(BananaRoutine());
-        }
-    }
 }

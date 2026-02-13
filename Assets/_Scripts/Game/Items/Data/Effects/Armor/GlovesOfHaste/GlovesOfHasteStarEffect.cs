@@ -15,9 +15,7 @@ public class GlovesOfHasteStarEffect : MonoBehaviour, IStarEffect
     private void OnDestroy()
     {
         CombatManager.Instance.OnCombatStarted -= CombatManager_OnCombatStarted;
-    }
-
-   
+    }   
 
     public void ApplyStarEffect(ItemBehaviour sourceItem, ItemBehaviour targetItem, StarCell starCell)
     {
@@ -42,7 +40,7 @@ public class GlovesOfHasteStarEffect : MonoBehaviour, IStarEffect
             sourceItem.TryGetComponent(out WeaponBehaviour weapon);
             if (weapon != null)
             {
-                weapon.IncreaseSpeedMultiplier(_speedIncrease);
+                weapon.CooldownMultiplier += _speedIncrease;
             }
         }
     }

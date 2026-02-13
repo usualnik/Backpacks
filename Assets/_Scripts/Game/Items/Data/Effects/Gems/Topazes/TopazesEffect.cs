@@ -92,13 +92,13 @@ public class TopazesEffect : MonoBehaviour, IItemEffect
     {
         if (weaponBehaviour == null) return;
         _gemedWeapon = weaponBehaviour;
-        _gemedWeapon.IncreaseSpeedMultiplier(_increaseSpeedMultiplier);
+        _gemedWeapon.CooldownMultiplier += _increaseSpeedMultiplier;
 
     }
 
     private void RemoveWeaponEffect()
     {
-        _gemedWeapon.IncreaseSpeedMultiplier(-_increaseSpeedMultiplier);
+        _gemedWeapon.CooldownMultiplier -= _increaseSpeedMultiplier;
         _gemedWeapon = null;
     }
 
@@ -141,11 +141,7 @@ public class TopazesEffect : MonoBehaviour, IItemEffect
     #region Interface
     public void StartOfCombatInit(ItemBehaviour item, Character sourceCharacter, Character targetCharacter)
     {
-    }
-
-    public void RemoveEffect()
-    {
-    }
+    }     
 
     public void OnActivate()
     {

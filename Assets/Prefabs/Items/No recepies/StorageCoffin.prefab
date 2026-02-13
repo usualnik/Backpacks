@@ -281,6 +281,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 736f38acfb216b148a093f2572005c10, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _storageCoffinBuff:
+    Name: StorageCoffinBuff
+    Type: 8
+    IsPositive: 0
+    Value: 1
 --- !u!114 &5282576982308912559 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 5512910330479703549, guid: 137870c767bf8b84f9c550357331a0cf, type: 3}

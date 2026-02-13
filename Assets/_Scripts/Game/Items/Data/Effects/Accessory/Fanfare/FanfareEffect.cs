@@ -2,9 +2,19 @@ using System;
 using System.Collections;
 using UnityEngine;
 
-public class FanfareEffect : MonoBehaviour, IItemEffect
+public class FanfareEffect : MonoBehaviour, IItemEffect, ICooldownable
 {
     public int ItemActivations { get; set; }
+    public float BaseCooldown { get; private set; } = 3f;
+    public float CooldownMultiplier { get; set; } = 1f;
+    public float CurrentCooldown
+    {
+        get
+        {
+            float safeMultiplier = Math.Max(0.01f, CooldownMultiplier);
+            return MathF.Round(BaseCooldown / safeMultiplier, 3);
+        }
+    }
 
     public event Action OnEffectAcivate;
 
@@ -12,10 +22,7 @@ public class FanfareEffect : MonoBehaviour, IItemEffect
     [SerializeField] private Buff _manaBuff;
     [SerializeField] private int _removeManaFromOpponentAmount = 2;
     [SerializeField] private float _removeStaminaAmount = 1f;
-    [SerializeField] private float _cooldown = 3f;
-
-    private float _currentCooldownMultiplier = 1f;
-
+       
     private Coroutine _fanfareRoutine;
     private ItemBehaviour _fanfare;
     private void Awake()
@@ -45,6 +52,8 @@ public class FanfareEffect : MonoBehaviour, IItemEffect
             StopCoroutine(FanfareRoutine());
             _fanfareRoutine = null;
         }
+
+        CooldownMultiplier = 1f;
     }
 
     public void StartOfCombatInit(ItemBehaviour item, Character sourceCharacter, Character targetCharacter)
@@ -61,11 +70,10 @@ public class FanfareEffect : MonoBehaviour, IItemEffect
         {
             ProcBuff();
 
-            float currentCooldown = _cooldown / _currentCooldownMultiplier;
 
             OnActivate();
 
-            yield return new WaitForSeconds(currentCooldown);
+            yield return new WaitForCooldown(this);
         }
     }
 
@@ -111,15 +119,5 @@ public class FanfareEffect : MonoBehaviour, IItemEffect
         ItemActivations++;
         OnEffectAcivate?.Invoke();
     }
-
-    public void IncreaseSpeed(float increaseAmount)
-    {
-        _currentCooldownMultiplier += increaseAmount;
-
-        if (_fanfareRoutine != null)
-        {
-            StopCoroutine(_fanfareRoutine);
-            _fanfareRoutine = StartCoroutine(FanfareRoutine());
-        }
-    }
+       
 }

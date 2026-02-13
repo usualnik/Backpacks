@@ -1,11 +1,23 @@
 using System;
 using System.Collections;
+using System.Threading;
 using UnityEngine;
 
-public class EmeraldsEffect : MonoBehaviour, IItemEffect
+public class EmeraldsEffect : MonoBehaviour, IItemEffect, ICooldownable
 {
     public event Action OnEffectAcivate;
     public int ItemActivations { get; set; }
+
+    public float BaseCooldown { get; private set; }
+    public float CooldownMultiplier { get; set; } = 1f;
+    public float CurrentCooldown
+    {
+        get
+        {
+            float safeMultiplier = Math.Max(0.01f, CooldownMultiplier);
+            return MathF.Round(BaseCooldown / safeMultiplier, 3);
+        }
+    }
 
     [Header("Weapon Effects")]
     [SerializeField] private float _chanceToInfictPoison = 35;
@@ -15,7 +27,7 @@ public class EmeraldsEffect : MonoBehaviour, IItemEffect
     [Header("Bag Effects")]
     [SerializeField] private float _gainRegenerationBuffTimer;
     [SerializeField] private Buff _regenerationBuff;
-    private bool _isShouldBuffRegen = false;
+    private Coroutine _gainRegenRoutine;
     private ItemBehaviour _bagItem;
 
     [Header("ArmorAndOther Effects")]
@@ -30,6 +42,8 @@ public class EmeraldsEffect : MonoBehaviour, IItemEffect
     {
         _draggableGem = GetComponent<DraggableGem>();
 
+        BaseCooldown = _gainRegenerationBuffTimer;
+
     }
     private void Start()
     {
@@ -42,6 +56,12 @@ public class EmeraldsEffect : MonoBehaviour, IItemEffect
     {
         _draggableGem.OnGemPlacedInItem -= DraggableGem_OnGemPlacedInItem;
         _draggableGem.OnGemRemovedFromItem -= DraggableGem_OnGemRemovedFromItem;
+
+        if (_gainRegenRoutine != null)
+        {
+            StopCoroutine(GainRegenRoutine());
+            _gainRegenRoutine = null;
+        }
 
     }
     private void DraggableGem_OnGemRemovedFromItem(ItemBehaviour itemWithSocket)
@@ -144,27 +164,32 @@ public class EmeraldsEffect : MonoBehaviour, IItemEffect
 
     private void CombatManager_OnCombatStarted()
     {
-        _isShouldBuffRegen = true;
+        if(_gainRegenRoutine == null)
+        {
+            _gainRegenRoutine = StartCoroutine(GainRegenRoutine());
+        }
     }
 
     private void CombatManager_OnCombatFinished(CombatManager.CombatResult obj)
     {
-        _isShouldBuffRegen = false;
+        if (_gainRegenRoutine != null)
+        {
+            StopCoroutine(GainRegenRoutine());
+            _gainRegenRoutine = null;
+        }
+        CooldownMultiplier = 1f;
     }
 
-    private void Update()
+
+    private IEnumerator GainRegenRoutine()
     {
-        if (!_isShouldBuffRegen) return;
-
-        _gainRegenerationBuffTimer -= Time.deltaTime;
-
-        if (_gainRegenerationBuffTimer <= 0)
+        while (true)
         {
             _bagItem.OwnerCharacter.ApplyBuff(_regenerationBuff);
-            OnActivate();
-            _isShouldBuffRegen = false;
-        }
 
+            OnActivate();
+            yield return new WaitForCooldown(this);
+        }
     }
 
 

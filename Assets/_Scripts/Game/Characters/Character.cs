@@ -33,6 +33,9 @@ public abstract class  Character : MonoBehaviour, IDamageable, IStaminable
     [SerializeField] private List<Buff> _buffs;
     [SerializeField] private List<Buff> _debuffs;
 
+    [Header("System refs")]
+    [SerializeField] private BaseInventory _characterInventory;
+
     protected Character character;
 
     /*first element is default gold*/
@@ -545,6 +548,8 @@ public abstract class  Character : MonoBehaviour, IDamageable, IStaminable
 
     public List<Buff> AllBuffs => _buffs;
     public List<Buff> AllDebuffs => _debuffs;
+
+    public BaseInventory CharacterInventory => _characterInventory;
 
 
     #endregion

@@ -3,10 +3,21 @@ using System.Collections;
 using UnityEngine;
 using static Buff;
 
-public class AmethystsEffect : MonoBehaviour, IItemEffect
+public class AmethystsEffect : MonoBehaviour, IItemEffect, ICooldownable
 {
     public int ItemActivations { get; set; }
     public event Action OnEffectAcivate;
+
+    public float BaseCooldown { get; private set; }
+    public float CooldownMultiplier { get; set; } = 1f;
+    public float CurrentCooldown
+    {
+        get
+        {
+            float safeMultiplier = Math.Max(0.01f, CooldownMultiplier);
+            return MathF.Round(BaseCooldown / safeMultiplier, 3);
+        }
+    }
 
     [Header("Weapon Effects")]
     [SerializeField] private float _chanceToRemoveRandomBuffFromOpponent = 25;
@@ -31,18 +42,30 @@ public class AmethystsEffect : MonoBehaviour, IItemEffect
     {
         _draggableGem = GetComponent<DraggableGem>();
 
+        BaseCooldown = _cleanseDebuffTimer;
+
     }
     private void Start()
     {
         _draggableGem.OnGemPlacedInItem += DraggableGem_OnGemPlacedInItem;
         _draggableGem.OnGemRemovedFromItem += DraggableGem_OnGemRemovedFromItem;
+        CombatManager.Instance.OnCombatFinished += CombatManager_OnCombatFinished;
     }
 
-   
+
     private void OnDestroy()
     {
         _draggableGem.OnGemPlacedInItem -= DraggableGem_OnGemPlacedInItem;
         _draggableGem.OnGemRemovedFromItem -= DraggableGem_OnGemRemovedFromItem;
+        CombatManager.Instance.OnCombatFinished -= CombatManager_OnCombatFinished;
+
+
+        if (_cleanseDebuffCoroutine != null)
+        {
+            StopCoroutine(_cleanseDebuffCoroutine);
+            _cleanseDebuffCoroutine = null;
+        }
+
 
     }
     private void DraggableGem_OnGemRemovedFromItem(ItemBehaviour itemWithSocket)
@@ -131,6 +154,18 @@ public class AmethystsEffect : MonoBehaviour, IItemEffect
     #endregion
 
     #region Bags
+
+    private void CombatManager_OnCombatFinished(CombatManager.CombatResult obj)
+    {
+        if (_cleanseDebuffCoroutine != null)
+        {
+            StopCoroutine(_cleanseDebuffCoroutine);
+            _cleanseDebuffCoroutine = null;
+        }
+
+        CooldownMultiplier = 1f;
+    }
+
     private void ApplyBagEffect(ItemBehaviour bagItem)
     {
         _bagItem = bagItem;
@@ -145,18 +180,12 @@ public class AmethystsEffect : MonoBehaviour, IItemEffect
 
     private IEnumerator CleanseDebuffCorutine()
     {
-        BuffType[] buffTypes = (BuffType[])Enum.GetValues(typeof(BuffType));
-
-        //HACK: Переделать одним из первых! Хардкод значений, так как пока нет разделения на бафы и дебафы, они все в одном энаме.
-        int randomIndex = UnityEngine.Random.Range(8, buffTypes.Length);
-        BuffType randomBuff = buffTypes[randomIndex];
-
         while (true)
         {
-            _bagItem?.OwnerCharacter?.RemoveBuff(randomBuff, 1);
+            _bagItem?.OwnerCharacter?.RemoveBuff(Buff.GetRandomBuffType(), 1);
             Debug.Log("Trying to remove debuff");
             OnActivate();
-            yield return new WaitForSeconds(_cleanseDebuffTimer);
+            yield return new WaitForCooldown(this);
         }
     }
 

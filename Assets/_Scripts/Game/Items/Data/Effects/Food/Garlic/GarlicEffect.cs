@@ -2,13 +2,22 @@
 using System.Collections;
 using UnityEngine;
 
-public class GarlicEffect : MonoBehaviour, IItemEffect, IFoodEffect
+public class GarlicEffect : MonoBehaviour, IItemEffect, IFoodEffect, ICooldownable
 {
     public event Action OnEffectAcivate;
     public int ItemActivations { get; set; }
 
-    [SerializeField]
-    private float _baseEffectCooldown = 4f; 
+    public float BaseCooldown { get; private set; } = 4f;
+    public float CooldownMultiplier { get; set; } = 1f;
+    public float CurrentCooldown
+    {
+        get
+        {
+            float safeMultiplier = Math.Max(0.01f, CooldownMultiplier);
+            return MathF.Round(BaseCooldown / safeMultiplier, 3);
+        }
+    }
+  
     [SerializeField]
     private float _armorBuffValue = 1f;
     [SerializeField]
@@ -18,9 +27,7 @@ public class GarlicEffect : MonoBehaviour, IItemEffect, IFoodEffect
 
     private Character _targetCharacterToBuffArmor;
 
-    private float _currentCooldownMultiplier = 1f;
     private Coroutine _garlicRoutine;
-
 
 
     private void Start()
@@ -43,6 +50,8 @@ public class GarlicEffect : MonoBehaviour, IItemEffect, IFoodEffect
             StopCoroutine(_garlicRoutine);
             _garlicRoutine = null;
         }
+
+        CooldownMultiplier = 1f;
     }
 
     public void StartOfCombatInit(ItemBehaviour item, Character sourceCharacter, Character targetCharacter)
@@ -74,8 +83,7 @@ public class GarlicEffect : MonoBehaviour, IItemEffect, IFoodEffect
     {
         while (true)
         {
-            float currentCooldown = _baseEffectCooldown / _currentCooldownMultiplier;
-            yield return new WaitForSeconds(currentCooldown);
+            yield return new WaitForCooldown(this);
 
             _targetCharacterToBuffArmor.AddArmor(_armorBuffValue);
             TryRemoveVampirism();
@@ -107,27 +115,16 @@ public class GarlicEffect : MonoBehaviour, IItemEffect, IFoodEffect
             return null;
         }
     }
-
     public void OnActivate()
     {
         ItemActivations++;
         OnEffectAcivate?.Invoke();
     }
 
-    public void TriggerEffect()
+    public void TriggerFoodEffect()
     {
         TryRemoveVampirism();
         OnActivate();
     }
-
-    public void IncreaseFoodSpeed(float speedIncrease)
-    {
-        _currentCooldownMultiplier += speedIncrease;
-
-        if (_garlicRoutine != null)
-        {
-            StopCoroutine(_garlicRoutine);
-            _garlicRoutine = StartCoroutine(GarlicArmorRoutine());
-        }
-    }
+ 
 }

@@ -3,11 +3,22 @@ using System.Collections;
 using UnityEditor.ShaderGraph.Internal;
 using UnityEngine;
 
-public class StaffOfUnhealingEffect : MonoBehaviour, IItemEffect
+public class StaffOfUnhealingEffect : MonoBehaviour, IItemEffect, ICooldownable
 {
     public int ItemActivations { get; set; }
 
     public event Action OnEffectAcivate;
+
+    public float BaseCooldown { get; private set; } = 2f;
+    public float CooldownMultiplier { get; set; } = 1f;
+    public float CurrentCooldown
+    {
+        get
+        {
+            float safeMultiplier = Math.Max(0.01f, CooldownMultiplier);
+            return MathF.Round(BaseCooldown / safeMultiplier, 3);
+        }
+    }
 
     [SerializeField] private float _healingAmount = 20;
     [SerializeField] private int _manaToProcNeeded = 5;
@@ -39,6 +50,8 @@ public class StaffOfUnhealingEffect : MonoBehaviour, IItemEffect
 
         _staff.OwnerCharacter.OnHealingRecived -= OwnerCharacter_OnHealingRecived;
 
+        CooldownMultiplier = 1f;
+
     }
 
     private void OwnerCharacter_OnHealingRecived(float healingAmount)
@@ -67,7 +80,7 @@ public class StaffOfUnhealingEffect : MonoBehaviour, IItemEffect
 
             OnActivate();
 
-            yield return new WaitForSeconds(2f);
+            yield return new WaitForCooldown(this);
         }
     }
 

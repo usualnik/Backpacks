@@ -6,8 +6,6 @@ public class BloodGoobertStarEffect : MonoBehaviour
     [SerializeField] private List<ItemBehaviour> _trackedItems = new List<ItemBehaviour>();
 
     [SerializeField] private float _damageAfterItemsProcAmount = 10f;
-    [SerializeField] private float _additionalDamagePerVampirismStack = 1f;
-
 
     private const int ITEM_ACTIVATIONS_NEEDED_TO_PROC = 6;
     private int _itemsActivations;

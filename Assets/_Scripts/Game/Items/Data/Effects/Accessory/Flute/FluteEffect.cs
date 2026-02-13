@@ -2,19 +2,27 @@ using System;
 using System.Collections;
 using UnityEngine;
 
-public class FluteEffect : MonoBehaviour, IItemEffect
+public class FluteEffect : MonoBehaviour, IItemEffect,ICooldownable
 {
     public int ItemActivations { get; set; }
 
     public event Action OnEffectAcivate;
 
+    public float BaseCooldown { get; private set; } = 4.7f;
+    public float CooldownMultiplier { get; set; } = 1f;
+
+    public float CurrentCooldown
+    {
+        get
+        {
+            float safeMultiplier = Math.Max(0.01f, CooldownMultiplier);
+            return MathF.Round(BaseCooldown / safeMultiplier, 3);
+        }
+    }
+
     [SerializeField] private Buff _luckBuff;
-
     [SerializeField] private float _staminaBuff = 2f;
-    [SerializeField] private int _armorBuffAmount = 14;
-    [SerializeField] private float _cooldown = 4.7f;
-
-    private float _currentCooldownMultiplier = 1f;
+    [SerializeField] private int _armorBuffAmount = 14;   
 
     private Coroutine _fluteRoutine;
 
@@ -47,6 +55,8 @@ public class FluteEffect : MonoBehaviour, IItemEffect
             StopCoroutine(FanfareRoutine());
             _fluteRoutine = null;
         }
+
+        CooldownMultiplier = 1f;
     }
 
     public void StartOfCombatInit(ItemBehaviour item, Character sourceCharacter, Character targetCharacter)
@@ -63,11 +73,10 @@ public class FluteEffect : MonoBehaviour, IItemEffect
         {
             ProcBuff();
 
-            float currentCooldown = _cooldown / _currentCooldownMultiplier;
 
             OnActivate();
 
-            yield return new WaitForSeconds(currentCooldown);
+            yield return new WaitForCooldown(this);
         }
     }
 
@@ -111,15 +120,5 @@ public class FluteEffect : MonoBehaviour, IItemEffect
         ItemActivations++;
         OnEffectAcivate?.Invoke();
     }
-
-    public void IncreaseSpeed(float increaseAmount)
-    {
-        _currentCooldownMultiplier += increaseAmount;
-
-        if (_fluteRoutine != null)
-        {
-            StopCoroutine(_fluteRoutine);
-            _fluteRoutine = StartCoroutine(FanfareRoutine());
-        }
-    }
+     
 }

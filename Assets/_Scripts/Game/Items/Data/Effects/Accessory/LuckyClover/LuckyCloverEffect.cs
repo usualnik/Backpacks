@@ -8,19 +8,13 @@ public class LuckyCloverEffect : MonoBehaviour, IItemEffect
     public event Action OnEffectAcivate;
 
     [SerializeField]
-    private Buff _luckyCloverBuff;
-
-   
+    private Buff _luckyCloverBuff;   
 
     public void StartOfCombatInit(ItemBehaviour item, Character sourceCharacter, Character targetCharacter)
     {
         targetCharacter.ApplyBuff(_luckyCloverBuff);
         OnActivate();
-    }   
-
-    public void RemoveEffect()
-    {
-    }
+    }      
 
     public void OnActivate()
     {

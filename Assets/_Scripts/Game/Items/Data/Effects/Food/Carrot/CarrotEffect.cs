@@ -2,19 +2,27 @@ using System;
 using System.Collections;
 using UnityEngine;
 
-public class CarrotEffect : MonoBehaviour, IItemEffect, IFoodEffect
+public class CarrotEffect : MonoBehaviour, IItemEffect, IFoodEffect, ICooldownable
 {
     public int ItemActivations { get; set; }
 
     public event Action OnEffectAcivate;
 
+    public float BaseCooldown { get; private set; } = 2.7f;
+    public float CooldownMultiplier { get; set; } = 1f;
+    public float CurrentCooldown
+    {
+        get
+        {
+            float safeMultiplier = Math.Max(0.01f, CooldownMultiplier);
+            return MathF.Round(BaseCooldown / safeMultiplier, 3);
+        }
+    }
+
     [SerializeField] private Buff _empowerrBuff;
-    [SerializeField] private float _cooldown = 2.7f;
-    [SerializeField] private int _cleanseDebuffAmount = 1;
     [SerializeField] private int _luckMinimumNeededToProcEmpower = 4;
     [SerializeField] private int _chanceToProcEmpower = 55;
 
-    private float _cooldownMultiplier = 1f;
 
     private ItemBehaviour _carrot;
     private Coroutine _carrotRoutine;
@@ -52,6 +60,8 @@ public class CarrotEffect : MonoBehaviour, IItemEffect, IFoodEffect
             StopCoroutine(CarrotRoutine());
             _carrotRoutine = null;
         }
+
+        CooldownMultiplier = 1f;
     }
 
     public void StartOfCombatInit(ItemBehaviour item, Character sourceCharacter, Character targetCharacter)
@@ -84,10 +94,9 @@ public class CarrotEffect : MonoBehaviour, IItemEffect, IFoodEffect
             }
 
 
-            float currentCooldown = _cooldown / _cooldownMultiplier;
 
 
-            yield return new WaitForSeconds(currentCooldown);
+            yield return new WaitForCooldown(this);
         }
     }
 
@@ -101,7 +110,7 @@ public class CarrotEffect : MonoBehaviour, IItemEffect, IFoodEffect
         }
     }
 
-    public void TriggerEffect()
+    public void TriggerFoodEffect()
     {
         if (_carrot.OwnerCharacter)
         {
@@ -116,14 +125,4 @@ public class CarrotEffect : MonoBehaviour, IItemEffect, IFoodEffect
         }
     }
 
-    public void IncreaseFoodSpeed(float speedIncrease)
-    {
-        _cooldownMultiplier += speedIncrease;
-
-        if (_carrotRoutine != null)
-        {
-            StopCoroutine(_carrotRoutine);
-            _carrotRoutine = StartCoroutine(CarrotRoutine());
-        }
-    }
 }

@@ -51,7 +51,7 @@ public class StrongHealthPotionEffect : MonoBehaviour, IItemEffect, IPotionEffec
     {
         if (stats.Health <= _healthToTriggerConsume && _canConsume)
         {
-            Consume();
+            TriggerEffect();
         }
     }
 
@@ -61,7 +61,7 @@ public class StrongHealthPotionEffect : MonoBehaviour, IItemEffect, IPotionEffec
         OnEffectAcivate?.Invoke();
     }
 
-    public void Consume()
+    public void TriggerEffect()
     {
         _strongHealthPotion.OwnerCharacter.AddHealth(_healAmount);
         _strongHealthPotion.OwnerCharacter.ApplyBuff(_regenBuff);

@@ -205,7 +205,6 @@ public class CombatManager : MonoBehaviour
                 float damageMin = weapon.WeaponDamageMin;
                 float damageMax = weapon.WeaponDamageMax;
                 float staminaCost = weapon.StaminaCost;
-                float cooldown = weapon.Cooldown;
                 float accuracy = weapon.Accuracy;
 
                 float damage = CalculateFinalDamage(sourceCharacter, targetCharacter, weapon);
@@ -217,7 +216,7 @@ public class CombatManager : MonoBehaviour
                 if (!isHit)
                 {
                     OnMiss?.Invoke(weapon, sourceCharacter);
-                    yield return new WaitForSeconds(cooldown);
+                    yield return new WaitForCooldown(weapon);
                     continue;
                 }
 
@@ -238,7 +237,7 @@ public class CombatManager : MonoBehaviour
                     weaponVisual.ShowNoStaminaText();
                 }
 
-                yield return new WaitForSeconds(cooldown);
+                yield return new WaitForCooldown(weapon);
             }
         }
         finally

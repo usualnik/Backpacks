@@ -1,16 +1,24 @@
-using JetBrains.Annotations;
 using System;
 using System.Collections;
-using System.Linq;
 using UnityEngine;
 
-public class DjinLampEffect : MonoBehaviour, IItemEffect
+public class DjinLampEffect : MonoBehaviour, IItemEffect, ICooldownable
 {
     public int ItemActivations { get; set; }
-
     public event Action OnEffectAcivate;
 
-    [SerializeField] private float _cooldown = 1.6f;
+    public float BaseCooldown { get; private set; } = 1.6f;
+    public float CooldownMultiplier { get ; set ; } = 1f;
+
+    public float CurrentCooldown
+    {
+        get
+        {
+            float safeMultiplier = Math.Max(0.01f, CooldownMultiplier);
+            return MathF.Round(BaseCooldown / safeMultiplier, 3);
+        }
+    }
+
     [SerializeField] private Buff _manaBuff;
     [SerializeField] private Buff _thornsBuff;
     [SerializeField] private Buff _luckBuff;
@@ -46,6 +54,8 @@ public class DjinLampEffect : MonoBehaviour, IItemEffect
             StopCoroutine(DjinLampRoutine());
             _djinLampRoutine = null;
         }
+
+        CooldownMultiplier = 1f;
     }
 
     public void StartOfCombatInit(ItemBehaviour item, Character sourceCharacter, Character targetCharacter)
@@ -58,17 +68,15 @@ public class DjinLampEffect : MonoBehaviour, IItemEffect
         }
     }
 
-
     private IEnumerator DjinLampRoutine()
     {
         while (true)
         {
 
             GainBuff();
-
             OnActivate();
 
-            yield return new WaitForSeconds(_cooldown);
+            yield return new WaitForCooldown(this);
         }
     }
 

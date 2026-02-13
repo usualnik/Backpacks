@@ -19,18 +19,13 @@ public class FanfareStarEfffect : MonoBehaviour,IStarEffect
     private void Start()
     {
         CombatManager.Instance.OnCombatStarted += CombatManager_OnCombatStarted;
-        CombatManager.Instance.OnCombatFinished += CombatManager_OnCombatFinished;
     }
-
-   
+     
 
     private void OnDestroy()
     {
         CombatManager.Instance.OnCombatStarted -= CombatManager_OnCombatStarted;
-        CombatManager.Instance.OnCombatFinished -= CombatManager_OnCombatFinished;
-
     }
-
    
     public void ApplyStarEffect(ItemBehaviour sourceItem, ItemBehaviour targetItem, StarCell starCell)
     {
@@ -57,13 +52,8 @@ public class FanfareStarEfffect : MonoBehaviour,IStarEffect
             _speedIncreaseResult += _speedIncrease;
         }
 
-        _fanfareEffect.IncreaseSpeed(_speedIncreaseResult);
+        _fanfareEffect.CooldownMultiplier += _speedIncreaseResult;
     }
-    private void CombatManager_OnCombatFinished(CombatManager.CombatResult obj)
-    {
-        _fanfareEffect.IncreaseSpeed(-_speedIncreaseResult);
-        _speedIncreaseResult = 0;
 
-    }
 
 }

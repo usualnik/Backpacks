@@ -7,22 +7,13 @@ public class HealingHerbsEffect : MonoBehaviour,IItemEffect
 
     public event Action OnEffectAcivate;
 
-
     [SerializeField]
     private Buff _healingHerbsBuff;
-
 
     public void StartOfCombatInit(ItemBehaviour item, Character sourceCharacter, Character targetCharacter)
     {
         targetCharacter.ApplyBuff(_healingHerbsBuff);
         OnActivate();
-    }
-
-
-
-    public void RemoveEffect()
-    {
-        throw new System.NotImplementedException();
     }
 
     public void OnActivate()

@@ -3,21 +3,29 @@ using System.Collections;
 using TMPro;
 using UnityEngine;
 
-public class BlueberriesEffect : MonoBehaviour, IItemEffect, IFoodEffect
+public class BlueberriesEffect : MonoBehaviour, IItemEffect, IFoodEffect, ICooldownable
 {
-    [SerializeField] private float _baseEffectCooldown = 3.5f;
+    public int ItemActivations { get; set; }
+    public event Action OnEffectAcivate;
+
+    public float BaseCooldown { get; private set; } = 3.5f;
+    public float CooldownMultiplier { get; set; } = 1f;
+    public float CurrentCooldown
+    {
+        get
+        {
+            float safeMultiplier = Math.Max(0.01f, CooldownMultiplier);
+            return MathF.Round(BaseCooldown / safeMultiplier, 3);
+        }
+    }
+
     [SerializeField] private Buff _manaBuff;
     [SerializeField] private Buff _accuracyBuff;
     [SerializeField] private int _switchBuffsAmount = 10;
 
     private Character _owner;
-
-    private float _currentCooldownMultiplier = 1f;
     private Coroutine _blueberriesRoutine;
 
-    public event Action OnEffectAcivate;
-
-    public int ItemActivations { get; set; }
 
     private void Start()
     {
@@ -39,6 +47,7 @@ public class BlueberriesEffect : MonoBehaviour, IItemEffect, IFoodEffect
             StopCoroutine(_blueberriesRoutine);
             _blueberriesRoutine = null;
         }
+        CooldownMultiplier = 1f;
     }
 
     public void ApplyEffect(ItemBehaviour item, Character sourceCharacter, Character targetCharacter)
@@ -70,9 +79,7 @@ public class BlueberriesEffect : MonoBehaviour, IItemEffect, IFoodEffect
     {
         while (true)
         {
-            float currentCooldown = _baseEffectCooldown / _currentCooldownMultiplier;
-            yield return new WaitForSeconds(currentCooldown);
-
+            yield return new WaitForCooldown(this);
             ApplyBlueberriesBuff();
             OnActivate();
         }
@@ -91,7 +98,7 @@ public class BlueberriesEffect : MonoBehaviour, IItemEffect, IFoodEffect
         }
     }
 
-    public void TriggerEffect()
+    public void TriggerFoodEffect()
     {
         ApplyBlueberriesBuff();
         OnActivate();
@@ -108,15 +115,5 @@ public class BlueberriesEffect : MonoBehaviour, IItemEffect, IFoodEffect
         ItemActivations++;
         OnEffectAcivate?.Invoke();
     }
-
-    public void IncreaseFoodSpeed(float speedIncrease)
-    {
-        _currentCooldownMultiplier += speedIncrease;
-
-        if (_blueberriesRoutine != null)
-        {
-            StopCoroutine(_blueberriesRoutine);
-            _blueberriesRoutine = StartCoroutine(BlueberriesRoutine());
-        }
-    }
+      
 }

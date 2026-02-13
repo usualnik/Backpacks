@@ -54,7 +54,7 @@ public class VampiricGlovesStarEffect : MonoBehaviour, IStarEffect
             sourceItem.TryGetComponent(out WeaponBehaviour weapon);
             if (weapon != null)
             {
-                weapon.IncreaseSpeedMultiplier(_speedIncrease);
+                weapon.CooldownMultiplier += _speedIncrease;
             }
         }
 

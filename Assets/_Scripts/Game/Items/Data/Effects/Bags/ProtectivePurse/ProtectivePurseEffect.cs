@@ -15,11 +15,6 @@ public class ProtectivePurseEffect : MonoBehaviour, IItemEffect
         OnActivate();
     }
 
-
-    public void RemoveEffect()
-    {
-    }
-
     public void OnActivate()
     {
         ItemActivations++;

@@ -51,9 +51,9 @@ public class StrongStoneSkinPotion : MonoBehaviour, IItemEffect, IPotionEffect
 
     private void OwnerCharacter_OnCharacterStatsChanged(Character.CharacterStats stats)
     {
-        if (stats.Armor >= _armorReachedToTriggerEffect)
+        if (stats.Armor >= _armorReachedToTriggerEffect && _canConsume)
         {
-            Consume();
+            TriggerEffect();
         }
     }
 
@@ -63,7 +63,7 @@ public class StrongStoneSkinPotion : MonoBehaviour, IItemEffect, IPotionEffect
         OnEffectAcivate?.Invoke();
     }
 
-    public void Consume()
+    public void TriggerEffect()
     {
         _strongStoneSkinPotion.OwnerCharacter.TakeDamage(_covertedHealth, ItemDataSO.ExtraType.Effect);
         _strongStoneSkinPotion.OwnerCharacter.AddArmor(_armorBuff);

@@ -1,3 +1,6 @@
+using NUnit.Framework;
+using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class CharacterBuffHandler : MonoBehaviour
@@ -8,6 +11,8 @@ public class CharacterBuffHandler : MonoBehaviour
     private int _debuffResistStacks = 0;
 
     private bool _canReflect = true;
+
+    private const float SPEED_BUFF_PER_STACK = 0.02f;
 
     private void Awake()
     {
@@ -61,7 +66,7 @@ public class CharacterBuffHandler : MonoBehaviour
             case Buff.BuffType.Empower:
                 break;
             case Buff.BuffType.Heat:
-                //Recalculate cooldowns
+                RecalculateCooldowns();
                 break;
             case Buff.BuffType.Luck:
                 break;
@@ -86,7 +91,7 @@ public class CharacterBuffHandler : MonoBehaviour
                 if (!isProcPoisonResist)
                     _character.PoisonCharacter();
 
-                if(_debuffResistStacks > 0)
+                if (_debuffResistStacks > 0)
                 {
                     _character.RemoveBuff(Buff.BuffType.Poison, _debuffResistStacks);
                 }
@@ -119,13 +124,14 @@ public class CharacterBuffHandler : MonoBehaviour
                     _character.RemoveBuff(Buff.BuffType.Cold, _debuffResistStacks);
                 }
 
-                //Recalculate cooldowns
+                RecalculateCooldowns();
+
                 break;
             default:
                 break;
         }
     }
-   
+
     private void HandleBuffRemoved(Buff.BuffType buffType)
     {
 
@@ -136,7 +142,7 @@ public class CharacterBuffHandler : MonoBehaviour
             case Buff.BuffType.Empower:
                 break;
             case Buff.BuffType.Heat:
-                //Recalculate cooldowns
+                RecalculateCooldowns();
                 break;
             case Buff.BuffType.Luck:
                 break;
@@ -153,7 +159,7 @@ public class CharacterBuffHandler : MonoBehaviour
             case Buff.BuffType.Blindness:
                 break;
             case Buff.BuffType.Cold:
-                //Recalculate cooldowns
+                RecalculateCooldowns();
                 break;
             default:
                 break;
@@ -204,5 +210,23 @@ public class CharacterBuffHandler : MonoBehaviour
 
     public int GetReflectStacks() { return _reflectionStacks; }
     public int GetDebuffResistStacks() { return _debuffResistStacks; }
+
+    private void RecalculateCooldowns()
+    {
+        float finalSpeed = 1f + (_character.GetBuffStacks(Buff.BuffType.Heat)
+            - _character.GetBuffStacks(Buff.BuffType.Cold)) * SPEED_BUFF_PER_STACK;
+
+        var itemsWithCooldown = _character.CharacterInventory.ItemsInInventory
+        .Select(item => item.GetComponent<ICooldownable>())
+        .Where(cooldownable => cooldownable != null)
+        .ToList();
+
+        foreach (var cooldownable in itemsWithCooldown)
+        {
+            cooldownable.CooldownMultiplier = finalSpeed;
+        }
+
+    }
+
 
 }

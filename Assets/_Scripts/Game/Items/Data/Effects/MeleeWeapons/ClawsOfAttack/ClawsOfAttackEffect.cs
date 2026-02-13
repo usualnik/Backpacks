@@ -100,7 +100,7 @@ public class ClawsOfAttackEffect : MonoBehaviour, IItemEffect
         int activeThornsStacks = _weaponBehaviour.OwnerCharacter.GetBuffStacks(Buff.BuffType.Thorns);
 
         if (activeThornsStacks > 0)
-        _weaponBehaviour.IncreaseSpeedMultiplier(_increaseSpeedMiltiplier * activeThornsStacks);
+        _weaponBehaviour.CooldownMultiplier += _increaseSpeedMiltiplier * activeThornsStacks;
 
 
     }

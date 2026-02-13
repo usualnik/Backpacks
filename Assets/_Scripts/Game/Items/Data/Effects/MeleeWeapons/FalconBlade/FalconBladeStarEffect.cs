@@ -48,7 +48,7 @@ public class FalconBladeStarEffect : MonoBehaviour, IStarEffect
 
             if (weapon != null)
             {
-                weapon.IncreaseSpeedMultiplier(_cooldownIncrease);
+                weapon.CooldownMultiplier += _cooldownIncrease;
             }
         }
     }

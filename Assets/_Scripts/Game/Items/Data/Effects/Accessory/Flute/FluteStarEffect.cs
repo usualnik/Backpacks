@@ -19,15 +19,11 @@ public class FluteStarEffect : MonoBehaviour, IStarEffect
     private void Start()
     {
         CombatManager.Instance.OnCombatStarted += CombatManager_OnCombatStarted;
-        CombatManager.Instance.OnCombatFinished += CombatManager_OnCombatFinished;
     }
-
-
 
     private void OnDestroy()
     {
         CombatManager.Instance.OnCombatStarted -= CombatManager_OnCombatStarted;
-        CombatManager.Instance.OnCombatFinished -= CombatManager_OnCombatFinished;
 
     }
 
@@ -57,12 +53,7 @@ public class FluteStarEffect : MonoBehaviour, IStarEffect
             _speedIncreaseResult += _speedIncrease;
         }
 
-        fluteEffect.IncreaseSpeed(_speedIncreaseResult);
+        fluteEffect.CooldownMultiplier += _speedIncreaseResult;
     }
-    private void CombatManager_OnCombatFinished(CombatManager.CombatResult obj)
-    {
-        fluteEffect.IncreaseSpeed(-_speedIncreaseResult);
-        _speedIncreaseResult = 0;
-
-    }
+   
 }

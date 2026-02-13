@@ -43,7 +43,7 @@ public class BloodHarvesterEffect : MonoBehaviour, IItemEffect
     {
         if (newBuff.Type == Buff.BuffType.Vampirism)
         {
-            _bloodHarvester.IncreaseSpeedMultiplier(_increaseSpeedMultiplier);
+            _bloodHarvester.CooldownMultiplier += _increaseSpeedMultiplier;
             OnActivate();
         }
     }

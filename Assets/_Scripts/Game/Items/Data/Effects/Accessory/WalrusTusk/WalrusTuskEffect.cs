@@ -9,19 +9,12 @@ public class WalrusTuskEffect : MonoBehaviour, IItemEffect
     [SerializeField]
     private Buff _walrusTuskBuff;
 
-
-
     public void StartOfCombatInit(ItemBehaviour item, Character sourceCharacter, Character targetCharacter)
     {      
        targetCharacter.ApplyBuff(_walrusTuskBuff);
         OnActivate();
     }
-
-    public void RemoveEffect()
-    {
-        throw new System.NotImplementedException();
-    }    
-
+ 
     public void OnActivate()
     {
         ItemActivations++;

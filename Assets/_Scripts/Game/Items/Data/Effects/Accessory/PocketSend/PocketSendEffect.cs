@@ -21,10 +21,4 @@ public class PocketSendEffect : MonoBehaviour, IItemEffect
         OnEffectAcivate?.Invoke();
     }
 
-    public void RemoveEffect()
-    {
-        throw new System.NotImplementedException();
-    }
-
-   
 }

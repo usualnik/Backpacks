@@ -13,12 +13,12 @@ public class PumpkinStarEffect : MonoBehaviour, IStarEffect
     }
     public void ApplyStarEffect(ItemBehaviour sourceItem, ItemBehaviour targetItem, StarCell starCell)
     {
-        _pumpkin.IncreaseSpeedMultiplier(_speedInrease);
+        _pumpkin.CooldownMultiplier += _speedInrease;
     }
 
     public void RemoveStarEffect(ItemBehaviour sourceItem, ItemBehaviour targetItem, StarCell starCell)
     {
-        _pumpkin.IncreaseSpeedMultiplier(-_speedInrease);
+        _pumpkin.CooldownMultiplier -= _speedInrease;
 
     }
 }

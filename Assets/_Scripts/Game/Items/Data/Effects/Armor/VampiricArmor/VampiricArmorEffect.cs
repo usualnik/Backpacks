@@ -2,11 +2,22 @@ using System;
 using System.Collections;
 using UnityEngine;
 
-public class VampiricArmorEffect : MonoBehaviour, IItemEffect
+public class VampiricArmorEffect : MonoBehaviour, IItemEffect, ICooldownable
 {
     public int ItemActivations { get; set; }
 
     public event Action OnEffectAcivate;
+
+    public float BaseCooldown { get; private set; } = 2.8f;
+    public float CooldownMultiplier { get; set; } = 1f;
+    public float CurrentCooldown
+    {
+        get
+        {
+            float safeMultiplier = Math.Max(0.01f, CooldownMultiplier);
+            return MathF.Round(BaseCooldown / safeMultiplier, 3);
+        }
+    }
 
     [Header("Start of combat")]
     [SerializeField] private Buff _vampirismBuff;
@@ -14,7 +25,6 @@ public class VampiricArmorEffect : MonoBehaviour, IItemEffect
     [SerializeField] private int _gainArmorAmount;
 
     [Header("Routine")]
-    [SerializeField] private float _convertCooldown = 2.8f;
     [SerializeField] private float _convertHpRoutineAmount;
     [SerializeField] private int _gainArmorRoutineAmount;
 
@@ -51,6 +61,8 @@ public class VampiricArmorEffect : MonoBehaviour, IItemEffect
             StopCoroutine(_convertHpRoutine);
             _convertHpRoutine = null;
         }
+
+        CooldownMultiplier = 1f;
     }
 
     public void StartOfCombatInit(ItemBehaviour item, Character sourceCharacter, Character targetCharacter)
@@ -75,7 +87,7 @@ public class VampiricArmorEffect : MonoBehaviour, IItemEffect
 
             OnActivate();
 
-            yield return new WaitForSeconds(_convertCooldown);
+            yield return new WaitForCooldown(this);
         }
     }
 

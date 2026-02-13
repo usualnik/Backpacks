@@ -84,7 +84,7 @@ public class EggscaliburStarEffect : MonoBehaviour, IStarEffect
 
             if (foodEffect != null)
             {
-                foodEffect.TriggerEffect();
+                foodEffect.TriggerFoodEffect();
             }
         }
     }

@@ -1,11 +1,23 @@
 
 using System;
+using System.Collections;
 using UnityEngine;
 
-public class RubysEffect : MonoBehaviour, IItemEffect
+public class RubysEffect : MonoBehaviour, IItemEffect, ICooldownable
 {
     public event Action OnEffectAcivate;
     public int ItemActivations { get; set; }
+
+    public float BaseCooldown { get; private set; }
+    public float CooldownMultiplier { get; set; } = 1f;
+    public float CurrentCooldown
+    {
+        get
+        {
+            float safeMultiplier = Math.Max(0.01f, CooldownMultiplier);
+            return MathF.Round(BaseCooldown / safeMultiplier, 3);
+        }
+    }
 
     [Header("Weapon Effects")]
     [SerializeField] private float _gainedLifeStealAmount = 0.7f;
@@ -16,10 +28,11 @@ public class RubysEffect : MonoBehaviour, IItemEffect
     [SerializeField] private float _effectDamageAmount = 4;
     [SerializeField] private float _additionalLifesteal = 1.5f;
     [SerializeField] private float _dealDamageTimer = 5f;
+    private Coroutine _dealDamageRoutine;
+
     private ItemBehaviour _bagItem;
 
 
-    private bool _shouldDealDamage = false;
 
     [Header("ArmorAndOther Effects")]
     [SerializeField] private float _increaseHealingMultiplier = 0.1f;
@@ -33,6 +46,8 @@ public class RubysEffect : MonoBehaviour, IItemEffect
     private void Awake()
     {
         _draggableGem = GetComponent<DraggableGem>();
+
+        BaseCooldown = _dealDamageTimer;
 
     }
     private void Start()
@@ -155,29 +170,40 @@ public class RubysEffect : MonoBehaviour, IItemEffect
 
     private void CombatManager_OnCombatStartedWithGemmedBag()
     {
-        _shouldDealDamage = true;
+
+
+        if(_dealDamageRoutine ==  null)
+        {
+            _dealDamageRoutine = StartCoroutine(DealDamageRoutine());
+        }
+
     }
 
     private void CombatManager_OnCombatFinishedWithGemmedBag(CombatManager.CombatResult obj)
     {
-        _shouldDealDamage = false;
         _bagItem?.OwnerCharacter?.AddLifestealMultiplier(-_additionalLifesteal);
+
+
+        if(_dealDamageRoutine != null)
+        {
+            StopCoroutine(_dealDamageRoutine);
+            _dealDamageRoutine = null;
+        }
+        CooldownMultiplier = 1f;
     }
 
-    private void Update()
+
+    private IEnumerator DealDamageRoutine()
     {
-        if (!_shouldDealDamage) return;
-
-        _dealDamageTimer -= Time.deltaTime;
-
-        if (_dealDamageTimer <= 0)
+        while (true)
         {
             _bagItem?.TargetCharacter?.TakeDamage(_effectDamageAmount, ItemDataSO.ExtraType.Effect);
             _bagItem?.OwnerCharacter?.AddLifestealMultiplier(_additionalLifesteal);
-            OnActivate();
-            _shouldDealDamage = false;
-        }
 
+            OnActivate();
+
+            yield return new WaitForCooldown(this);
+        }
     }
 
 

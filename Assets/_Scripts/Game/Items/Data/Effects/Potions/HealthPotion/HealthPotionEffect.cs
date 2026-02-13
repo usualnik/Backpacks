@@ -50,7 +50,7 @@ public class HealthPotionEffect : MonoBehaviour, IItemEffect, IPotionEffect
     {
         if (stats.Health <= _healthToTriggerConsume && _canConsume)
         {
-            Consume();
+            TriggerEffect();
         }
     }
 
@@ -60,7 +60,7 @@ public class HealthPotionEffect : MonoBehaviour, IItemEffect, IPotionEffect
         OnEffectAcivate?.Invoke();
     }
 
-    public void Consume()
+    public void TriggerEffect()
     {
         _healthPotion.OwnerCharacter.AddHealth(_healAmount);
         _healthPotion.OwnerCharacter.RemoveBuff(Buff.BuffType.Poison, _removePoisonAmount);

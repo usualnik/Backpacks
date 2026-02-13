@@ -21274,6 +21274,10 @@ PrefabInstance:
       propertyPath: _stats.GoldAmount
       value: 12
       objectReference: {fileID: 0}
+    - target: {fileID: 4867948185435377715, guid: 19ff9dd93006e0c44a8d5f1746767bfa, type: 3}
+      propertyPath: _characterInventory
+      value: 
+      objectReference: {fileID: 8368822341279542765}
     - target: {fileID: 8017962295943111096, guid: 19ff9dd93006e0c44a8d5f1746767bfa, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -21799,14 +21803,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5eafa1be1c87ec247b4333ee945542f1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Inventory
-  _rangerStartItemsConfig: {fileID: 166130651}
-  _reaperStartItemsConfig: {fileID: 758997511}
   _itemsInIventory:
   - {fileID: 1560361655}
   - {fileID: 1578606026}
   - {fileID: 1049212642}
   - {fileID: 697648141}
   - {fileID: 2138547397}
+  _rangerStartItemsConfig: {fileID: 166130651}
+  _reaperStartItemsConfig: {fileID: 758997511}
 --- !u!224 &5676903702911961656
 RectTransform:
   m_ObjectHideFlags: 0
@@ -22104,6 +22108,10 @@ PrefabInstance:
       propertyPath: _stats.GoldAmount
       value: 50000
       objectReference: {fileID: 0}
+    - target: {fileID: 3747798926841609250, guid: bff15b2ed5ab1684e9290d49703a96ef, type: 3}
+      propertyPath: _characterInventory
+      value: 
+      objectReference: {fileID: 5484952705979955550}
     - target: {fileID: 4643275793669918561, guid: bff15b2ed5ab1684e9290d49703a96ef, type: 3}
       propertyPath: m_Name
       value: Player
@@ -22191,6 +22199,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 516c932dd5c5ce940af2eea1f32987af, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _itemsInIventory: []
   _itemsInIventory: []
   _leatherBagPreset:
   - {fileID: 1913195343}

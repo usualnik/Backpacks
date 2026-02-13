@@ -5,8 +5,8 @@ public class EnemyInventory : BaseInventory
 {
     public static EnemyInventory Instance { get; private set; }
 
-    [SerializeField] private List<ItemBehaviour> _itemsInIventory;
     [SerializeField] private List<BagPreset> _leatherBagPreset;
+
 
     private float _targetGearScore;
     private const float BAGS_GEARSCORE_PERCENTAGE = 30f; // % который должны занимать сумки в целевом гирскоре врага.

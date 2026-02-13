@@ -2,19 +2,26 @@ using System;
 using System.Collections;
 using UnityEngine;
 
-public class FlyAgaricEffect : MonoBehaviour, IItemEffect, IFoodEffect
+public class FlyAgaricEffect : MonoBehaviour, IItemEffect, IFoodEffect, ICooldownable
 {
     public event Action OnEffectAcivate;
     public int ItemActivations { get; set; }
 
-
+    public float BaseCooldown { get; private set; } = 3.6f;
+    public float CooldownMultiplier { get; set; } = 1f;
+    public float CurrentCooldown
+    {
+        get
+        {
+            float safeMultiplier = Math.Max(0.01f, CooldownMultiplier);
+            return MathF.Round(BaseCooldown / safeMultiplier, 3);
+        }
+    }
 
     [SerializeField] private Buff _flyAgaricPoisonBuff;
-    [SerializeField] private float _flyAgaricEffectCooldown;
 
     private Coroutine _flyAgaricRoutine;
     private Character _targetCharacter;
-    private float _currentCooldownMultiplier = 1f;
 
 
 
@@ -40,6 +47,7 @@ public class FlyAgaricEffect : MonoBehaviour, IItemEffect, IFoodEffect
             StopCoroutine(FlyAgaricRoutine());
             _flyAgaricRoutine = null;
         }
+        CooldownMultiplier = 1f;
     }
 
 
@@ -48,9 +56,8 @@ public class FlyAgaricEffect : MonoBehaviour, IItemEffect, IFoodEffect
         while (true)
         {
             _targetCharacter.ApplyBuff(_flyAgaricPoisonBuff);
-            float currentCooldown = _flyAgaricEffectCooldown / _currentCooldownMultiplier;
             OnActivate();
-            yield return new WaitForSeconds(currentCooldown);
+            yield return new WaitForCooldown(this);
         }
     }
 
@@ -76,20 +83,10 @@ public class FlyAgaricEffect : MonoBehaviour, IItemEffect, IFoodEffect
         OnEffectAcivate?.Invoke();
     }
 
-    public void TriggerEffect()
+    public void TriggerFoodEffect()
     {
         _targetCharacter.ApplyBuff(_flyAgaricPoisonBuff);
         OnActivate();
     }
-
-    public void IncreaseFoodSpeed(float speedIncrease)
-    {
-        _currentCooldownMultiplier += speedIncrease;
-
-        if (_flyAgaricRoutine != null)
-        {
-            StopCoroutine(_flyAgaricRoutine);
-            _flyAgaricRoutine = StartCoroutine(FlyAgaricRoutine());
-        }
-    }
+ 
 }

@@ -49,7 +49,7 @@ public class DemonicFlaskEffect : MonoBehaviour, IItemEffect, IPotionEffect
     {
         if (stats.Health <= _healthToTriggerConsume && _canConsume)
         {
-            Consume();
+            TriggerEffect();
         }
     }
 
@@ -59,7 +59,7 @@ public class DemonicFlaskEffect : MonoBehaviour, IItemEffect, IPotionEffect
         OnEffectAcivate?.Invoke();
     }
 
-    public void Consume()
+    public void TriggerEffect()
     {
         var allOpponentDebuffs = _demonicFlask.TargetCharacter.AllDebuffs.Count;
 

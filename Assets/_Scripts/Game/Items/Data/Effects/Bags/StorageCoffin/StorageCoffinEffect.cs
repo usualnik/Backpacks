@@ -7,6 +7,7 @@ public class StorageCoffinEffect : MonoBehaviour, IItemEffect
     public event Action OnEffectAcivate;
     public int ItemActivations { get; set; }
 
+    [SerializeField] private Buff _storageCoffinBuff;
 
     private Bag _bag;
 
@@ -14,21 +15,12 @@ public class StorageCoffinEffect : MonoBehaviour, IItemEffect
 
     private List<ItemBehaviour> _itemsInCoffin;
 
-    private Buff _storageCoffinBuff;
     private Character _targetCharacter;
 
 
     private void Awake()
     {
-        _bag = GetComponent<Bag>();
-        _storageCoffinBuff = new Buff
-        {
-            Name = "StorageCoffinBuff",
-            Type = Buff.BuffType.Poison,
-            IsPositive = false,
-            Value = 1
-
-        };
+        _bag = GetComponent<Bag>();           
     }
 
     private void Start()
@@ -66,13 +58,9 @@ public class StorageCoffinEffect : MonoBehaviour, IItemEffect
         }
     }
 
-    public void RemoveEffect()
-    {
-
-    }
-
     public void OnActivate()
     {
-
+        ItemActivations++;
+        OnEffectAcivate?.Invoke();
     }
 }

@@ -1,25 +1,36 @@
 using System;
+using System.Collections;
 using Unity.VisualScripting;
 using UnityEngine;
 
-public class SapphiresEffect : MonoBehaviour, IItemEffect
+public class SapphiresEffect : MonoBehaviour, IItemEffect, ICooldownable
 {
     public int ItemActivations { get; set; }
 
     public event Action OnEffectAcivate;
 
+    public float BaseCooldown { get; private set; }
+    public float CooldownMultiplier { get; set; } = 1f;
+    public float CurrentCooldown
+    {
+        get
+        {
+            float safeMultiplier = Math.Max(0.01f, CooldownMultiplier);
+            return MathF.Round(BaseCooldown / safeMultiplier, 3);
+        }
+    }
 
     [Header("Weapon Effects")]
     [SerializeField] private float _ignoreArmorChance = 15f;
     [SerializeField] private Buff _gainedManaBuff;
     [SerializeField] private Buff _inflictedColdDebuff;
 
+    private Coroutine _inflictColdRoutine;
     private WeaponBehaviour _gemedWeapon;
 
     [Header("Bag Effects")]  
     [SerializeField] private float _inflictColdTimer;
     [SerializeField] private Buff _bagColdDebuff;
-    private bool _shouldInflictCold;
     private ItemBehaviour _bagItem;
 
 
@@ -37,6 +48,8 @@ public class SapphiresEffect : MonoBehaviour, IItemEffect
     private void Awake()
     {
         _draggableGem = GetComponent<DraggableGem>();
+
+        BaseCooldown = _inflictColdTimer;
 
     }
     private void Start()
@@ -162,29 +175,36 @@ public class SapphiresEffect : MonoBehaviour, IItemEffect
 
     private void CombatManager_OnCombatStartedWithGemmedBag()
     {
-        _shouldInflictCold = true;
+
+        if (_inflictColdRoutine == null)
+            _inflictColdRoutine = StartCoroutine(InflictColdRoutine());
     }
 
     private void CombatManager_OnCombatFinishedWithGemmedBag(CombatManager.CombatResult obj)
     {
-        _shouldInflictCold = false;
-    }
 
-    private void Update()
-    {
-        if (!_shouldInflictCold) return;
-
-        _inflictColdTimer -= Time.deltaTime;
-
-        if (_inflictColdTimer <= 0)
+        if (_inflictColdRoutine != null)
         {
-            _bagItem.TargetCharacter.ApplyBuff(_bagColdDebuff);
-           _shouldInflictCold = false;
-            OnActivate();
-
+            StopCoroutine(_inflictColdRoutine);
+            _inflictColdRoutine = null;
         }
 
+        CooldownMultiplier = 1f;
     }
+
+
+    private IEnumerator InflictColdRoutine()
+    {
+        while (true)
+        {
+            _bagItem.TargetCharacter.ApplyBuff(_bagColdDebuff);
+            OnActivate();
+            yield return new WaitForCooldown(this);
+        }
+    }
+
+
+
     #endregion
 
     #region Armor + other

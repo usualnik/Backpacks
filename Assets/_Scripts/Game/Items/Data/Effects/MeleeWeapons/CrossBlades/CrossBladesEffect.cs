@@ -46,7 +46,7 @@ public class CrossBladesEffect : MonoBehaviour, IItemEffect
         _damageIncrease++;
 
         _weaponBehaviour.AddDamageToWeapon(_damageIncrease);
-        _weaponBehaviour.IncreaseSpeedMultiplier(_speedIncrease);
+        _weaponBehaviour.CooldownMultiplier += _speedIncrease;
         OnActivate();
     }
 

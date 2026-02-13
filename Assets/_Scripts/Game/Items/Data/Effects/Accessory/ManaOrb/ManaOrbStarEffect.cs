@@ -7,7 +7,6 @@ public class ManaOrbStarEffect : MonoBehaviour, IStarEffect
     [SerializeField] private List<ItemBehaviour> _trackedItems = new List<ItemBehaviour>();
     [SerializeField] private Buff _manaBuff;
     [SerializeField] private int _chaneToProcManaBuff = 50;
-    [SerializeField] private int _newRandomBuffsAmount = 20;
     [SerializeField] private int _useManaAmountToProcRandomBuffs = 35;
 
 

@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public class PumpkinEffect : MonoBehaviour, IItemEffect
@@ -56,7 +57,7 @@ public class PumpkinEffect : MonoBehaviour, IItemEffect
 
     private void TryApplyStun(WeaponBehaviour weapon, Character targetCharacter)
     {
-        if (Random.Range(0f, 100f) <= _chanceToStun)
+        if (UnityEngine.Random.Range(0f, 100f) <= _chanceToStun)
         {
             if (targetCharacter != null)
             {
@@ -65,12 +66,6 @@ public class PumpkinEffect : MonoBehaviour, IItemEffect
 
             }
         }
-    }
-
-  
-    public void RemoveEffect()
-    {
-        // Логика удаления эффекта
     }
 
     public void OnActivate()

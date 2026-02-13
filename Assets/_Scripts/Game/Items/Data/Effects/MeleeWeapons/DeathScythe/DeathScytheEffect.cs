@@ -32,7 +32,8 @@ public class DeathScytheEffect : MonoBehaviour, IItemEffect
 
     public void OnActivate()
     {
-
+        ItemActivations++;
+        OnEffectAcivate?.Invoke();
     }
 
     public void StartOfCombatInit(ItemBehaviour item, Character sourceCharacter, Character targetCharacter)
@@ -59,6 +60,7 @@ public class DeathScytheEffect : MonoBehaviour, IItemEffect
 
     private void ProcEffect()
     {
+        OnActivate();
         _deathScythe.AddCritHitChanceToWeapon(_critHitChanceBuff);
     }
 }

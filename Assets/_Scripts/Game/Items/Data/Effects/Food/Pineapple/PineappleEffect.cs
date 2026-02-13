@@ -2,21 +2,27 @@ using System;
 using System.Collections;
 using UnityEngine;
 
-public class PineappleEffect : MonoBehaviour, IItemEffect, IFoodEffect
+public class PineappleEffect : MonoBehaviour, IItemEffect, IFoodEffect, ICooldownable
 {
     public int ItemActivations { get; set; }
 
     public event Action OnEffectAcivate;
 
-    [SerializeField] private float _cooldown = 3.3f;
+    public float BaseCooldown { get; private set; } = 3.3f;
+    public float CooldownMultiplier { get; set; } = 1f;
+    public float CurrentCooldown
+    {
+        get
+        {
+            float safeMultiplier = Math.Max(0.01f, CooldownMultiplier);
+            return MathF.Round(BaseCooldown / safeMultiplier, 3);
+        }
+    }
+
     [SerializeField] private Buff _thornsBuff;
     [SerializeField] private float _healAmount = 4f;
 
-
-    private float _cooldownMultiplier = 1f;
-
     private Coroutine _procBuffRoutine;
-
     private ItemBehaviour _pineapple;
 
     private void Awake()
@@ -68,11 +74,10 @@ public class PineappleEffect : MonoBehaviour, IItemEffect, IFoodEffect
             _pineapple.OwnerCharacter.ApplyBuff(_thornsBuff);
             _pineapple.OwnerCharacter.AddHealth(_healAmount);
 
-            float currentCooldown = _cooldown / _cooldownMultiplier;
 
             OnActivate();
 
-            yield return new WaitForSeconds(currentCooldown);
+            yield return new WaitForCooldown(this);
         }
     }
 
@@ -82,20 +87,10 @@ public class PineappleEffect : MonoBehaviour, IItemEffect, IFoodEffect
         OnEffectAcivate?.Invoke();
     }
 
-    public void TriggerEffect()
+    public void TriggerFoodEffect()
     {
         _pineapple.OwnerCharacter.ApplyBuff(_thornsBuff);
         _pineapple.OwnerCharacter.AddHealth(_healAmount);
     }
-
-    public void IncreaseFoodSpeed(float speedIncrease)
-    {
-        _cooldownMultiplier += speedIncrease;
-
-        if (_procBuffRoutine != null)
-        {
-            StopCoroutine(_procBuffRoutine);
-            _procBuffRoutine = StartCoroutine(ConvertHpRoutine());
-        }
-    }
+   
 }

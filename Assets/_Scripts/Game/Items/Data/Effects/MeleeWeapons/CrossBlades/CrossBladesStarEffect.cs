@@ -13,7 +13,7 @@ public class CrossBladesStarEffect : MonoBehaviour, IStarEffect
         if (weapon != null)
         {
             weapon.AddDamageToWeapon(_damageBuff);
-            weapon.IncreaseSpeedMultiplier(_speedIncreaseBuff);
+            weapon.CooldownMultiplier += _speedIncreaseBuff;
         }
     }
 
@@ -24,7 +24,7 @@ public class CrossBladesStarEffect : MonoBehaviour, IStarEffect
         if (weapon != null)
         {
             weapon.AddDamageToWeapon(-_damageBuff);
-            weapon.IncreaseSpeedMultiplier(-_speedIncreaseBuff);
+            weapon.CooldownMultiplier -= _speedIncreaseBuff;
         }
     }
 }

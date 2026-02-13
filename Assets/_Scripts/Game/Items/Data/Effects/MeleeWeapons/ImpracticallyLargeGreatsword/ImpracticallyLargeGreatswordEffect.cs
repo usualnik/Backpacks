@@ -75,7 +75,7 @@ public class ImpracticallyLargeGreatswordEffect : MonoBehaviour, IItemEffect
 
     private void ProcEffect()
     {
-        _greatSword.IncreaseSpeedMultiplier(_cooldownBuff);
+        _greatSword.CooldownMultiplier += _cooldownBuff;
         _greatSword.RemoveStaminaUsage(_decreaseStaminaUsage);
     }
 

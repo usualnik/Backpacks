@@ -49,7 +49,7 @@ public class PestilanceFlaskEffect : MonoBehaviour, IItemEffect, IPotionEffect
     {
         if (_canConsume)
         {
-            Consume();
+            TriggerEffect();
         }
     }
 
@@ -59,7 +59,7 @@ public class PestilanceFlaskEffect : MonoBehaviour, IItemEffect, IPotionEffect
         OnEffectAcivate?.Invoke();
     }
 
-    public void Consume()
+    public void TriggerEffect()
     {
         _pestilanceFlask.TargetCharacter.ApplyBuff(_inflictedPoison);
         _pestilanceFlask.OwnerCharacter.ApplyBuff(_selfInflictedPoison);

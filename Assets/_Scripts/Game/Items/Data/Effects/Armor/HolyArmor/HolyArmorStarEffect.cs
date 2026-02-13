@@ -1,13 +1,24 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class HolyArmorStarEffect : MonoBehaviour
+public class HolyArmorStarEffect : MonoBehaviour, ICooldownable
 {
     [SerializeField] private int _armorBuff = 65;
     [SerializeField] private Buff _regenBuff;
 
-    [SerializeField] private float _cleansePoisonCooldown = 2.2f;
+    public float BaseCooldown { get; private set; } = 2.2f;
+    public float CooldownMultiplier { get; set; } = 1f;
+    public float CurrentCooldown
+    {
+        get
+        {
+            float safeMultiplier = Math.Max(0.01f, CooldownMultiplier);
+            return MathF.Round(BaseCooldown / safeMultiplier, 3);
+        }
+    }
+
     [SerializeField] private int _cleansePoisonAmount = 2;
 
     private List<ItemBehaviour> _itemsInStar = new List<ItemBehaviour>();
@@ -45,6 +56,8 @@ public class HolyArmorStarEffect : MonoBehaviour
             StopCoroutine(_cleansePoisonRoutine);
             _cleansePoisonRoutine = null;
         }
+
+        CooldownMultiplier = 1f;
     }
 
 
@@ -90,7 +103,7 @@ public class HolyArmorStarEffect : MonoBehaviour
         {
             _holyArmor.OwnerCharacter.RemoveBuff(Buff.BuffType.Poison,_cleansePoisonAmount);
 
-            yield return new WaitForSeconds(_cleansePoisonCooldown);
+            yield return new WaitForCooldown(this);
         }        
     }
 }

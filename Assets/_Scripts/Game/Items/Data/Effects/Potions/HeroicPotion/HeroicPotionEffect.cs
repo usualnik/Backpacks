@@ -48,7 +48,7 @@ public class HeroicPotionEffect : MonoBehaviour, IItemEffect, IPotionEffect
     private void OwnerCharacter_OnStaminaEmpty()
     {
         if(_canConsume)
-            Consume();
+            TriggerEffect();
     }
 
     public void OnActivate()
@@ -57,7 +57,7 @@ public class HeroicPotionEffect : MonoBehaviour, IItemEffect, IPotionEffect
         OnEffectAcivate?.Invoke();
     }
 
-    public void Consume()
+    public void TriggerEffect()
     {
         _heroicPotion.OwnerCharacter.AddStamina(_staminaBuff);
         _heroicPotion.OwnerCharacter.ApplyBuff(_empowerBuff);
