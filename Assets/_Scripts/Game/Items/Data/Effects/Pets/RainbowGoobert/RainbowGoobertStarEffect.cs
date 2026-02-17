@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-public class RainbowGoobertStarEffect : MonoBehaviour
+public class RainbowGoobertStarEffect : MonoBehaviour, IStarEffect
 {
     [SerializeField] private List<ItemBehaviour> _trackedItems = new List<ItemBehaviour>();
     [SerializeField] private float _healAmount = 20f;

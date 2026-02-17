@@ -22200,7 +22200,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _itemsInIventory: []
-  _itemsInIventory: []
   _leatherBagPreset:
   - {fileID: 1913195343}
   - {fileID: 1241071647}

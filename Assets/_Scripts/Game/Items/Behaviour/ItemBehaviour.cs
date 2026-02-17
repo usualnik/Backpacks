@@ -4,7 +4,6 @@ using UnityEngine;
 public class ItemBehaviour : MonoBehaviour
 {
     public event Action<ItemState, ItemState> OnItemStateChanged;
-
     public ItemState CurrentState => _currentState;
     public ItemState PreviousState => _previousState;
     public ItemDataSO ItemData => _itemData;

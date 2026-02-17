@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CarrotGoobertStarEffect : MonoBehaviour
+public class CarrotGoobertStarEffect : MonoBehaviour, IStarEffect
 {
     [SerializeField] private List<ItemBehaviour> _trackedItems;
 

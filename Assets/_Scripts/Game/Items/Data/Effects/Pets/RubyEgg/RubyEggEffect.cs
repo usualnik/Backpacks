@@ -1,26 +1,23 @@
 using System;
 using UnityEngine;
 
-public class BloodAmuletEffect : MonoBehaviour, IItemEffect
+public class RubyEggEffect : MonoBehaviour, IItemEffect
 {
     public int ItemActivations { get; set; }
 
     public event Action OnEffectAcivate;
 
-    [SerializeField]
-    private float _additionalHealth = 20f;
-
-    [SerializeField]
-    private Buff _bloodAmuletBuff; 
+    [SerializeField] private Buff _empowerBuff;
+    [SerializeField] private int _reflectDebuffsAmount = 3;
 
     public void StartOfCombatInit(ItemBehaviour target, Character sourceCharacter, Character targetCharacter)
     {
-        targetCharacter.ChangeMaxHealthValue(_additionalHealth);
-        targetCharacter.AddHealth(_additionalHealth);
-        targetCharacter.ApplyBuff(_bloodAmuletBuff);
+        targetCharacter.ApplyBuff(_empowerBuff);
+        targetCharacter.AddReflectStacks(_reflectDebuffsAmount);
+
         OnActivate();
-    }   
-    
+    }
+
     public void OnActivate()
     {
         ItemActivations++;

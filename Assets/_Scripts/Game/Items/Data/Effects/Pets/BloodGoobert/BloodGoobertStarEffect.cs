@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BloodGoobertStarEffect : MonoBehaviour
+public class BloodGoobertStarEffect : MonoBehaviour, IStarEffect
 {
     [SerializeField] private List<ItemBehaviour> _trackedItems = new List<ItemBehaviour>();
 

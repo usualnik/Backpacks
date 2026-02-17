@@ -19,7 +19,7 @@ public class Shop : MonoBehaviour
     [SerializeField] private GameObject[] _salePricesObjects;
 
     [Header("SYSTEM")]
-    [SerializeField] private List<ItemDataSO> _allSpawnebleItems;
+    [SerializeField] private List<ItemDataSO> _allSpawnableItems;
 
     private const float SALE_CHANCE = 0.2f;
     private const int MAX_SPAWN_ATTEMPTS = 50; // Защита от бесконечного цикла
@@ -166,7 +166,7 @@ public class Shop : MonoBehaviour
     private void SpawnUniqueItemInRandomSlot()
     {
         // Получаем список уникальных предметов
-        var allSpawnebleUniques = _allSpawnebleItems
+        var allSpawnebleUniques = _allSpawnableItems
             .Where(i => i.Rarity == ItemDataSO.RarityType.Unique && i.IsSpawnableInShop)
             .ToList();
 
@@ -297,7 +297,7 @@ public class Shop : MonoBehaviour
             }
 
             // 4. Получаем все предметы выбранной редкости
-            var itemsOfSelectedRarity = _allSpawnebleItems
+            var itemsOfSelectedRarity = _allSpawnableItems
                 .Where(item => (int)item.Rarity == selectedRarity &&
                               item.IsSpawnableInShop)
                 .ToList();
@@ -310,7 +310,7 @@ public class Shop : MonoBehaviour
                 // Ищем любую доступную редкость по порядку (от низшей к высшей)
                 for (int fallbackRarity = 0; fallbackRarity < 6; fallbackRarity++)
                 {
-                    var fallbackItems = _allSpawnebleItems
+                    var fallbackItems = _allSpawnableItems
                         .Where(item => (int)item.Rarity == fallbackRarity &&
                                       item.IsSpawnableInShop)
                         .ToList();
@@ -407,13 +407,13 @@ public class Shop : MonoBehaviour
     [ContextMenu("LOAD ALL ITEMS")]
     private void InitShopItems()
     {
-        _allSpawnebleItems = Resources.LoadAll<ItemDataSO>("ItemsData")
+        _allSpawnableItems = Resources.LoadAll<ItemDataSO>("ItemsData")
             .Where(item => item.IsSpawnableInShop && !item.Type.HasFlag(ItemDataSO.ItemType.Gemstone))
             .ToList();
 
-        Debug.Log($"Loaded {_allSpawnebleItems.Count} items");
+        Debug.Log($"Loaded {_allSpawnableItems.Count} items");
 
-        foreach (var itemData in _allSpawnebleItems)
+        foreach (var itemData in _allSpawnableItems)
         {
             if (itemData.Prefab == null)
             {
@@ -437,9 +437,9 @@ public class Shop : MonoBehaviour
     {
         foreach (var gem in gemsToAdd)
         {
-            if (!_allSpawnebleItems.Contains(gem))
+            if (!_allSpawnableItems.Contains(gem))
             {
-                _allSpawnebleItems.Add(gem);
+                _allSpawnableItems.Add(gem);
             }
         }
     }
@@ -447,9 +447,9 @@ public class Shop : MonoBehaviour
     {
         foreach (var gem in gemsToRemove)
         {
-            if (_allSpawnebleItems.Contains(gem))
+            if (_allSpawnableItems.Contains(gem))
             {
-                _allSpawnebleItems.Remove(gem);
+                _allSpawnableItems.Remove(gem);
             }
         }
     }
@@ -498,7 +498,7 @@ public class Shop : MonoBehaviour
             }
 
             // 4. Получаем все предметы выбранной редкости
-            var itemsOfSelectedRarity = _allSpawnebleItems
+            var itemsOfSelectedRarity = _allSpawnableItems
                 .Where(item => (int)item.Rarity == selectedRarity &&
                               item.GetShapeSize() == itemShape && item.Type != ItemDataSO.ItemType.Bag)
                 .ToList();
@@ -511,7 +511,7 @@ public class Shop : MonoBehaviour
                 // Ищем любую доступную редкость по порядку (от низшей к высшей)
                 for (int fallbackRarity = 0; fallbackRarity < 6; fallbackRarity++)
                 {
-                    var fallbackItems = _allSpawnebleItems
+                    var fallbackItems = _allSpawnableItems
                         .Where(item => (int)item.Rarity == fallbackRarity &&
                                       item.GetShapeSize() == itemShape && item.Type != ItemDataSO.ItemType.Bag)
                         .ToList();
@@ -588,7 +588,7 @@ public class Shop : MonoBehaviour
             }
 
             // 4. Получаем все предметы выбранной редкости
-            var itemsOfSelectedRarity = _allSpawnebleItems
+            var itemsOfSelectedRarity = _allSpawnableItems
                 .Where(item => (int)item.Rarity == selectedRarity && item.Type != ItemDataSO.ItemType.Bag)
                 .ToList();
 
@@ -600,7 +600,7 @@ public class Shop : MonoBehaviour
                 // Ищем любую доступную редкость по порядку (от низшей к высшей)
                 for (int fallbackRarity = 0; fallbackRarity < 6; fallbackRarity++)
                 {
-                    var fallbackItems = _allSpawnebleItems
+                    var fallbackItems = _allSpawnableItems
                         .Where(item => (int)item.Rarity == fallbackRarity && item.Type != ItemDataSO.ItemType.Bag)
                         .ToList();
 
@@ -634,7 +634,7 @@ public class Shop : MonoBehaviour
     }
     public float GetCheapestBagGearScoreAmount()
     {
-        ItemDataSO leatherBag = _allSpawnebleItems.Where(i => i.ItemName == "LeatherBag").FirstOrDefault();
+        ItemDataSO leatherBag = _allSpawnableItems.Where(i => i.ItemName == "LeatherBag").FirstOrDefault();
         return leatherBag.GearScore;
        
     }
