@@ -56,6 +56,8 @@ public class EnemyInventory : BaseInventory
     }
     private void SpawnItems()
     {
+        if (_leatherBagPreset == null) return;
+
         _targetGearScore = PlayerInventory.Instance.GetPlayerGearScore();
 
         SpawnStartingBag();
@@ -68,8 +70,11 @@ public class EnemyInventory : BaseInventory
         int bagsAvailable = _leatherBagPreset.Capacity - 1;
 
 
+
         while (gearScoreAvailableForBags > _cheapestBagGearScoreAmount && bagsAvailable > 0)
         {
+            if (_leatherBagPreset[bagsAvailable] == null) return;
+
             _leatherBagPreset[bagsAvailable].gameObject.SetActive(true);
 
             // Вычитаем из обоих значений

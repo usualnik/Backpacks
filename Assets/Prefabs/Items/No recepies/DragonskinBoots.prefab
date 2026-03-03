@@ -12,6 +12,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: DragonskinBoots
       objectReference: {fileID: 0}
+    - target: {fileID: 329016987711949224, guid: 137870c767bf8b84f9c550357331a0cf, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 2686240260154758306, guid: 137870c767bf8b84f9c550357331a0cf, type: 3}
       propertyPath: enemyConfigOwner
       value: 1
@@ -216,11 +220,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e4ede2115e3d68441b17513f31597c28, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _luckBuf:
-    Name: DragonskinLuckBuff
-    Type: 3
-    IsPositive: 1
-    Value: 1
+  _luckBuff:
+    Name: 
+    Type: 0
+    IsPositive: 0
+    Value: 0
   _empowerBuff:
     Name: DragonskinEmpowerBuff
     Type: 1

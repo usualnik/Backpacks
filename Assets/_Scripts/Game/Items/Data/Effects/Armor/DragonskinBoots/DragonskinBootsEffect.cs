@@ -29,11 +29,13 @@ public class DragonskinBootsEffect : MonoBehaviour, IItemEffect
     private void OnDestroy()
     {
         CombatManager.Instance.OnCombatFinished -= CombatManager_OnCombatFinished;
-        _boots.OwnerCharacter.OnCharacterStatsChanged -= Owner_OnCharacterStatsChanged;
+        if (_boots.OwnerCharacter != null)
+            _boots.OwnerCharacter.OnCharacterStatsChanged -= Owner_OnCharacterStatsChanged;
     }
     private void CombatManager_OnCombatFinished(CombatManager.CombatResult obj)
     {
-        _boots.OwnerCharacter.OnCharacterStatsChanged -= Owner_OnCharacterStatsChanged;
+        if (_boots.OwnerCharacter != null)
+            _boots.OwnerCharacter.OnCharacterStatsChanged -= Owner_OnCharacterStatsChanged;
         _canTrigger = true;
     }
 

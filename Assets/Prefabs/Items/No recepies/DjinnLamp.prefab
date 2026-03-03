@@ -178,6 +178,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: DjinnLamp
       objectReference: {fileID: 0}
+    - target: {fileID: 329016987711949224, guid: 137870c767bf8b84f9c550357331a0cf, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 2686240260154758306, guid: 137870c767bf8b84f9c550357331a0cf, type: 3}
       propertyPath: enemyConfigOwner
       value: 1
@@ -392,7 +396,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: edbe79b7b76a62e4fa0a9141bfc4a9d0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _cooldown: 1.6
   _manaBuff:
     Name: DjinLampManaBuff
     Type: 4

@@ -71,6 +71,8 @@ public class CapOfResilienceEffect : MonoBehaviour, IItemEffect, IDamagePreventi
     }
     public void RemoveEffect()
     {
+        if (_cap.OwnerCharacter == null) { return; }
+
         var damageHandler = _cap.OwnerCharacter.GetComponent<CharacterDamageHandler>();
         if (damageHandler != null)
         {

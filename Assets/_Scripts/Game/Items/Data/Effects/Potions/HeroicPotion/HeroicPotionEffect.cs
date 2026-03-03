@@ -28,12 +28,14 @@ public class HeroicPotionEffect : MonoBehaviour, IItemEffect, IPotionEffect
     private void OnDestroy()
     {
         CombatManager.Instance.OnCombatFinished -= CombatManager_OnCombatFinished;
-        _heroicPotion.OwnerCharacter.OnStaminaEmpty -= OwnerCharacter_OnStaminaEmpty;
+        if (_heroicPotion.OwnerCharacter != null)
+            _heroicPotion.OwnerCharacter.OnStaminaEmpty -= OwnerCharacter_OnStaminaEmpty;
 
     }
     private void CombatManager_OnCombatFinished(CombatManager.CombatResult obj)
     {
-        _heroicPotion.OwnerCharacter.OnStaminaEmpty -= OwnerCharacter_OnStaminaEmpty;
+        if (_heroicPotion.OwnerCharacter != null)
+            _heroicPotion.OwnerCharacter.OnStaminaEmpty -= OwnerCharacter_OnStaminaEmpty;
 
         _canConsume = true;
     }

@@ -28,11 +28,13 @@ public class DemonicFlaskEffect : MonoBehaviour, IItemEffect, IPotionEffect
     private void OnDestroy()
     {
         CombatManager.Instance.OnCombatFinished -= CombatManager_OnCombatFinished;
-        _demonicFlask.OwnerCharacter.OnCharacterStatsChanged -= Target_OnCharacterStatsChanged;
+        if (_demonicFlask.OwnerCharacter != null)
+            _demonicFlask.OwnerCharacter.OnCharacterStatsChanged -= Target_OnCharacterStatsChanged;
     }
     private void CombatManager_OnCombatFinished(CombatManager.CombatResult obj)
     {
-        _demonicFlask.OwnerCharacter.OnCharacterStatsChanged -= Target_OnCharacterStatsChanged;
+        if (_demonicFlask.OwnerCharacter != null)
+            _demonicFlask.OwnerCharacter.OnCharacterStatsChanged -= Target_OnCharacterStatsChanged;
         _canConsume = true;
     }
 
@@ -65,7 +67,7 @@ public class DemonicFlaskEffect : MonoBehaviour, IItemEffect, IPotionEffect
 
         float damage = allOpponentDebuffs * _damagePerDebuff;
 
-        _demonicFlask.TargetCharacter.TakeDamage(damage,ItemDataSO.ExtraType.Effect);
+        _demonicFlask.TargetCharacter.TakeDamage(damage, ItemDataSO.ExtraType.Effect);
 
         OnActivate();
 

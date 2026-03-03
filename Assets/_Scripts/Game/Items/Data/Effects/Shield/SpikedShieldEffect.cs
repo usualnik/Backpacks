@@ -73,8 +73,10 @@ public class SpikedShieldEffect : MonoBehaviour, IItemEffect, IDamagePreventionE
 
     public void StartOfCombatInit(ItemBehaviour item, Character sourceCharacter, Character targetCharacter)
     {
-       
+        if (_spikedShield.OwnerCharacter == null) return;
+
         var damageHandler = _spikedShield.OwnerCharacter.GetComponent<CharacterDamageHandler>();
+
         if (damageHandler != null)
         {
             damageHandler.RegisterMeleeDamagePreventionEffect(this);
@@ -83,11 +85,15 @@ public class SpikedShieldEffect : MonoBehaviour, IItemEffect, IDamagePreventionE
 
     public void RemoveEffect()
     {
+        if (_spikedShield.OwnerCharacter == null) return;
+
         var damageHandler = _spikedShield.OwnerCharacter.GetComponent<CharacterDamageHandler>();
+
         if (damageHandler != null)
         {
             damageHandler.UnRegisterMeleeDamagePreventionEffect(this);
         }
+
     }
 
     public void OnActivate()

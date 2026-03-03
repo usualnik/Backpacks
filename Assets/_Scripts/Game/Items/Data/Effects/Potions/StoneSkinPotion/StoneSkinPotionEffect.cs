@@ -30,12 +30,14 @@ public class StoneSkinPotionEffect : MonoBehaviour, IItemEffect, IPotionEffect
     private void OnDestroy()
     {
         CombatManager.Instance.OnCombatFinished -= CombatManager_OnCombatFinished;
-        _stoneSkinPotion.OwnerCharacter.OnCharacterStatsChanged -= OwnerCharacter_OnCharacterStatsChanged;
+        if (_stoneSkinPotion.OwnerCharacter != null)
+            _stoneSkinPotion.OwnerCharacter.OnCharacterStatsChanged -= OwnerCharacter_OnCharacterStatsChanged;
 
     }
     private void CombatManager_OnCombatFinished(CombatManager.CombatResult obj)
     {
-        _stoneSkinPotion.OwnerCharacter.OnCharacterStatsChanged -= OwnerCharacter_OnCharacterStatsChanged;
+        if (_stoneSkinPotion.OwnerCharacter != null)
+            _stoneSkinPotion.OwnerCharacter.OnCharacterStatsChanged -= OwnerCharacter_OnCharacterStatsChanged;
 
         _canConsume = true;
     }

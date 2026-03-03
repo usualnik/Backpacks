@@ -29,11 +29,13 @@ public class HealthPotionEffect : MonoBehaviour, IItemEffect, IPotionEffect
     private void OnDestroy()
     {
         CombatManager.Instance.OnCombatFinished -= CombatManager_OnCombatFinished;
-        _healthPotion.OwnerCharacter.OnCharacterStatsChanged -= Owner_OnCharacterStatsChanged;
+        if (_healthPotion.OwnerCharacter != null)
+            _healthPotion.OwnerCharacter.OnCharacterStatsChanged -= Owner_OnCharacterStatsChanged;
     }
     private void CombatManager_OnCombatFinished(CombatManager.CombatResult obj)
     {
-        _healthPotion.OwnerCharacter.OnCharacterStatsChanged -= Owner_OnCharacterStatsChanged;
+        if (_healthPotion.OwnerCharacter != null)
+            _healthPotion.OwnerCharacter.OnCharacterStatsChanged -= Owner_OnCharacterStatsChanged;
         _canConsume = true;
     }
 

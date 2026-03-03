@@ -22,6 +22,7 @@ public class PotionBeltEffect : MonoBehaviour, IItemEffect
     {
         _bag = GetComponent<Bag>();
         _potionBelt = GetComponent<ItemBehaviour>();
+        _itemsInPotionBelt = new List<ItemBehaviour>();
     }
     private void Start()
     {
@@ -32,21 +33,28 @@ public class PotionBeltEffect : MonoBehaviour, IItemEffect
     {
         CombatManager.Instance.OnCombatFinished -= CombatManager_OnCombatFinished;
 
-        foreach (var i in _itemsInPotionBelt)
+        if (_itemsInPotionBelt.Count > 0)
         {
-            if (i.TryGetComponent(out IPotionEffect iPotionEffect))
+            foreach (var i in _itemsInPotionBelt)
             {
-                iPotionEffect.OnPotionConsumed -= IPotionEffect_OnPotionConsumed;
+                if (i.TryGetComponent(out IPotionEffect iPotionEffect))
+                {
+                    iPotionEffect.OnPotionConsumed -= IPotionEffect_OnPotionConsumed;
+                }
             }
         }
+       
     }
     private void CombatManager_OnCombatFinished(CombatManager.CombatResult obj)
     {
-        foreach (var i in _itemsInPotionBelt)
+        if (_itemsInPotionBelt.Count > 0)
         {
-            if (i.TryGetComponent(out IPotionEffect iPotionEffect))
+            foreach (var i in _itemsInPotionBelt)
             {
-                iPotionEffect.OnPotionConsumed -= IPotionEffect_OnPotionConsumed;
+                if (i.TryGetComponent(out IPotionEffect iPotionEffect))
+                {
+                    iPotionEffect.OnPotionConsumed -= IPotionEffect_OnPotionConsumed;
+                }
             }
         }
 

@@ -933,6 +933,7 @@ MonoBehaviour:
   m_VerticalAlignment: 512
   m_textAlignment: 65535
   m_characterSpacing: 0
+  m_characterHorizontalScale: 1
   m_wordSpacing: 0
   m_lineSpacing: 0
   m_lineSpacingMax: 0
@@ -1476,6 +1477,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: HeroLongSword
       objectReference: {fileID: 0}
+    - target: {fileID: 329016987711949224, guid: 137870c767bf8b84f9c550357331a0cf, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 2686240260154758306, guid: 137870c767bf8b84f9c550357331a0cf, type: 3}
       propertyPath: enemyConfigOwner
       value: 1
@@ -1747,6 +1752,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fb6237882d2e69d4b8eabab79c9d86f8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _trackedWeapons: []
+  _damageBuff: 4
 --- !u!114 &5282576982308912559 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 5512910330479703549, guid: 137870c767bf8b84f9c550357331a0cf, type: 3}

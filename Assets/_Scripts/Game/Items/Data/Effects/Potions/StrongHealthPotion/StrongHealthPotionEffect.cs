@@ -30,11 +30,13 @@ public class StrongHealthPotionEffect : MonoBehaviour, IItemEffect, IPotionEffec
     private void OnDestroy()
     {
         CombatManager.Instance.OnCombatFinished -= CombatManager_OnCombatFinished;
-        _strongHealthPotion.OwnerCharacter.OnCharacterStatsChanged -= Owner_OnCharacterStatsChanged;
+        if (_strongHealthPotion.OwnerCharacter != null)
+            _strongHealthPotion.OwnerCharacter.OnCharacterStatsChanged -= Owner_OnCharacterStatsChanged;
     }
     private void CombatManager_OnCombatFinished(CombatManager.CombatResult obj)
     {
-        _strongHealthPotion.OwnerCharacter.OnCharacterStatsChanged -= Owner_OnCharacterStatsChanged;
+        if (_strongHealthPotion.OwnerCharacter != null)
+            _strongHealthPotion.OwnerCharacter.OnCharacterStatsChanged -= Owner_OnCharacterStatsChanged;
         _canConsume = true;
     }
 

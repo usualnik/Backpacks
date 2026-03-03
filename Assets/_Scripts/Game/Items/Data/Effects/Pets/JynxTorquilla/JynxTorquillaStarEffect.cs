@@ -64,7 +64,7 @@ public class JynxTorquillaStarEffect : MonoBehaviour, IStarEffect, ICooldownable
     }
     private void CombatManager_OnCombatStarted()
     {
-        if (_jynxRoutine == null)
+        if (_jynxRoutine == null && _jynx.isActiveAndEnabled)
         {
             _jynxRoutine = StartCoroutine(JynxRoutine());
         }

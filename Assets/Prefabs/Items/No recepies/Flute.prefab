@@ -1506,6 +1506,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Flute
       objectReference: {fileID: 0}
+    - target: {fileID: 329016987711949224, guid: 137870c767bf8b84f9c550357331a0cf, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 2686240260154758306, guid: 137870c767bf8b84f9c550357331a0cf, type: 3}
       propertyPath: enemyConfigOwner
       value: 1
@@ -1758,7 +1762,6 @@ MonoBehaviour:
     Value: 2
   _staminaBuff: 2
   _armorBuffAmount: 14
-  _cooldown: 4.7
 --- !u!114 &6485594140033378074
 MonoBehaviour:
   m_ObjectHideFlags: 0

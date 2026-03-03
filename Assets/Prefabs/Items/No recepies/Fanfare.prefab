@@ -1506,6 +1506,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Fanfare
       objectReference: {fileID: 0}
+    - target: {fileID: 329016987711949224, guid: 137870c767bf8b84f9c550357331a0cf, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 2686240260154758306, guid: 137870c767bf8b84f9c550357331a0cf, type: 3}
       propertyPath: enemyConfigOwner
       value: 1
@@ -1763,7 +1767,6 @@ MonoBehaviour:
     Value: 0
   _removeManaFromOpponentAmount: 2
   _removeStaminaAmount: 1
-  _cooldown: 3
 --- !u!114 &2354791870334105901
 MonoBehaviour:
   m_ObjectHideFlags: 0

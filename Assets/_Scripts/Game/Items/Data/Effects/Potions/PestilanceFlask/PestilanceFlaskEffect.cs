@@ -28,12 +28,14 @@ public class PestilanceFlaskEffect : MonoBehaviour, IItemEffect, IPotionEffect
     private void OnDestroy()
     {
         CombatManager.Instance.OnCombatFinished -= CombatManager_OnCombatFinished;
-        _pestilanceFlask.TargetCharacter.OnHealingRecived -= TargetCharacter_OnHealingRecived;
+        if (_pestilanceFlask.OwnerCharacter != null)
+            _pestilanceFlask.TargetCharacter.OnHealingRecived -= TargetCharacter_OnHealingRecived;
 
     }
     private void CombatManager_OnCombatFinished(CombatManager.CombatResult obj)
     {
-        _pestilanceFlask.TargetCharacter.OnHealingRecived -= TargetCharacter_OnHealingRecived;
+        if (_pestilanceFlask.OwnerCharacter != null)
+            _pestilanceFlask.TargetCharacter.OnHealingRecived -= TargetCharacter_OnHealingRecived;
         _canConsume = true;
     }
 

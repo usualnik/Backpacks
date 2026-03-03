@@ -31,7 +31,10 @@ public class StaminaSackEffect : MonoBehaviour, IItemEffect
 
     private void CombatManager_OnCombatFinished(CombatManager.CombatResult obj)
     {
-        _staminaSack.OwnerCharacter.ChangeStaminaMaxValue(-_staminaBuffAmount);
+        if(_staminaSack.OwnerCharacter != null)
+        {
+            _staminaSack.OwnerCharacter.ChangeStaminaMaxValue(-_staminaBuffAmount);
+        }
     }
 
     public void OnActivate()

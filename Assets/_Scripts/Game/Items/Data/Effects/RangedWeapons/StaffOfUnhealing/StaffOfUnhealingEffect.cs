@@ -48,7 +48,8 @@ public class StaffOfUnhealingEffect : MonoBehaviour, IItemEffect, ICooldownable
             _staffRoutine = null;
         }
 
-        _staff.OwnerCharacter.OnHealingRecived -= OwnerCharacter_OnHealingRecived;
+        if (_staff.OwnerCharacter)
+            _staff.OwnerCharacter.OnHealingRecived -= OwnerCharacter_OnHealingRecived;
 
         CooldownMultiplier = 1f;
 
@@ -61,7 +62,7 @@ public class StaffOfUnhealingEffect : MonoBehaviour, IItemEffect, ICooldownable
 
     public void StartOfCombatInit(ItemBehaviour item, Character sourceCharacter, Character targetCharacter)
     {
-        if (_staffRoutine == null)
+        if (_staffRoutine == null && _staff.isActiveAndEnabled)
         {
             _staffRoutine = StartCoroutine(StaffRoutine());
         }
@@ -99,14 +100,14 @@ public class StaffOfUnhealingEffect : MonoBehaviour, IItemEffect, ICooldownable
             Invoke(nameof(StopConvertHealinToDamage), 2);
         }
     }
-  
+
     private void StopConvertHealinToDamage()
     {
         if (CombatManager.Instance.IsInCombat)
         {
             _staff.OwnerCharacter.OnHealingRecived -= OwnerCharacter_OnHealingRecived;
         }
-    }    
+    }
 
     private void ConvertHealingToDamage(float healingAmount)
     {

@@ -81,7 +81,7 @@ public class HolyArmorStarEffect : MonoBehaviour, ICooldownable
     {
         ApplyHolyArmorBuff();
 
-        if (_cleansePoisonRoutine == null)
+        if (_cleansePoisonRoutine == null && _holyArmor.isActiveAndEnabled)
         {
             _cleansePoisonRoutine = StartCoroutine(CleansePoisonCorutine());
         }

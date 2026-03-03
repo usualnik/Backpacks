@@ -28,7 +28,7 @@ public class ShopItem : MonoBehaviour, IPointerClickHandler
             if (_itemBehaviour.CurrentState.HasFlag(ItemBehaviour.ItemState.Store))
             {
                 _isItemReserved = _isItemReserved ? false : true;
-                _reservedImage.gameObject.SetActive(_isItemReserved);
+                _reservedImage?.gameObject.SetActive(_isItemReserved);
             }          
         }
     }

@@ -33,7 +33,10 @@ public class HungryBladeEffect : MonoBehaviour, IItemEffect
     }
     private void CombatManager_OnCombatFinished(CombatManager.CombatResult obj)
     {
-        _hungryBlade.OwnerCharacter.OnNewBuffApplied -= OwnerCharacter_OnNewBuffApplied;
+        if(_hungryBlade.OwnerCharacter)
+        {
+            _hungryBlade.OwnerCharacter.OnNewBuffApplied -= OwnerCharacter_OnNewBuffApplied;
+        }
     }
 
 

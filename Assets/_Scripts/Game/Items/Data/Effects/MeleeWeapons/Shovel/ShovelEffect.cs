@@ -70,16 +70,19 @@ public class ShovelEffect : MonoBehaviour, IItemEffect
 
     private void DigUpItem()
     {
-        ItemDataSO randomAvailavleItemData = Shop.Instance.GetRandomAvailableItemDataSO();
 
-        GameObject diggedItem = randomAvailavleItemData.Prefab;
 
-        Transform storageTransform = Storage.Instance.transform;
 
-        if (diggedItem != null)
-        {
-            Instantiate(diggedItem, storageTransform, storageTransform);
-        }
+        //ItemDataSO randomAvailavleItemData = Shop.Instance.GetRandomAvailableItemDataSO();
+
+        //GameObject diggedItem = randomAvailavleItemData.Prefab;
+
+        //Transform storageTransform = Storage.Instance.transform;
+
+        //if (diggedItem != null)
+        //{
+        //    Instantiate(diggedItem, storageTransform, storageTransform);
+        //}
     }
    
 }

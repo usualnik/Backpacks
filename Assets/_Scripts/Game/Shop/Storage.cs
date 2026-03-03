@@ -13,10 +13,10 @@ public class Storage : MonoBehaviour
     }
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.TryGetComponent(out ItemBehaviour item))
-        {
-           item.SetItemState(ItemBehaviour.ItemState.Storage);
-        }
+        //if (collision.TryGetComponent(out ItemBehaviour item))
+        //{
+        //   item.SetItemState(ItemBehaviour.ItemState.Storage);
+        //}
     }
 
 
