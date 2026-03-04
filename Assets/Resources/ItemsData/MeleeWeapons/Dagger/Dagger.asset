@@ -22,8 +22,10 @@ MonoBehaviour:
   _shapeWidth: 1
   _shapeHeight: 2
   _shapeArray: 0101
-  _recipeIngridients: []
-  _recipeResult: {fileID: 0}
+  _recepies:
+  - RecipeIngridients:
+    - {fileID: 11400000, guid: f934c01ae82a6e84ca47fa878f243c8a, type: 2}
+    RecipeResult: {fileID: 11400000, guid: 77a015ae8393ff349944329dcc05235a, type: 2}
   _price: 4
   _gearScore: 1.6
   _damageMin: 2
