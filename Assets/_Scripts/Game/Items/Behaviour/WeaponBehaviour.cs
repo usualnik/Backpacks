@@ -40,6 +40,8 @@ public class WeaponBehaviour : ItemBehaviour, ICooldownable
     public float _staminaCost = 0;
 
 
+    private ItemVisual itemVisual;
+
     private WeaponBehaviour _weaponBehaviour;
 
 
@@ -49,6 +51,8 @@ public class WeaponBehaviour : ItemBehaviour, ICooldownable
         ResetWeaponStatsToDefault();
         _effect = GetComponent<IItemEffect>();
         _weaponBehaviour = this;
+        _itemVisual = GetComponentInChildren<ItemVisual>();
+
     }
 
     private void Start()
@@ -161,5 +165,11 @@ public class WeaponBehaviour : ItemBehaviour, ICooldownable
             WeaponDamageMin, WeaponDamageMax,
             StaminaCost, CurrentCooldown, Accuracy);
         }
+    }
+
+    public void CombineWeaponToRecepie(ItemDataSO itemData)
+    {
+        _weaponDataSO = itemData as WeaponDataSO;
+        _itemVisual.UpdateVisual(_weaponDataSO.Icon);
     }
 }

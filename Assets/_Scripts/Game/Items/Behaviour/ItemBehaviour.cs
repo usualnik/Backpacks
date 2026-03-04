@@ -103,11 +103,26 @@ public class ItemBehaviour : MonoBehaviour
     {
         Destroy(gameObject);
     }
-    public void CombineWithIngridient(ItemBehaviour ingridient, ItemDataSO recipeResult)
+    public void CombineItemWithIngridient(ItemBehaviour[] ingridients, ItemDataSO recipeResult)
     {
-        _itemData = recipeResult;
-        Destroy(ingridient.gameObject);
-        _itemVisual.UpdateVisual(_itemData.Icon);
+        if(this is WeaponBehaviour)
+        {
+            WeaponBehaviour weaponBehaviour = (WeaponBehaviour)this;
+            _itemData = recipeResult;
+
+           
+            weaponBehaviour.CombineWeaponToRecepie(recipeResult);
+        }
+        else
+        {
+            _itemData = recipeResult;           
+            _itemVisual.UpdateVisual(_itemData.Icon);
+        }
+
+        foreach (var i in ingridients)
+        {
+            Destroy(i.gameObject);
+        }
     }
     public int GetItemPrice() => ItemData.Price;
     public void SetItemPrice(int value) => _itemPrice = value;

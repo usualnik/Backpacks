@@ -1,7 +1,12 @@
 using System;
 using UnityEngine;
 
-
+[Serializable]
+public class Recepie
+{
+    public ItemDataSO[] RecipeIngridients;
+    public ItemDataSO RecipeResult;
+}
 public abstract class ItemDataSO : ScriptableObject
 {
     public string ItemName => _itemName;
@@ -12,8 +17,7 @@ public abstract class ItemDataSO : ScriptableObject
     public RarityType Rarity => _rarity;
     public bool IsSpawnableInShop => _isSpawnableInShop;
     public ItemType Type => _itemType;
-    public ItemDataSO[] RecipeIngridients => _recipeIngridients;
-    public ItemDataSO RecipeResult => _recipeResult;
+    public Recepie[] Recepies => _recepies;
     public Vector2Int GetShapeSize() => new Vector2Int(_shapeWidth, _shapeHeight);
     public float GearScore => _gearScore;
 
@@ -88,9 +92,8 @@ public abstract class ItemDataSO : ScriptableObject
     [SerializeField] private int _shapeHeight = 1;
     [SerializeField] private bool[] _shapeArray;
 
-    [Header("Recipe")]
-    [SerializeField] private ItemDataSO[] _recipeIngridients;
-    [SerializeField] private ItemDataSO _recipeResult;
+    [Header("Recipes")]
+    [SerializeField] private Recepie[] _recepies;
 
     [Header("Properties")]
     [SerializeField] private int _price;
