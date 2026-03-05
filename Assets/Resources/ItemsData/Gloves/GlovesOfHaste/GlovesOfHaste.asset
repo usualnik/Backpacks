@@ -26,5 +26,8 @@ MonoBehaviour:
   - RecipeIngridients:
     - {fileID: 11400000, guid: f934c01ae82a6e84ca47fa878f243c8a, type: 2}
     RecipeResult: {fileID: 11400000, guid: d528829310a37bb4f91cf9b6f9376bb0, type: 2}
+  - RecipeIngridients:
+    - {fileID: 11400000, guid: 49db54dd5acc34b4bb1f55719e374261, type: 2}
+    RecipeResult: {fileID: 11400000, guid: f76be0ab47e13f145b54d5a3d0f216dd, type: 2}
   _price: 4
   _gearScore: 1.6

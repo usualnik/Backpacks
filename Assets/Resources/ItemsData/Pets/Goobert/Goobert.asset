@@ -15,7 +15,7 @@ MonoBehaviour:
   _itemName: Goobert
   _icon: {fileID: 21300000, guid: 42bc0d2ec79f2db459ed4727f6ac01d5, type: 3}
   _prefab: {fileID: 98611140532912634, guid: a7c1ac4454e52fd40877669efb23650e, type: 3}
-  _isSpawnableInShop: 0
+  _isSpawnableInShop: 1
   _itemType: 128
   _itemExtraType: 0
   _rarity: 1

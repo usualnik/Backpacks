@@ -15,15 +15,14 @@ MonoBehaviour:
   _itemName: SpectralDagger
   _icon: {fileID: 21300000, guid: 9642513d21e2ba046ba871046ddfab85, type: 3}
   _prefab: {fileID: 98611140532912634, guid: d7cf2e50aa636094daa870c6808fc05f, type: 3}
-  _isSpawnableInShop: 0
+  _isSpawnableInShop: 1
   _itemType: 64
   _itemExtraType: 17
   _rarity: 3
   _shapeWidth: 1
   _shapeHeight: 2
   _shapeArray: 0101
-  _recipeIngridients: []
-  _recipeResult: {fileID: 0}
+  _recepies: []
   _price: 10
   _gearScore: 8
   _damageMin: 3
