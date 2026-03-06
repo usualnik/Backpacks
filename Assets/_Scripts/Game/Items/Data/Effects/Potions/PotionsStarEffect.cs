@@ -21,20 +21,21 @@ public class PotionsStarEffect : MonoBehaviour, IStarEffect
     }
     private void Effect_OnEffectAcivate()
     {
-        if(CombatManager.Instance.IsInCombat)
-        {
-            _starredPotion.TryGetComponent(out IPotionEffect _effect);
+        if (!CombatManager.Instance.IsInCombat) return;
+        if (_starredPotion == null) return;
 
-            if (_effect != null)
-            {
-                _effect.TriggerPotionEffect();
-            }
+        _starredPotion.TryGetComponent(out IPotionEffect _effect);
+
+        if (_effect != null)
+        {
+            _effect.TriggerPotionEffect();
         }
+
     }
 
     public void ApplyStarEffect(ItemBehaviour sourceItem, ItemBehaviour targetItem, StarCell starCell)
     {
-        _starredPotion = targetItem;        
+        _starredPotion = targetItem;
     }
 
     public void RemoveStarEffect(ItemBehaviour sourceItem, ItemBehaviour targetItem, StarCell starCell)

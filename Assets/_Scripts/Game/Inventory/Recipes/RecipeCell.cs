@@ -37,20 +37,17 @@ public class RecipeCell : MonoBehaviour
         // Если сборка для этого предмета уже выполнена - игнорируем все последующие ячейки
         if (_itemCombinationExecuted)
         {
-            Debug.Log($"RecipeCell: Сборка для предмета {_itemBehaviour.name} уже выполнена другой ячейкой, пропускаем");
             return;
         }
 
         // Проверяем, не запущена ли уже сборка другой ячейкой этого же предмета
         if (IsAnyOtherCellCombining())
         {
-            Debug.Log($"RecipeCell: Процесс сборки уже запущен другой ячейкой предмета {_itemBehaviour.name}, пропускаем");
             return;
         }
 
         if (_canBeCombined && _currentRecepie != null)
         {
-            Debug.Log($"RecipeCell: Начинаем сборку с рецептом {_currentRecepie.RecipeResult.name}, ингредиентов в зоне: {_ingridientItemBehaviours.Count}");
 
             try
             {
@@ -63,15 +60,11 @@ public class RecipeCell : MonoBehaviour
             }
             catch (System.Exception e)
             {
-                Debug.LogError($"RecipeCell: Ошибка при сборке: {e.Message}");
                 // В случае ошибки сбрасываем флаг
                 _itemCombinationExecuted = false;
             }
         }
-        else
-        {
-            Debug.Log($"RecipeCell: Не можем собрать - _canBeCombined={_canBeCombined}, _currentRecepie={_currentRecepie}");
-        }
+
     }
 
     private bool IsAnyOtherCellCombining()
@@ -87,7 +80,6 @@ public class RecipeCell : MonoBehaviour
         // Если только одна ячейка может собрать рецепт - это наша, и мы её пропускаем дальше
         if (combinableCells.Count == 1 && combinableCells[0] == this)
         {
-            Debug.Log($"RecipeCell: Только я могу собрать рецепт, выполняю сборку");
             return false;
         }
 
@@ -103,12 +95,10 @@ public class RecipeCell : MonoBehaviour
             // Если первая ячейка в отсортированном списке - это мы, то собираем
             if (sortedCells[0] == this)
             {
-                Debug.Log($"RecipeCell: Я первая в очереди на сборку, выполняю");
                 return false;
             }
             else
             {
-                Debug.Log($"RecipeCell: Другая ячейка {sortedCells[0].name} первая в очереди, пропускаю");
                 return true;
             }
         }
@@ -167,7 +157,6 @@ public class RecipeCell : MonoBehaviour
             {
                 _ingridientItemBehaviours.Add(ingridientBehaviour);
                 CheckForValidRecipe();
-                Debug.Log($"RecipeCell: Добавлен ингредиент {ingridientBehaviour.name}, теперь в зоне: {_ingridientItemBehaviours.Count} предметов");
             }
         }
     }
@@ -185,7 +174,6 @@ public class RecipeCell : MonoBehaviour
             {
                 _ingridientItemBehaviours.Remove(ingridientBehaviour);
                 CheckForValidRecipe();
-                Debug.Log($"RecipeCell: Удален ингредиент {ingridientBehaviour.name}, теперь в зоне: {_ingridientItemBehaviours.Count} предметов");
             }
         }
     }
@@ -205,7 +193,6 @@ public class RecipeCell : MonoBehaviour
             {
                 _canBeCombined = true;
                 _currentRecepie = recipe;
-                Debug.Log($"RecipeCell: Найден подходящий рецепт {recipe.RecipeResult.name}");
                 return;
             }
         }

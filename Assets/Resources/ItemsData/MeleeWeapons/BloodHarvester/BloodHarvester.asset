@@ -21,9 +21,8 @@ MonoBehaviour:
   _rarity: 5
   _shapeWidth: 3
   _shapeHeight: 4
-  _shapeArray: 010101010100000001000000
-  _recipeIngridients: []
-  _recipeResult: {fileID: 0}
+  _shapeArray: 010101010000000101000000
+  _recepies: []
   _price: 7
   _gearScore: 10.8
   _damageMin: 10
