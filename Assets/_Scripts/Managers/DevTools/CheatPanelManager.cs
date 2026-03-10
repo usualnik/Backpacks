@@ -11,7 +11,6 @@ public class CheatPanelManager : MonoBehaviour
     [Header("System")]
     [SerializeField] private GameObject _cheatPanel;
     [SerializeField] private TMP_InputField _searchInputField;
-
     [SerializeField] private ItemBehaviour _trackedItem;
 
     private void Awake()
@@ -75,6 +74,8 @@ public class CheatPanelManager : MonoBehaviour
         if (arg2 == ItemBehaviour.ItemState.Inventory)
         {
             _trackedItem.enabled = true;
+
+            _allItemsInGame.Remove(_trackedItem);
 
             // Отписываемся после перемещения в инвентарь
             _trackedItem.OnItemStateChanged -= TrackedItem_OnItemStateChanged;

@@ -56,6 +56,10 @@ PrefabInstance:
       propertyPath: m_EditorClassIdentifier
       value: UnityEngine.UI::UnityEngine.UI.Image
       objectReference: {fileID: 0}
+    - target: {fileID: 6229271222334431382, guid: 137870c767bf8b84f9c550357331a0cf, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: -200
+      objectReference: {fileID: 0}
     - target: {fileID: 6452252180174813985, guid: 137870c767bf8b84f9c550357331a0cf, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5

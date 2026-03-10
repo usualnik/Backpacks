@@ -8,6 +8,7 @@ public class DraggableItem : MonoBehaviour,
     public ItemBehaviour ItemBehaviour => _itemBehaviour;
 
     [SerializeField] protected Image _image;
+    protected Vector3 _draggingImageSizeboost = new Vector3(0.2f, 0.2f, 0.2f);
     [SerializeField] protected ItemCell[] _itemCells;
     [SerializeField] protected bool _isCanBeSelled = false;
 
@@ -28,6 +29,9 @@ public class DraggableItem : MonoBehaviour,
     protected Quaternion _originalRotation;
     protected Transform _originalParent;
 
+    protected UI_DragItemsCanvas _dragItemsCanvas;
+
+
     private void Awake()
     {
         _itemBehaviour = GetComponent<ItemBehaviour>();
@@ -36,6 +40,8 @@ public class DraggableItem : MonoBehaviour,
         _targetBagCells = new BagCell[_itemCells.Length];
 
         _neededSlotsToBePlaced = _itemCells.Length;
+
+        _dragItemsCanvas = FindAnyObjectByType<UI_DragItemsCanvas>();
 
         ValidateComponents();
     }
@@ -57,6 +63,7 @@ public class DraggableItem : MonoBehaviour,
         _originalPosition = transform.position;
         _originalRotation = transform.rotation;
         _originalParent = transform.parent;
+
 
         if (SelectedItemManager.Instance != null)
         {
@@ -85,13 +92,14 @@ public class DraggableItem : MonoBehaviour,
         _rb.angularVelocity = 0f;
 
         _image.raycastTarget = false;
+        _image.gameObject.transform.localScale += _draggingImageSizeboost;
         _isDragging = true;
         _canRotate = true;
         _collider.enabled = true;
 
-        if (_canvas != null)
+        if (_dragItemsCanvas != null)
         {
-            transform.SetParent(_canvas.transform, true);
+            transform.SetParent(_dragItemsCanvas.transform, true);
         }
     }
 
@@ -115,6 +123,7 @@ public class DraggableItem : MonoBehaviour,
             SelectedItemManager.Instance.SetCurrentSelectedItem(null);
 
         _image.raycastTarget = true;
+        _image.gameObject.transform.localScale -= _draggingImageSizeboost;
         _canRotate = false;
         _isDragging = false;
     }
@@ -123,11 +132,7 @@ public class DraggableItem : MonoBehaviour,
     {
         if (!_canRotate) return;
 
-        ////float scroll = Input.GetAxis("Mouse ScrollWheel");
-        //if (scroll != 0)
-        //{
-        //    RotateItem(scroll > 0 ? 90 : -90);
-        //}
+        HandleRotation();
 
         if (_isDragging)
         {
@@ -135,11 +140,19 @@ public class DraggableItem : MonoBehaviour,
         }
     }
 
+    private void HandleRotation()
+    {
+        float scroll = Input.GetAxis("Mouse ScrollWheel");
+        if (scroll != 0)
+        {
+            RotateItem(scroll > 0 ? 90 : -90);
+        }
+    }
+
     private void RotateItem(float angle)
     {
         transform.Rotate(0, 0, angle);
 
-        // Опционально: снэп к ближайшим 90 градусам
         Vector3 currentRotation = transform.eulerAngles;
         currentRotation.z = Mathf.Round(currentRotation.z / 90) * 90;
         transform.eulerAngles = currentRotation;

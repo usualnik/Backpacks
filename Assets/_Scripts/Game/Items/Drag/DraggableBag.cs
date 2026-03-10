@@ -6,6 +6,7 @@ public class DraggableBag : MonoBehaviour,
     IBeginDragHandler, IDragHandler, IEndDragHandler, IDraggable
 {
     [SerializeField] protected Image _image;
+    protected Vector3 _draggingImageSizeboost = new Vector3(0.2f, 0.2f, 0.2f);
     [SerializeField] private BagCell[] _bagCells;
     [SerializeField] private bool _isCanBeSelled = false;
 
@@ -26,6 +27,9 @@ public class DraggableBag : MonoBehaviour,
     private Quaternion _originalRotation;
     private Transform _originalParent;
 
+    protected UI_DragItemsCanvas _dragItemsCanvas;
+
+
     private void Awake()
     {
         _itemBehaviour = GetComponent<ItemBehaviour>();
@@ -34,6 +38,8 @@ public class DraggableBag : MonoBehaviour,
         _targetInventoryCells = new InventoryCell[_bagCells.Length];
 
         _neededSlotsToBePlaced = _bagCells.Length;
+
+        _dragItemsCanvas = FindAnyObjectByType<UI_DragItemsCanvas>();   
 
         ValidateComponents();
     }
@@ -77,13 +83,15 @@ public class DraggableBag : MonoBehaviour,
         _rb.angularVelocity = 0f;
 
         _image.raycastTarget = false;
+        _image.gameObject.transform.localScale += _draggingImageSizeboost;
+
         _isDragging = true;
         _canRotate = true;
         _collider.enabled = true;
 
-        if (_canvas != null)
+        if (_dragItemsCanvas != null)
         {
-            transform.SetParent(_canvas.transform, true);
+            transform.SetParent(_dragItemsCanvas.transform, true);
         }
     }
 
@@ -107,6 +115,7 @@ public class DraggableBag : MonoBehaviour,
             SelectedItemManager.Instance.SetCurrentSelectedItem(null);
 
         _image.raycastTarget = true;
+        _image.gameObject.transform.localScale -= _draggingImageSizeboost;
         _canRotate = false;
         _isDragging = false;
     }
@@ -125,18 +134,17 @@ public class DraggableBag : MonoBehaviour,
 
     private void HandleRotation()
     {
-        //float scroll = Input.GetAxis("Mouse ScrollWheel");
-        //if (scroll != 0)
-        //{
-        //    RotateBag(scroll > 0 ? 90 : -90);
-        //}
+        float scroll = Input.GetAxis("Mouse ScrollWheel");
+        if (scroll != 0)
+        {
+            RotateBag(scroll > 0 ? 90 : -90);
+        }
     }
 
     private void RotateBag(float angle)
     {
         transform.Rotate(0, 0, angle);
 
-        // Опционально: снэп к ближайшим 90 градусам
         Vector3 currentRotation = transform.eulerAngles;
         currentRotation.z = Mathf.Round(currentRotation.z / 90) * 90;
         transform.eulerAngles = currentRotation;

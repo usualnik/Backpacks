@@ -16,11 +16,18 @@ public class StarCell : MonoBehaviour
     protected IStarEffect _starEffect;
     protected ItemBehaviour _item;
 
+    private UI_DragItemsCanvas uI_DragItemsCanvas;
+    private Transform _originalTransform;
+
     private void Awake()
     {
         _starImage = GetComponent<Image>();
         _starImage.enabled = false;
         _starImage.sprite = _starEmpty;
+
+        uI_DragItemsCanvas = FindAnyObjectByType<UI_DragItemsCanvas>();
+        _originalTransform = GetComponentInParent<ItemBehaviour>().transform;
+
     }
 
     private void Start()
@@ -29,14 +36,22 @@ public class StarCell : MonoBehaviour
         _starEffect = GetComponentInParent<IStarEffect>();
         _item = GetComponentInParent<ItemBehaviour>();
 
-        //_onHoverItem.OnHover += OnHoverItem_OnHover;
-       // _onHoverItem.OnHoverExit += OnHoverItem_OnHoverExit;
+        if (_onHoverItem != null)
+        {
+            _onHoverItem.OnHover += OnHoverItem_OnHover;
+            _onHoverItem.OnHoverExit += OnHoverItem_OnHoverExit;
+        }
     }
 
     private void OnDestroy()
     {
-        //_onHoverItem.OnHover -= OnHoverItem_OnHover;
-        //_onHoverItem.OnHoverExit -= OnHoverItem_OnHoverExit;
+        if (_onHoverItem != null)
+        {
+            _onHoverItem.OnHover -= OnHoverItem_OnHover;
+            _onHoverItem.OnHoverExit -= OnHoverItem_OnHoverExit;
+        }
+
+
     }
 
     private void OnHoverItem_OnHover()
@@ -52,11 +67,16 @@ public class StarCell : MonoBehaviour
     private void ShowStars()
     {
         _starImage.enabled = true;
+
+        _starImage.gameObject.transform.SetParent(uI_DragItemsCanvas.transform, true);
     }
 
     private void HideStars()
     {
         _starImage.enabled = false;
+
+        _starImage.gameObject.transform.SetParent(_originalTransform, true);
+
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -66,7 +86,7 @@ public class StarCell : MonoBehaviour
             if (HasMatchingTypes(otherItem.ItemData.Type))
             {
                 ApplyStarEffect(otherItem);
-            }           
+            }
         }
     }
     private void OnTriggerExit2D(Collider2D collision)

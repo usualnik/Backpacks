@@ -51,7 +51,7 @@ public class UI_CharacterStatsPanel : MonoBehaviour
         
         _goldAmountText.text = "Gold: " + stats.GoldAmount;
         _healthAmountText.text = "Health: " + stats.Health;
-        //_staminaAmountText.text = "Stamina: " + stats.Stamina;        
+        _staminaAmountText.text = "Stamina: " + stats.Stamina;        
     }
 
     private void UpdatePlayerClassText(string newClassName)

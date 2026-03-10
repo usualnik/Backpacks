@@ -60,7 +60,7 @@ public class RecipeCell : MonoBehaviour
             }
             catch (System.Exception e)
             {
-                // В случае ошибки сбрасываем флаг
+                Debug.LogException(e);  
                 _itemCombinationExecuted = false;
             }
         }

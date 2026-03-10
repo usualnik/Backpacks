@@ -276,17 +276,17 @@ public abstract class  Character : MonoBehaviour, IDamageable, IStaminable
     //-----------------STAMINA------------------------------------------------
     public void UseStamina(float amount)
     {
-        if (_stats.Stamina - amount > 0)
-        {
-            _stats.Stamina -= amount;
-            _staminaRegenCoroutine = StartCoroutine(RegenStaminaRoutine());
-        }
-        else
+        _stats.Stamina -= amount;
+
+        _stats.Stamina = Mathf.Max(_stats.Stamina, 0f);
+
+        if (_stats.Stamina <= 0)
         {
             OnStaminaEmpty?.Invoke();
         }
-    }
 
+        _staminaRegenCoroutine = StartCoroutine(RegenStaminaRoutine());
+    }
     public bool HasStaminaToAttack(float amount)
     {
         return _stats.Stamina - amount > 0;
@@ -297,6 +297,9 @@ public abstract class  Character : MonoBehaviour, IDamageable, IStaminable
         while (!_isDead && _stats.Stamina < _stats.StaminaMax)
         {
             _stats.Stamina += STAMINA_REGEN_STEP * _staminaRegenMultiplier;
+
+            _stats.Stamina = Mathf.Min(_stats.Stamina, _stats.StaminaMax);
+
             InvokeStatsChanged(_stats);
             yield return new WaitForSeconds(0.1f);
         }
@@ -314,11 +317,13 @@ public abstract class  Character : MonoBehaviour, IDamageable, IStaminable
     public void AddStaminaRegenStepMultiplier(float value)
     {
         _staminaRegenMultiplier += value;
+
     }
 
     public void ChangeStaminaMaxValue(float value)
     {
         _stats.StaminaMax += value;
+
     }
 
     //---------------------HEALTH----------------------------------
