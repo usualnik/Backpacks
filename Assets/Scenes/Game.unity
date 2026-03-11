@@ -3061,7 +3061,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
-    m_RemovedGameObjects: []
+    m_RemovedGameObjects:
+    - {fileID: 8046987199707027147, guid: 218a7078d7561f4499b0de74f71c038f, type: 3}
+    - {fileID: 1880885379378494736, guid: 218a7078d7561f4499b0de74f71c038f, type: 3}
+    - {fileID: 6693142541335441984, guid: 218a7078d7561f4499b0de74f71c038f, type: 3}
     m_AddedGameObjects: []
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 98611140532912634, guid: 218a7078d7561f4499b0de74f71c038f, type: 3}
@@ -3693,7 +3696,7 @@ MonoBehaviour:
   - {fileID: 817596744}
   - {fileID: 745175675}
   - {fileID: 1095334312}
-  - {fileID: 1728315148}
+  - {fileID: 0}
   - {fileID: 1474477394}
   - {fileID: 818738413}
   - {fileID: 2137281340}
@@ -5995,7 +5998,11 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
-    m_RemovedGameObjects: []
+    m_RemovedGameObjects:
+    - {fileID: 4102108019145637048, guid: 31c08e4acc2691945a801582794bdfff, type: 3}
+    - {fileID: 2090437971885029602, guid: 31c08e4acc2691945a801582794bdfff, type: 3}
+    - {fileID: 8222791069040973741, guid: 31c08e4acc2691945a801582794bdfff, type: 3}
+    - {fileID: 7222852845214714830, guid: 31c08e4acc2691945a801582794bdfff, type: 3}
     m_AddedGameObjects: []
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 98611140532912634, guid: 31c08e4acc2691945a801582794bdfff, type: 3}
@@ -33605,17 +33612,6 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 6648914310299956083, guid: 35eac0639959b854da16a7093a350d18, type: 3}
   m_PrefabInstance: {fileID: 1728315141}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &1728315148 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 3919845225088230267, guid: 35eac0639959b854da16a7093a350d18, type: 3}
-  m_PrefabInstance: {fileID: 1728315141}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1782505180}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 192d0ac472af34e488bbae61bb182578, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::ItemBehaviour
 --- !u!114 &1728772681 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 8668338911553433116, guid: 54dcd81a648e1f342a58b0a9fa02b73a, type: 3}
@@ -36779,6 +36775,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 68fea9106bc32764cb65e68803a9d6da, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::UI_DescriptionCanvas
+  _activeDescriptionsCount: 0
 --- !u!1 &1858053141
 GameObject:
   m_ObjectHideFlags: 0

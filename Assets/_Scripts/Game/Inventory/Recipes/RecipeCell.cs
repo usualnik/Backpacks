@@ -7,13 +7,13 @@ public class RecipeCell : MonoBehaviour
     private bool _isCheckingForIngridient = false;
 
     private ItemBehaviour _itemBehaviour;
-    private List<ItemBehaviour> _ingridientItemBehaviours = new List<ItemBehaviour>();
+    [SerializeField] private List<ItemBehaviour> _ingridientItemBehaviours = new List<ItemBehaviour>();
 
+    [SerializeField]
     private Recepie _currentRecepie;
-    private bool _canBeCombined = false;
 
-    // Флаг на уровне предмета, что сборка уже выполнена
-    private static bool _itemCombinationExecuted = false;
+    [SerializeField]
+    private bool _canBeCombined = false;
 
     private void Awake()
     {
@@ -34,77 +34,17 @@ public class RecipeCell : MonoBehaviour
 
     private void CombatManager_OnCombatFinished(CombatManager.CombatResult obj)
     {
-        // Если сборка для этого предмета уже выполнена - игнорируем все последующие ячейки
-        if (_itemCombinationExecuted)
-        {
-            return;
-        }
-
-        // Проверяем, не запущена ли уже сборка другой ячейкой этого же предмета
-        if (IsAnyOtherCellCombining())
-        {
-            return;
-        }
 
         if (_canBeCombined && _currentRecepie != null)
         {
 
-            try
-            {
-                // Устанавливаем флаг, что сборка началась
-                _itemCombinationExecuted = true;
+            ItemBehaviour[] ingredientsForRecipe = GetIngredientsForCurrentRecipe();
+            _itemBehaviour.CombineItemWithIngridient(ingredientsForRecipe, _currentRecepie.RecipeResult);
 
-                // Получаем только те ингредиенты, которые нужны для текущего рецепта
-                ItemBehaviour[] ingredientsForRecipe = GetIngredientsForCurrentRecipe();
-                _itemBehaviour.CombineItemWithIngridient(ingredientsForRecipe, _currentRecepie.RecipeResult);
-            }
-            catch (System.Exception e)
-            {
-                Debug.LogException(e);  
-                _itemCombinationExecuted = false;
-            }
         }
 
     }
 
-    private bool IsAnyOtherCellCombining()
-    {
-        // Получаем все RecipeCell на этом предмете
-        RecipeCell[] allCells = _itemBehaviour.GetComponentsInChildren<RecipeCell>();
-
-        // Находим все ячейки, которые могут собрать рецепт (включая текущую)
-        var combinableCells = allCells
-            .Where(cell => cell._canBeCombined && cell._currentRecepie != null)
-            .ToList();
-
-        // Если только одна ячейка может собрать рецепт - это наша, и мы её пропускаем дальше
-        if (combinableCells.Count == 1 && combinableCells[0] == this)
-        {
-            return false;
-        }
-
-        // Если несколько ячеек могут собрать рецепт, выбираем первую по индексу
-        if (combinableCells.Count > 1)
-        {
-            // Сортируем ячейки по имени или индексу для детерминированного выбора
-            var sortedCells = combinableCells
-                .OrderBy(cell => cell.name)
-                .ThenBy(cell => cell.GetInstanceID())
-                .ToList();
-
-            // Если первая ячейка в отсортированном списке - это мы, то собираем
-            if (sortedCells[0] == this)
-            {
-                return false;
-            }
-            else
-            {
-                return true;
-            }
-        }
-
-        return false;
-    }
 
     private ItemBehaviour[] GetIngredientsForCurrentRecipe()
     {
@@ -139,8 +79,6 @@ public class RecipeCell : MonoBehaviour
         if (!_isCheckingForIngridient)
         {
             ClearIngridients();
-            // Сбрасываем флаг сборки, когда предмет больше не в состоянии проверки
-            _itemCombinationExecuted = false;
         }
     }
 

@@ -38,7 +38,7 @@ public class ItemBehaviour : MonoBehaviour
     protected int _itemPrice;
     protected ItemVisual _itemVisual;
 
-   protected OwnerTargetHandler _ownerTargetHandler;
+    protected OwnerTargetHandler _ownerTargetHandler;
 
     private void Awake()
     {
@@ -105,23 +105,24 @@ public class ItemBehaviour : MonoBehaviour
     }
     public void CombineItemWithIngridient(ItemBehaviour[] ingridients, ItemDataSO recipeResult)
     {
-        if(this is WeaponBehaviour)
+        if (this is WeaponBehaviour)
         {
             WeaponBehaviour weaponBehaviour = (WeaponBehaviour)this;
             _itemData = recipeResult;
 
-           
+
             weaponBehaviour.CombineWeaponToRecepie(recipeResult);
         }
         else
         {
-            _itemData = recipeResult;           
+            _itemData = recipeResult;
             _itemVisual.UpdateVisual(_itemData.Icon);
         }
 
         foreach (var i in ingridients)
         {
-            Destroy(i.gameObject);
+            if (i != null)
+                Destroy(i.gameObject);
         }
     }
     public int GetItemPrice() => ItemData.Price;
