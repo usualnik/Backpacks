@@ -69,8 +69,6 @@ public class EnemyInventory : BaseInventory
 
         int bagsAvailable = _leatherBagPreset.Capacity - 1;
 
-
-
         while (gearScoreAvailableForBags > _cheapestBagGearScoreAmount && bagsAvailable > 0)
         {
             if (_leatherBagPreset[bagsAvailable] == null) return;
@@ -104,6 +102,9 @@ public class EnemyInventory : BaseInventory
 
         startingBagBehaviour.InitItemStateInInventory();
 
+        //Отключаем перетаскивание
+        startingBag.GetComponent<DraggableBag>().enabled = false;
+
         _itemsInIventory.Add(startingBagBehaviour);
 
         BagPreset startingBagPreset = startingBag.AddComponent<BagPreset>();
@@ -132,9 +133,15 @@ public class EnemyInventory : BaseInventory
         {
             ItemDataSO newItem = Shop.Instance.GetRandomAvailableItemDataSO(item.GetComponent<ItemBehaviour>().ItemData.GetShapeSize());
 
-            GameObject spawnedItem = Instantiate(newItem.Prefab, item.transform.position, item.transform.rotation , bag.transform);
+            GameObject spawnedItem = Instantiate(newItem.Prefab, item.transform.position, item.transform.rotation, bag.transform);
 
+            //Конфигурация отспавленного предмета
             spawnedItem.GetComponent<ItemBehaviour>().InitItemStateInInventory();
+
+            if (spawnedItem.GetComponent<DraggableItem>() != null)
+                spawnedItem.GetComponent<DraggableItem>().enabled = false;
+            else if (spawnedItem.GetComponent<DraggableGem>() != null)
+                spawnedItem.GetComponent<DraggableGem>().enabled = false;
 
             _targetGearScore -= newItem.GearScore;
 

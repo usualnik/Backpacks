@@ -9,6 +9,7 @@ public class ItemBehaviour : MonoBehaviour
     public ItemDataSO ItemData => _itemData;
     public Character TargetCharacter => _targetCharacter;
     public Character OwnerCharacter => _ownerCharacter;
+    public bool IsBought => _isBought; 
 
     [SerializeField] private ItemDataSO _itemData;
 
@@ -33,6 +34,7 @@ public class ItemBehaviour : MonoBehaviour
 
     [SerializeField] protected ItemState _currentState;
     [SerializeField] protected ItemState _previousState = ItemState.None;
+    [SerializeField] protected bool _isBought = false;
 
 
     protected int _itemPrice;
@@ -161,6 +163,11 @@ public class ItemBehaviour : MonoBehaviour
                 _ownerCharacter = EnemyCharacter.Instance;
                 break;
         }
+    }
+
+    public void SetIsBought()
+    {
+        _isBought = true;
     }
 
 }

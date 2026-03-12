@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
+using System.Linq;
 
 public class DraggableItem : MonoBehaviour,
     IBeginDragHandler, IDragHandler, IEndDragHandler, IDraggable
@@ -114,7 +115,7 @@ public class DraggableItem : MonoBehaviour,
     {
         if (!_isDragging) return;
 
-        CheckPutInSlot();
+        CheckPutInBag();
 
         if (_isCanBeSelled && PlayerCharacter.Instance != null)
             PlayerCharacter.Instance.SellItem();
@@ -158,35 +159,71 @@ public class DraggableItem : MonoBehaviour,
         transform.eulerAngles = currentRotation;
     }
 
-    private void CheckPutInSlot()
+    private void CheckPutInBag()
     {
-        bool canAfford = PlayerCharacter.Instance != null &&
-                        PlayerCharacter.Instance.HasMoneyToBuyItem(_itemBehaviour.GetItemPrice());
+        // Проверяем, что все целевые ячейки принадлежат сумке в инвентаре
+        bool allCellsInInventory = _targetBagCells
+            .Where(cell => cell != null)
+            .All(cell => cell.BagItem != null &&
+                         cell.BagItem.CurrentState.HasFlag(ItemBehaviour.ItemState.Inventory));
 
-        bool canPlace = _currentSlotsToBePlaced == _neededSlotsToBePlaced;
+        bool canPlace = (_currentSlotsToBePlaced == _neededSlotsToBePlaced) && allCellsInInventory;
 
-        if (canPlace && canAfford)
+        // Если это попытка купить предмет - списать деньги
+        if (canPlace && !_itemBehaviour.IsBought)
         {
-            // Предмет можно разместить - привязываем к ячейкам сумки
+            canPlace = TryBuyItem();
+        }
+
+        if (canPlace)
+        {
             PlaceItemInBagCells();
             _itemBehaviour.SetItemState(ItemBehaviour.ItemState.Inventory);
-
-            PlayerCharacter.Instance.SpendMoney(_itemBehaviour.GetItemPrice());
+        }
+        else if (_itemBehaviour.PreviousState == ItemBehaviour.ItemState.Store)
+        {
+            ReturnToOriginalPosition();
         }
         else
         {
-
-            if (_itemBehaviour.PreviousState.HasFlag(ItemBehaviour.ItemState.Store))               
-            {
-                ReturnIfNotPlaced();
-            }
-            else
-            {
-                FreeFall();
-            }
+            FreeFall();
         }
     }
 
+    private bool TryBuyItem()
+    {
+        bool canAfford = PlayerCharacter.Instance != null &&
+                       PlayerCharacter.Instance.HasMoneyToBuyItem(_itemBehaviour.GetItemPrice());
+
+        if (canAfford)
+        {
+            PlayerCharacter.Instance.SpendMoney(_itemBehaviour.GetItemPrice());
+            _itemBehaviour.SetIsBought();
+            return true;
+        }
+
+        return false;
+    }
+    private void ReturnToOriginalPosition()
+    {
+        // Восстанавливаем оригинальную позицию и rotation
+        transform.position = _originalPosition;
+        transform.rotation = _originalRotation;
+
+        // Восстанавливаем оригинального родителя
+        if (_originalParent != null)
+        {
+            transform.SetParent(_originalParent, true);
+        }
+
+        // Возвращаем исходное состояние
+        _rb.bodyType = RigidbodyType2D.Kinematic;
+        _collider.enabled = false;
+        ResetColor();
+
+        // Возвращаем предыдущее состояние предмета
+        _itemBehaviour.SetItemState(_itemBehaviour.PreviousState);
+    }
 
     protected virtual void CheckCanBePlaced()
     {
@@ -196,9 +233,16 @@ public class DraggableItem : MonoBehaviour,
         {
             if (_itemCells[i].CanBePlaced)
             {
-                _currentSlotsToBePlaced++;
-                // Сохраняем ссылку на ячейку сумки для этого ItemCell
-                _targetBagCells[i] = _itemCells[i].CurrentBagCell;
+                BagCell bagCell = _itemCells[i].CurrentBagCell;
+                if (bagCell != null && bagCell.BagItem.CurrentState.HasFlag(ItemBehaviour.ItemState.Inventory))
+                {
+                    _currentSlotsToBePlaced++;
+                    _targetBagCells[i] = bagCell;
+                }
+                else
+                {
+                    _targetBagCells[i] = null;
+                }
             }
             else
             {
@@ -356,7 +400,5 @@ public class DraggableItem : MonoBehaviour,
         _collider.enabled = true;
         _rb.bodyType = RigidbodyType2D.Dynamic;
         _itemBehaviour.SetItemState(ItemBehaviour.ItemState.FreeFall);
-
-
     }
 }

@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
+using System.Linq;
 
 public class DraggableBag : MonoBehaviour,
     IBeginDragHandler, IDragHandler, IEndDragHandler, IDraggable
@@ -151,30 +152,65 @@ public class DraggableBag : MonoBehaviour,
     }
 
     private void CheckPutInInventory()
-    {
+    {    
+
         bool canPlace = _currentSlotsToBePlaced == _neededSlotsToBePlaced;
+
+        if (canPlace && !_itemBehaviour.IsBought)
+        {
+            canPlace = TryBuyItem();
+        }
 
         if (canPlace)
         {
-            // Сумку можно разместить - привязываем к ячейкам инвентаря
-            PlaceBagInInventoryCells();
+            PlaceBagInInventory();
             _itemBehaviour.SetItemState(ItemBehaviour.ItemState.Inventory);
-            PlayerCharacter.Instance.SpendMoney(_itemBehaviour.GetItemPrice());
-
+        }
+        else if (_itemBehaviour.PreviousState == ItemBehaviour.ItemState.Store)
+        {
+            ReturnToOriginalPosition();
         }
         else
         {
-            if (_itemBehaviour.CurrentState.HasFlag(ItemBehaviour.ItemState.Store))
-            {
-                ReturnIfNotPlaced();
-            }
-            else
-            {
-                FreeFall();
-            }
+            FreeFall();
         }
     }
 
+    private bool TryBuyItem()
+    {
+        bool canAfford = PlayerCharacter.Instance != null &&
+                       PlayerCharacter.Instance.HasMoneyToBuyItem(_itemBehaviour.GetItemPrice());
+
+        if (canAfford)
+        {
+            PlayerCharacter.Instance.SpendMoney(_itemBehaviour.GetItemPrice());
+            _itemBehaviour.SetIsBought();
+            return true;
+        }
+
+        return false;
+    }
+
+    private void ReturnToOriginalPosition()
+    {
+        // Восстанавливаем оригинальную позицию и rotation
+        transform.position = _originalPosition;
+        transform.rotation = _originalRotation;
+
+        // Восстанавливаем оригинального родителя
+        if (_originalParent != null)
+        {
+            transform.SetParent(_originalParent, true);
+        }
+
+        // Возвращаем исходное состояние
+        _rb.bodyType = RigidbodyType2D.Kinematic;
+        _collider.enabled = false;
+        ResetColor();
+
+        // Возвращаем предыдущее состояние предмета
+        _itemBehaviour.SetItemState(_itemBehaviour.PreviousState);
+    }
 
 
     private void CheckCanBePlaced()
@@ -205,7 +241,7 @@ public class DraggableBag : MonoBehaviour,
         }
     }
 
-    private void PlaceBagInInventoryCells()
+    private void PlaceBagInInventory()
     {
         if (_targetInventoryCells[0] == null) return;
 
